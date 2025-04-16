@@ -1,0 +1,779 @@
+/* src/ticketPurchase.css */
+.ticket-purchase-container {
+  width: 100%;
+  margin: 0;
+  background-color: #f5f5f5;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+}
+
+.ticket-image-container {
+  width: 100%;
+  height: 500px;
+  position: relative;
+  margin: 0;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.ticket-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.countdown {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 5px 10px;
+  border-radius: 5px;
+  z-index: 2;
+}
+
+.ticket-title-holder {
+  width: 100%;
+  max-width: 1500px;
+  height: 50px;
+  background-color: #fff;
+  margin: -20px auto 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.event-title {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 15px 10px;
+  text-transform: uppercase;
+  color: #100c08;
+}
+
+.buy-ticket-container {
+  width: 600px;
+  min-height: 908px;
+  background-color: #fff;
+  box-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.1);
+  margin: 40px auto;
+  border-radius: 3px;
+  padding: 5px; /* Reduced from 20px to fit 590px buttons */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.buy-ticket-container.gift-active {
+  padding-bottom: 40px;
+}
+
+.ticket-header {
+  width: 100%;
+  max-width: 590px; /* Increased from 500px to match buttons */
+  text-align: left;
+}
+
+.buy-ticket-header {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 10px 20px;
+  color: #333;
+}
+
+.buy-ticket-paragraph {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 80%;
+  padding: 2px  20px;
+  color: #555;
+}
+
+.ticket-header-divider {
+  width: 95%;
+  margin: 10px auto;
+  border: 1px solid #e0e0e0;
+}
+
+.ticket-form{
+  width: 90%;
+  background-color: #fff;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0 -40px;
+  padding: 20px 0 25px;
+  justify-content: flex-start;
+}
+
+.checkbox-group label {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #555;
+}
+
+.name-input {
+  margin: 10px 0;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  color: #555;
+  margin: 12px 0 5px;
+  padding-top: 35px;
+  display: block;
+  text-align: left;
+}
+
+.name-inputs {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.name-inputbox,
+.name-inputbox-2,
+.phone-number-inputbox {
+  width: 311px;
+  height: 30px;
+  border-radius: 4px;
+  border: 0.5px solid #e0e0e0;
+  margin-top: 10px;
+  padding: 0 10px;
+  background-color: #f8fafc;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.phone-code-select {
+  width: 334px;
+  height: 32px;
+  border-radius: 4px;
+  border: 0.5px solid #e0e0e0;
+  margin-top: 10px;
+  padding: 0 10px;
+  background-color: #f8fafc;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="%23777" d="M2 4l4 4 4-4H2z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+}
+
+.email-inputbox,
+.recipient-email-inputbox {
+  width: 96%;
+  height: 30px;
+  border-radius: 4px;
+  border: 0.5px solid #e0e0e0;
+  margin-top: 10px;
+  padding: 0 10px;
+  background-color: #f8fafc;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  display: block;
+}
+
+.name-inputbox::placeholder,
+.name-inputbox-2::placeholder,
+.email-inputbox::placeholder,
+.recipient-email-inputbox::placeholder,
+.phone-number-inputbox::placeholder {
+  font-family: 'Inter', sans-serif;
+  color: #777;
+  font-size: 14px;
+}
+
+.recipient-group .name-inputbox,
+.recipient-group .name-inputbox-2 {
+  width: 311px;
+  height: 30px;
+  border-radius: 4px;
+  border: 0.5px solid #e0e0e0;
+  margin-bottom: 5px;
+  padding: 0 10px;
+  background-color: #f8fafc;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+}
+
+.file-display-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 15px 0;
+  justify-content: flex-start;
+}
+
+.file-display-wrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.file-display-text {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #777;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  background-color: #f8fafc;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.angle-down {
+  font-size: 12px;
+  color: #777;
+  cursor: pointer;
+}
+
+.file-details {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  
+}
+
+.file-details-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.file-icon {
+  font-size: 24px;
+  color: #007bff;
+}
+
+.file-name {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: #333;
+  margin: 0;
+}
+
+.file-meta {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  color: #777;
+  margin: 0;
+}
+
+/* Wider buttons */
+.confirm-ticket-btn,
+.back-btn {
+  width: 100%; /* Full width of parent */
+  height: 35px;
+  margin: 10px 0;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s, transform 0.1s;
+  box-sizing: border-box;
+}
+
+.confirm-ticket-btn {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  margin-top: 20px;
+  background-color: #17153a;
+  border: none;
+  color: #fff;
+}
+
+.confirm-ticket-btn:hover {
+  background-color: #0f0d2e;
+  transform: translateY(-1px);
+}
+
+.back-btn {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  background-color: #fff;
+  border: 0.5px solid #e0e0e0;
+  color: #000;
+}
+
+.back-btn:hover {
+  background-color: #f8f8f8;
+  transform: translateY(-1px);
+}
+
+.ticket-counter-group {
+  margin-bottom: 0;
+}
+
+.ticket-counter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: #f8fafc;
+}
+
+.counter-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.counter-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.counter-btn:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.counter-icon {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  line-height: 1;
+  color: white;
+  display: block;
+}
+
+.counter-value {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: #333;
+  width: 40px;
+  text-align: center;
+}
+
+.counter-price-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 60px 0 20px;
+  width: 93%;
+}
+
+.price-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  height: 20px;
+  margin-bottom: 9px;
+  margin-right: -38px;
+}
+
+.price-value {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  color: #333;
+  background-color: #f8fafc;
+  padding: 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  width: fit-content;
+  height: 14px;
+}
+
+.ticket-bottom-divider {
+  width: 100%;
+  margin: 10px auto;
+  align-items: flex-start;
+  border: 1px solid #e0e0e0;
+}
+
+/* Responsive Breakpoints */
+
+/* Large Tablets (≤1024px) */
+@media (max-width: 1024px) {
+  .ticket-image-container {
+    height: 400px;
+  }
+
+  .buy-ticket-container {
+    width: 80%;
+    margin: 30px auto;
+    padding: 5px;
+  }
+
+  .buy-ticket-header {
+    font-size: 16px;
+  }
+
+  .ticket-header {
+    max-width: 100%; /* Scale with container */
+  }
+
+  .input-group {
+    margin-bottom: 18px;
+  }
+
+  .input-group label {
+    margin: 8px 0 5px;
+  }
+
+  .checkbox-group {
+    margin: 12px 0 20px;
+  }
+
+  .file-display-group {
+    margin: 12px 0;
+  }
+
+  .counter-price-container {
+    gap: 15px;
+    max-width: 100%;
+  }
+
+  .file-details {
+    max-width: 100%;
+  }
+
+  .ticket-bottom-divider {
+    max-width: 100%;
+  }
+
+  .confirm-ticket-btn,
+  .back-btn {
+    max-width: 100%; /* Scale with container */
+    height: 38px;
+    font-size: 14px;
+  }
+}
+
+/* Tablets and Small Laptops (≤768px) */
+@media (max-width: 768px) {
+  .ticket-image-container {
+    height: 300px;
+  }
+
+  .ticket-image {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    filter: brightness(90%) saturate(80%);
+  }
+
+  .countdown {
+    font-size: 16px;
+    top: 10px;
+    right: 10px;
+    padding: 4px 8px;
+  }
+
+  .ticket-title-holder {
+    margin: -10px auto 20px;
+  }
+
+  .event-title {
+    font-size: 14px;
+    font-weight: 600;
+    padding-bottom: 15px;
+    color: #4b4b4b;
+  }
+
+  .buy-ticket-container {
+    width: 90%;
+    padding: 5px;
+    min-height: auto;
+    justify-content: flex-start;
+  }
+
+  .buy-ticket-container.gift-active {
+    padding-bottom: 30px;
+  }
+
+  .checkbox-group {
+    margin: 12px 0 20px;
+  }
+
+  .input-group {
+    margin-bottom: 15px;
+  }
+
+  .input-group label {
+    margin: 8px 0 5px;
+  }
+
+  .file-display-group {
+    margin: 12px 0;
+  }
+
+  .name-inputs {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .name-inputbox,
+  .name-inputbox-2,
+  .email-inputbox,
+  .phone-code-select,
+  .phone-number-inputbox,
+  .recipient-email-inputbox,
+  .recipient-group .name-inputbox,
+  .recipient-group .name-inputbox-2 {
+    width: 100%;
+    margin-bottom: 5px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .phone-code-select {
+    padding: 0 10px;
+  }
+
+  .name-inputbox::placeholder,
+  .name-inputbox-2::placeholder,
+  .email-inputbox::placeholder,
+  .recipient-email-inputbox::placeholder,
+  .phone-number-inputbox::placeholder {
+    font-size: 14px;
+  }
+
+  .file-display-text {
+    margin: 0;
+    width: fit-content;
+  }
+
+  .file-details-content {
+    align-items: center;
+  }
+
+  .confirm-ticket-btn,
+  .back-btn {
+    width: 100%;
+    max-width: 100%;
+    height: 40px;
+    font-size: 14px;
+    margin: 10px 0;
+  }
+
+  .confirm-ticket-btn {
+    margin-top: 20px;
+  }
+
+  .counter-price-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+    max-width: 100%;
+    padding: 0 10px;
+  }
+
+  .counter-btn {
+    width: 22px;
+    height: 22px;
+  }
+
+  .counter-icon {
+    font-size: 11px;
+  }
+
+  .counter-value {
+    font-size: 15px;
+    width: 35px;
+  }
+
+  .price-value {
+    font-size: 15px;
+    padding: 6px;
+    height: 16px;
+  }
+}
+
+/* Mobile Phones (≤480px) */
+@media (max-width: 480px) {
+  .ticket-image-container {
+    height: 250px;
+  }
+
+  .ticket-image {
+    height: 100%;
+  }
+
+  .countdown {
+    font-size: 14px;
+    top: 8px;
+    right: 8px;
+    padding: 3px 6px;
+  }
+
+  .ticket-title-holder {
+    margin: -8px auto 15px;
+    height: 40px;
+  }
+
+  .event-title {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .buy-ticket-container {
+    width: 95%;
+    margin: 15px auto;
+    padding: 5px;
+  }
+
+  .buy-ticket-header {
+    font-size: 14px;
+  }
+
+  .buy-ticket-paragraph {
+    font-size: 12px;
+  }
+
+  .checkbox-group {
+    margin: 5px 0 9px;
+  }
+
+  .input-group {
+    margin-bottom: 12px;
+  }
+
+  .input-group label {
+    font-size: 14px;
+    margin: -29px 0 5px;
+  }
+
+  .file-display-group {
+    margin: 10px 0 ;
+  }
+
+  .name-inputbox,
+  .name-inputbox-2,
+  .email-inputbox,
+  .phone-number-inputbox,
+  .recipient-email-inputbox {
+    width: 90%;
+    height: 30px;
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+
+.phone-code-select{
+  width: 95.8% ;
+  height: 30px;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+  .name-inputbox::placeholder,
+  .name-inputbox-2::placeholder,
+  .email-inputbox::placeholder,
+  .recipient-email-inputbox::placeholder,
+  .phone-number-inputbox::placeholder {
+    font-size: 13px;
+  }
+
+  .checkbox-group label {
+    font-size: 13px;
+  }
+
+  .file-display-text {
+    font-size: 13px;
+    padding: 6px;
+  }
+
+  .file-name {
+    font-size: 13px;
+  }
+
+  .file-meta {
+    font-size: 11px;
+  }
+
+  .confirm-ticket-btn,
+  .back-btn {
+    width: 100%;
+    max-width: 100%; /* Unchanged, full width */
+    height: 42px;
+    font-size: 13px;
+    margin: 8px 0;
+  }
+
+  .counter-price-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 5px;
+    padding: 0 5px;
+    max-width: 100%;
+  }
+
+  .counter-btn {
+    width: 20px;
+    height: 20px;
+  }
+
+  .counter-icon {
+    font-size: 15px;
+  }
+
+  .counter-value {
+    font-size: 14px;
+    width: 30px;
+  }
+
+  .price-value {
+    font-size: 14px;
+    padding: 8px;
+    height: 14px;
+    margin-right: -18px;
+    margin-right: 19px;
+  }
+
+  .ticket-bottom-divider {
+    margin: 8px auto;
+    width: 100%;
+  }
+}

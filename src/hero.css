@@ -1,0 +1,166 @@
+/* src/hero.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+.hero-container {
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', sans-serif; /* Default to Inter for body */
+  max-width: 1500px;
+  width: 100%;
+  height: 500px;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('./concert-crowd.jpg');
+  background-blend-mode: overlay;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 0 20px;
+  box-sizing: border-box;
+  color: #fff;
+  text-align: center;
+}
+
+.hero-text {
+  margin-top: 25px;
+}
+
+.hero-text h2 {
+  font-family: 'Poppins', sans-serif; /* Changed to Poppins */
+  font-weight: 600; /* Bold, matches TicketPurchase.jsx */
+}
+
+.hero-form {
+  display: flex;
+  flex-direction: column;
+  margin: 25px 30px 500px 30px;
+  gap: 25px;
+  align-items: center;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.event-field,
+.hero-form select,
+.location-field {
+  display: block;
+  width: 350px;
+  height: 45px;
+  padding: 10px 10px 10px 40px;
+  font-family: 'Inter', sans-serif; /* Changed to Inter */
+  font-weight: 400;
+  font-size: 16px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  border: none;
+  color: #808080;
+}
+
+.event-field::placeholder,
+.location-field::placeholder {
+  font-family: 'Inter', sans-serif; /* Changed to Inter */
+  color: #808080;
+}
+
+.input-icon {
+  position: absolute;
+  left: 10px;
+  font-size: 18px;
+  color: #E60278;
+}
+
+.hero-form input[type="button"] {
+  font-family: 'Poppins', sans-serif; /* Changed to Poppins */
+  font-weight: 600; /* Bold, matches confirm-ticket-btn */
+  background-color: #E60278;
+  border: none;
+  width: 349px;
+  height: 40px;
+  color: #f5f5f5;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 18px;
+  border-radius: 4px;
+}
+
+/* Optional: Style the dropdown arrow */
+.category-dropdown {
+  appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%2317153a" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+}
+
+.category-dropdown option {
+  font-size: 16px;
+  color: #17153a;
+  background-color: white;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .hero-container {
+    height: 240px;
+    width: 100%;
+  }
+
+  .hero-form {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .event-field {
+    width: 300px;
+    height: 45px;
+    border-radius: 3px;
+  }
+
+  .location-field {
+    width: 190px;
+    border-radius: 3px;
+  }
+
+  .hero-form select {
+    width: 230px;
+    border-radius: 3px;
+  }
+
+  .hero-form input[type="button"] {
+    width: 100px;
+    height: 45px;
+    border-radius: 4px;
+  }
+}
+
+@media (max-width: 911px) and (min-width: 768px) {
+  .hero-form {
+    gap: 7px;
+  }
+
+  .event-field {
+    width: 260px;
+    height: 45px;
+    border-radius: 3px;
+  }
+
+  .location-field {
+    width: 170px;
+    border-radius: 3px;
+  }
+
+  .hero-form select {
+    width: 200px;
+    border-radius: 3px;
+  }
+
+  .hero-form input[type="button"] {
+    width: 90px;
+    height: 45px;
+    border-radius: 4px;
+  }
+}

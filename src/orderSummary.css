@@ -1,0 +1,414 @@
+/* src/orderSummary.css */
+.order-summary-container {
+    width: 100%;
+    margin: 0;
+    background-color: #f5f5f5;
+    overflow-x: hidden;
+    overflow-y: auto;
+    font-family: 'Inter', sans-serif; /* Default body font */
+    min-height: 100vh;
+  }
+  
+  .order-summary-card {
+    width: 50%;
+    max-width: 1200px;
+    background-color: #fff;
+    box-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.1);
+    margin: 40px auto;
+    border-radius: 3px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  
+  .order-header-container h2 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600; /* Mimics A2 Boing Semibold */
+    font-size: 2rem;
+    margin: 0 0 10px;
+    color: #333;
+  }
+  
+  .summary-divider {
+    width: 100%;
+    margin: 10px 0;
+    border: 1px solid #e0e0e0;
+  }
+  
+  .summary-dot-divider {
+    border: 0.5px dotted #e0e0e0;
+    width: 100%;
+    margin: 10px 0;
+  }
+  
+  .customer-name {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 1.5rem;
+    margin: 10px 0;
+    color: #222;
+  }
+  
+  .customer-contact {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 5px 0;
+  }
+  
+  .customer-email,
+  .customer-phone {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    color: #555;
+    margin: 0;
+  }
+  
+  .contact-icon {
+    font-size: 1.125rem;
+    color: #666;
+    line-height: 1;
+  }
+  
+  .gift-details {
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    width: 95%;
+  }
+  
+  .gift-details h4 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 1.125rem;
+    margin: 0 0 10px;
+  }
+  
+  .gift-details p {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    margin: 5px 0;
+  }
+  
+  .ticket-quantity-group {
+    display: flex;
+    gap: 10px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    margin: 10px 0;
+  }
+  
+  .checkout-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 20px 0;
+  }
+  
+  .checkout,
+  .checkout-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    margin: 10px 0;
+    width: 100%;
+  }
+  
+  .checkout h5,
+  .checkout-total h5 {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .file-display-group {
+    margin: 20px 0;
+    width: 100%;
+  }
+  
+  .file-display-wrapper {
+    cursor: pointer;
+  }
+  
+  .file-display-text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .file-details {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+  }
+  
+  .file-details-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .file-icon {
+    font-size: 1.5rem;
+    color: #666;
+  }
+  
+  .file-name {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+  }
+  
+  .file-meta {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 0.875rem;
+    color: #666;
+  }
+  
+  .action-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+    padding: 0 10px; /* Ensure buttons don’t touch edges */
+    box-sizing: border-box;
+  }
+  
+  .payment-button,
+  .back-ticket-purchase-btn {
+    width: 100%;
+    max-width: 500px; /* Reduced from 630px for better fit */
+    height: 35px;
+    margin: 10px 0;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    text-align: center;
+    border: 0.5px solid #e0e0e0;
+    transition: background-color 0.2s, transform 0.1s;
+    box-sizing: border-box;
+  }
+  
+  .payment-button {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600; /* Mimics A2 Boing Semibold */
+    background-color: #17153a;
+    color: #fff;
+  }
+  
+  .payment-button:hover {
+    background-color: #0f0d2e;
+    transform: translateY(-1px);
+  }
+  
+  .back-ticket-purchase-btn {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500; /* Mimics Graphik */
+    background-color: #fff;
+    color: #000;
+  }
+  
+  .back-ticket-purchase-btn:hover {
+    background-color: #f8f8f8;
+    transform: translateY(-1px);
+  }
+  
+  /* Responsive Breakpoints */
+  
+  /* Large Tablets (≤1024px) */
+  @media (max-width: 1024px) {
+    .order-summary-card {
+      width: 80%;
+      margin: 30px auto;
+      padding: 15px;
+    }
+  
+    .order-header-container h2 {
+      font-size: 1.75rem;
+    }
+  
+    .customer-name {
+      font-size: 1.375rem;
+    }
+  
+    .checkout-container {
+      margin: 15px 0;
+    }
+  
+    .checkout,
+    .checkout-total {
+      gap: 50px; /* Reduced for tablets */
+      flex-wrap: wrap; /* Allow wrapping */
+    }
+  
+    .action-buttons {
+      padding: 0 15px;
+    }
+  
+    .payment-button,
+    .back-ticket-purchase-btn {
+      max-width: 450px; /* Slightly smaller */
+      height: 38px;
+      font-size: 0.9375rem; /* ~15px */
+    }
+  }
+  
+  /* Tablets and Small Laptops (≤768px) */
+  @media (max-width: 768px) {
+    .order-summary-card {
+      width: 90%;
+      margin: 20px auto;
+      padding: 15px;
+      min-height: auto;
+      justify-content: flex-start;
+    }
+  
+    .order-header-container h2 {
+      font-size: 1.5rem;
+    }
+  
+    .customer-name {
+      font-size: 1.25rem;
+    }
+  
+    .customer-email,
+    .customer-phone,
+    .gift-details p,
+    .ticket-quantity-group,
+    .file-display-text,
+    .file-name {
+      font-size: 0.9375rem;
+    }
+  
+    .file-meta,
+    .checkout h5,
+    .checkout-total h5 {
+      font-size: 0.875rem;
+    }
+  
+    .gift-details h4 {
+      font-size: 1rem;
+    }
+  
+    .checkout-container {
+      margin: 10px 0;
+    }
+  
+    .checkout,
+    .checkout-total {
+      gap: 20px;
+      flex-direction: column; /* Stack for clarity */
+      align-items: flex-start;
+    }
+  
+    .action-buttons {
+      padding: 0 10px;
+    }
+  
+    .payment-button,
+    .back-ticket-purchase-btn {
+      max-width: 100%;
+      height: 42px; /* Taller for touch */
+      font-size: 0.9375rem;
+    }
+  }
+  
+  /* Mobile Phones (≤480px) */
+  @media (max-width: 480px) {
+    .order-summary-container {
+      width: 95%;
+        min-height: 100vh;
+        margin: 15px auto;
+      }
+
+    .order-summary-card {
+      width: 100%;
+      margin: 10px auto;
+      padding: 10px;
+    }
+  
+    .order-header-container h2 {
+      font-size: 1.25rem;
+    }
+  
+    .customer-name {
+      font-size: 1.125rem;
+    }
+  
+    .customer-email,
+    .customer-phone,
+    .gift-details p,
+    .ticket-quantity-group,
+    .file-display-text,
+    .file-name,
+    .checkout h5,
+    .checkout-total h5 {
+      font-size: 0.875rem;
+    }
+  
+    .file-meta {
+      font-size: 0.75rem;
+    }
+  
+    .gift-details h4 {
+      font-size: 0.9375rem;
+    }
+  
+    .checkout-container {
+      margin: 8px 0;
+    }
+  
+    .checkout,
+    .checkout-total {
+      gap: 10px;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .action-buttons {
+      margin-top: 15px;
+      margin-left: -10px;
+      padding: 0 5px;
+    }
+  
+    .payment-button,
+    .back-ticket-purchase-btn {
+      max-width: 90%;
+      height: 45px;
+      font-size: 0.875rem;
+      margin: 8px -15px;
+    }
+  
+    .customer-contact,
+    .ticket-quantity-group {
+      gap: 8px;
+    }
+  
+    .gift-details,
+    .file-details {
+      padding: 8px;
+    }
+  
+    .summary-divider,
+    .summary-dot-divider {
+      margin: 8px 0;
+    }
+  }
