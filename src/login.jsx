@@ -13,46 +13,46 @@ function Login({ onLogin, navigateToSignUp }) {
     const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     const validatePassword = (password) => password.length >= 6;
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError('');
-        setIsLoading(true);
+ const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
 
-        if (!validateEmail(email)) {
-            setError('Please enter a valid email address.');
-            setIsLoading(false);
-            return;
+    if (!validateEmail(email)) {
+        setError('Please enter a valid email address.');
+        setIsLoading(false);
+        return;
+    }
+
+    if (!validatePassword(password)) {
+        setError('Password must be at least 6 characters long.');
+        setIsLoading(false);
+        return;
+    }
+
+    try {
+        console.log('API URL:', process.env.REACT_APP_API_URL); // Debug: Log the API URL
+        const response = await fetch(process.env.REACT_APP_API_URL + '/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || `HTTP error! Status: ${response.status}`);
         }
 
-        if (!validatePassword(password)) {
-            setError('Password must be at least 6 characters long.');
-            setIsLoading(false);
-            return;
-        }
-
-        try {
-            console.log('API URL:', process.env.REACT_APP_API_URL); // Debug: Log the API URL
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || `HTTP error! Status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            console.log('Login response:', data); // Debug: Log response data
-            onLogin(data); // Call onLogin with the response data (e.g., token or user info)
-        } catch (error) {
-            console.error('Login error:', error);
-            setError(error.message || 'Failed to sign in. Please try again.');
-        } finally {
-            setIsLoading(false);
-        }
-    };
+        const data = await response.json();
+        console.log('Login response:', data); // Debug: Log response data
+        onLogin(data); // Call onLogin with the response data
+    } catch (error) {
+        console.error('Login error:', error);
+        setError(error.message || 'Failed to sign in. Please try again.');
+    } finally {
+        setIsLoading(false);
+    }
+};
 
     return (
         <div className="login-container">
