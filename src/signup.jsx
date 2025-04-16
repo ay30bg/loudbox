@@ -47,7 +47,8 @@ function SignUp({ navigateToSignIn }) {
 
         try {
             // Replace with your actual API call
-            const response = await fetch('https://loudbox-backend.vercel.app/api/signup', {
+            const apiUrl=process.env.REACT_APP_API_URL
+            const response = await fetch('${apiUrl}/api/signup', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, email, password }),
