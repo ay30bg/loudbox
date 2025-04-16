@@ -31,24 +31,20 @@ function Login({ onLogin, navigateToSignUp }) {
             return;
         }
 
-        try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
-            });
+         try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+        }); // Semicolon added
+        const data = await response.json();
+        console.log(data); // Replace with your login logic (e.g., save token, redirect)
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
 
-            
-
-            const data = await response.json();
-            if (!response.ok) {
-                throw new Error(data.message || 'Login failed');
-            }
-
-            console.log('Login successful:', data);
             onLogin(data); // Pass user data or token to parent component
-        } catch (err) {
-            setError(err.message || 'Something went wrong. Please try again.');
         } finally {
             setIsLoading(false);
         }
