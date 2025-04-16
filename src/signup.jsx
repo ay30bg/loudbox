@@ -47,7 +47,7 @@ function SignUp({ navigateToSignIn }) {
 
         try {
             // Replace with your actual API call
-            const response = await fetch('http://localhost:5000/api/signup', {
+            const response = await fetch('https://loudbox-backend.vercel.app/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, email, password }),
