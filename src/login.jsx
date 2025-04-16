@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Logo from './logo.png';
-import './login.css'
+import './login.css';
 
 function Login({ onLogin, navigateToSignUp }) {
     console.log('Login is rendering');
@@ -12,12 +12,11 @@ function Login({ onLogin, navigateToSignUp }) {
 
     const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     const validatePassword = (password) => password.length >= 6;
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setIsLoading(true);
-
 
         if (!validateEmail(email)) {
             setError('Please enter a valid email address.');
@@ -31,26 +30,29 @@ function Login({ onLogin, navigateToSignUp }) {
             return;
         }
 
-         try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password }),
-        }); // Semicolon added
-        const data = await response.json();
-        console.log(data); // Replace with your login logic (e.g., save token, redirect)
-    } catch (error) {
-        console.error('Error:', error);
-    }
-};
+        try {
+            console.log('API URL:', process.env.REACT_APP_API_URL); // Debug: Log the API URL
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
 
-            onLogin(data); // Pass user data or token to parent component
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || `HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Login response:', data); // Debug: Log response data
+            onLogin(data); // Call onLogin with the response data (e.g., token or user info)
+        } catch (error) {
+            console.error('Login error:', error);
+            setError(error.message || 'Failed to sign in. Please try again.');
         } finally {
             setIsLoading(false);
         }
     };
-
-
 
     return (
         <div className="login-container">
@@ -59,7 +61,7 @@ function Login({ onLogin, navigateToSignUp }) {
                     <img src={Logo} alt="loudbox-logo" />
                 </div>
                 <div className="form-container">
-                <h2>Sign in with your email and password</h2>
+                    <h2>Sign in with your email and password</h2>
                     {error && <p className="error-message" style={{ color: 'red' }}>{error}</p>}
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
@@ -73,7 +75,6 @@ function Login({ onLogin, navigateToSignUp }) {
                                 required
                             />
                         </div>
-
 
                         <div className="form-group password-group">
                             <label htmlFor="password">Password</label>
@@ -105,28 +106,34 @@ function Login({ onLogin, navigateToSignUp }) {
                             <a className='' href="https://x.com/i/grok?conversation=1909339764446446086">Forgot your password</a>
                         </div>
 
-                        <button 
-                        type="submit" 
-                        className="sign-in-button"
-                        disabled={isLoading}
+                        <button
+                            type="submit"
+                            className="sign-in-button"
+                            disabled={isLoading}
                         >
-                           {isLoading ? 'Signing in...' : 'Sign in'}
+                            {isLoading ? 'Signing in...' : 'Sign in'}
                         </button>
                     </form>
                     <p className="sign-up">
-            Need an account?
-                    <button
-              onClick={navigateToSignUp}
-              style={{ background: 'none', border: 'none', fontSize:'15px', color: '#0056d2', cursor: 'pointer', textDecoration: 'underline' }}
-            >
-              Sign up
-            </button>
-            </p>
+                        Need an account?
+                        <button
+                            onClick={navigateToSignUp}
+                            style={{
+                                background: 'none',
+                                border: 'none',
+                                fontSize: '15px',
+                                color: '#0056d2',
+                                cursor: 'pointer',
+                                textDecoration: 'underline',
+                            }}
+                        >
+                            Sign up
+                        </button>
+                    </p>
                 </div>
-
             </div>
         </div>
-    )
+    );
 }
 
 export default Login;
