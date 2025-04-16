@@ -32,12 +32,14 @@ function Login({ onLogin, navigateToSignUp }) {
         }
 
         try {
-            // Replace with your actual API call
-            const response = await fetch('http://localhost:5000/api/login', {
+            Replace with your actual API call
+            const response = await fetch('https://loudbox-backend.vercel.app/api/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
             });
+
+            
 
             const data = await response.json();
             if (!response.ok) {
