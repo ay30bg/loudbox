@@ -26,6 +26,7 @@ function SignUp({ navigateToSignIn }) {
             setIsLoading(false);
             return;
         }
+    };
 
         if (!validateEmail(email)) {
             setError('Please enter a valid email address.');
