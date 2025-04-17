@@ -46,30 +46,26 @@ function SignUp({ navigateToSignIn }) {
         }
 
         try {
-            // Replace with your actual API call
-const apiUrl = process.env.REACT_APP_API_URL;
-const response = await fetch(`${apiUrl}/api/signup`, { // Fix: Correct template literal syntax
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, email, password }),
-});
-
-const data = await response.json();
-if (!response.ok) {
-    throw new Error(data.message || 'Signup failed');
+    const response = await fetch(process.env.REACT_APP_API_URL + '/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+    });
+    // Check for non-successful responses (status codes outside 200-299 range)
+    if (!response.ok) {
+        const errorData = await response.json(); // Try to parse server error message
+        // Check if errorData is a valid error response and extract the message if available
+        const errorMessage = errorData && errorData.message ? errorData.message : `Signup failed with status: ${response.status}`;
+        setError(errorMessage); // Set the error message to display to the user
+        setIsLoading(false); // Stop loading
+        return;
+    }
+    const data = await response.json();
+} catch (error) {
+    // Network error or JSON parsing error
+    setError('Network error or server is down.');
+    setIsLoading(false);
 }
-
-console.log('Signup successful:', data);
-navigateToSignIn(); // Navigate to login after successful signup
-
-            console.log('Signup successful:', data);
-            navigateToSignIn(); // Navigate to login after successful signup
-        } catch (err) {
-            setError(err.message || 'Something went wrong. Please try again.');
-        } finally {
-            setIsLoading(false);
-        }
-    };
 
     return (
         <div className="signup-container">
