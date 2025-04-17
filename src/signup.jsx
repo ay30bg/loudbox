@@ -46,28 +46,29 @@ function SignUp({ navigateToSignIn }) {
             return;
         }
 
-      try {
-    const response = await fetch(process.env.REACT_APP_API_URL + '/api/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-    });
-    if (!response.ok) {
-        const errorData = await response.json();
-        const errorMessage = errorData && errorData.message ? errorData.message : `Signup failed with status: ${response.status}`;
-        setError(errorMessage);
-        setIsLoading(false);
-        return;
-    }
+     
+    try {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/signup`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                const errorMessage = errorData?.message || `Signup failed with status: ${response.status}`;
+                setError(errorMessage);
+                setIsLoading(false);
+                return;
+            }
     const data = await response.json();
-    setIsLoading(false);
-    console.log('Signup successful:', data);
-    navigateToSignIn(); // Redirect to sign-in or another page
-} catch (error) {
-    setError('Network error or server is down.');
-    setIsLoading(false);
-}
-
+            setIsLoading(false);
+            console.log('Signup successful:', data);
+            navigateToSignIn(); // Redirect to sign-in
+        } catch (error) {
+            setError('Network error or server is down.');
+            setIsLoading(false);
+        }
+    };
     return (
         <div className="signup-container">
             <div className="signup-box">
