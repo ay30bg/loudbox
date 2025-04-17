@@ -47,17 +47,20 @@ function SignUp({ navigateToSignIn }) {
 
         try {
             // Replace with your actual API call
-             console.log('API URL:', process.env.REACT_APP_API_URL); // Debug: Log the API URL
-        const response = await fetch(process.env.REACT_APP_API_URL + '/api/signup', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password }),
-        });
+const apiUrl = process.env.REACT_APP_API_URL;
+const response = await fetch(`${apiUrl}/api/signup`, { // Fix: Correct template literal syntax
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, email, password }),
+});
 
-            const data = await response.json();
-            if (!response.ok) {
-                throw new Error(data.message || 'Signup failed');
-            }
+const data = await response.json();
+if (!response.ok) {
+    throw new Error(data.message || 'Signup failed');
+}
+
+console.log('Signup successful:', data);
+navigateToSignIn(); // Navigate to login after successful signup
 
             console.log('Signup successful:', data);
             navigateToSignIn(); // Navigate to login after successful signup
