@@ -45,24 +45,24 @@ function SignUp({ navigateToSignIn }) {
             return;
         }
 
-        try {
+      try {
     const response = await fetch(process.env.REACT_APP_API_URL + '/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
     });
-    // Check for non-successful responses (status codes outside 200-299 range)
     if (!response.ok) {
-        const errorData = await response.json(); // Try to parse server error message
-        // Check if errorData is a valid error response and extract the message if available
+        const errorData = await response.json();
         const errorMessage = errorData && errorData.message ? errorData.message : `Signup failed with status: ${response.status}`;
-        setError(errorMessage); // Set the error message to display to the user
-        setIsLoading(false); // Stop loading
+        setError(errorMessage);
+        setIsLoading(false);
         return;
     }
     const data = await response.json();
+    setIsLoading(false);
+    console.log('Signup successful:', data);
+    navigateToSignIn(); // Redirect to sign-in or another page
 } catch (error) {
-    // Network error or JSON parsing error
     setError('Network error or server is down.');
     setIsLoading(false);
 }
