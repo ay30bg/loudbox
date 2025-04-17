@@ -167,5 +167,4 @@ function SignUp({ navigateToSignIn }) {
         </div>
     );
 }
-
 export default SignUp;
