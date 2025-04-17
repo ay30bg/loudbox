@@ -47,12 +47,12 @@ function SignUp({ navigateToSignIn }) {
 
         try {
             // Replace with your actual API call
-            const apiUrl=process.env.REACT_APP_API_URL
-            const response = await fetch('${apiUrl}/api/signup', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, email, password }),
-            });
+             console.log('API URL:', process.env.REACT_APP_API_URL); // Debug: Log the API URL
+        const response = await fetch(process.env.REACT_APP_API_URL + '/api/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+        });
 
             const data = await response.json();
             if (!response.ok) {
