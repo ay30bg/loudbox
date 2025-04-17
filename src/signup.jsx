@@ -16,57 +16,64 @@ function SignUp({ navigateToSignIn }) {
     const validateUsername = (username) => username.length >= 3;
     const validatePassword = (password) => password.length >= 6;
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError('');
-        setIsLoading(true);
+   const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
 
-        if (!validateUsername(username)) {
-            setError('Username must be at least 3 characters long.');
-            setIsLoading(false);
-            return;
-        }
-    };
+    const trimmedUsername = username.trim();
+    const trimmedEmail = email.trim();
 
-        if (!validateEmail(email)) {
-            setError('Please enter a valid email address.');
-            setIsLoading(false);
-            return;
-        }
+    if (!validateUsername(trimmedUsername)) {
+      setError('Username must be at least 3 characters long.');
+      setIsLoading(false);
+      return;
+    }
 
-        if (!validatePassword(password)) {
-            setError('Password must be at least 6 characters long.');
-            setIsLoading(false);
-            return;
-        }
+    if (!validateEmail(trimmedEmail)) {
+      setError('Please enter a valid email address.');
+      setIsLoading(false);
+      return;
+    }
 
-        if (password !== confirmPassword) {
-            setError('Passwords do not match.');
-            setIsLoading(false);
-            return;
-        }
+    if (!validatePassword(password)) {
+      setError('Password must be at least 6 characters long.');
+      setIsLoading(false);
+      return;
+    }
 
-   try {
-    const response = await fetch(process.env.REACT_APP_API_URL + '/api/signup', {
+    if (password !== confirmPassword) {
+      setError('Passwords do not match.');
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-    });
-    if (!response.ok) {
-        const errorData = await response.json();
-        const errorMessage = errorData && errorData.message ? errorData.message : `Signup failed with status: ${response.status}`;
+        body: JSON.stringify({ username: trimmedUsername, email: trimmedEmail, password }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage = errorData.message || `Signup failed with status: ${response.status}`;
         setError(errorMessage);
         setIsLoading(false);
         return;
+      }
+
+      const data = await response.json();
+      setIsLoading(false);
+      console.log('Signup successful:', data);
+      navigateToSignIn();
+    } catch (error) {
+      setError('Network error or server is down.');
+      setIsLoading(false);
     }
-    const data = await response.json();
-    setIsLoading(false);
-    console.log('Signup successful:', data);
-    navigateToSignIn(); // Redirect to sign-in or another page
-} catch (error) {
-    setError('Network error or server is down.');
-    setIsLoading(false);
-}
+  };
+
+
 
     
     return (
