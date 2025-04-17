@@ -46,29 +46,28 @@ function SignUp({ navigateToSignIn }) {
             return;
         }
 
- try {
-        console.log('API URL:', process.env.REACT_APP_API_URL); // Debug: Log the API URL
-        const response = await fetch(process.env.REACT_APP_API_URL + '/api/signup', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password }),
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || `HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log('Login response:', data); // Debug: Log response data
-        onLogin(data); // Call onLogin with the response data
-    } catch (error) {
-        console.error('Login error:', error);
-        setError(error.message || 'Failed to sign in. Please try again.');
-    } finally {
+   try {
+    const response = await fetch(process.env.REACT_APP_API_URL + '/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+    });
+    if (!response.ok) {
+        const errorData = await response.json();
+        const errorMessage = errorData && errorData.message ? errorData.message : `Signup failed with status: ${response.status}`;
+        setError(errorMessage);
         setIsLoading(false);
+        return;
     }
-};
+    const data = await response.json();
+    setIsLoading(false);
+    console.log('Signup successful:', data);
+    navigateToSignIn(); // Redirect to sign-in or another page
+} catch (error) {
+    setError('Network error or server is down.');
+    setIsLoading(false);
+}
+
     
     return (
         <div className="signup-container">
