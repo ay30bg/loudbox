@@ -105,7 +105,8 @@ function Login({ onLogin, navigateToSignUp }) {
   buttonText="Sign in with Google"
   theme="filled_blue"
   size="large"
-  style={{ width: '100%', maxWidth: '400px', marginBottom: '20px' }}
+{/*   width: '1', maxWidth: '400px', */}
+  style={{  marginBottom: '20px' }}
 />
                         <p style={{ textAlign: 'center', margin: '10px 0' }}>or</p>
                         <h3>Sign in with your email and password</h3>
