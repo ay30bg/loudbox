@@ -101,7 +101,7 @@ const mockEvents = [
     },
 ];
 
-function OrderSummary({ navigateBack }) {
+function OrderSummary({ navigateBack, navigateToThankYou  }) {
     const { id } = useParams();
     const { state } = useLocation();
     const [eventData, setEventData] = useState(null);
@@ -141,7 +141,7 @@ function OrderSummary({ navigateBack }) {
         }
 
         const handler = window.PaystackPop.setup({
-            key: 'pk_live_a8e81a28a5055c73966d7046d9f4469837d9fee7', // Replace with your Paystack public key
+            key: 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df', // Replace with your Paystack public key
             email: email || 'guest@example.com', // Use customer email or fallback
             amount: totalPrice * 100, // Paystack expects amount in kobo (NGN * 100)
             currency: 'NGN',
@@ -168,9 +168,27 @@ function OrderSummary({ navigateBack }) {
             callback: (response) => {
                 // Handle successful payment
                 if (response.status === 'success') {
-                    alert(`Payment successful! Transaction reference: ${response.reference}`);
                     // Optionally, send transaction details to your backend for verification
-                    // e.g., call an API to save the order
+                    // e.g., fetch('/api/verify-payment', { method: 'POST', body: JSON.stringify({ reference: response.reference }) })
+                    console.log(`Payment successful! Transaction reference: ${response.reference}`);
+                    // Store payment status to protect ThankYouPage
+                    localStorage.setItem('paymentSuccessful', 'true');
+                    // Navigate to thank-you page with order details
+                    navigateToThankYou(id, {
+                        state: {
+                            eventTitle: eventData.title,
+                            ticketQuantity,
+                            totalPrice,
+                            firstName,
+                            lastName,
+                            email,
+                            isGift,
+                            recipientFirstName,
+                            recipientLastName,
+                            recipientEmail,
+                            transactionReference: response.reference,
+                        },
+                    });
                 } else {
                     alert('Payment failed. Please try again.');
                 }
