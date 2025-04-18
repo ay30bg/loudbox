@@ -99,15 +99,14 @@ function Login({ onLogin, navigateToSignUp }) {
                     <div className="form-container">
                         <h2>Sign in to your account</h2>
                         {error && <p className="error-message" style={{ color: 'red' }}>{error}</p>}
-                        <GoogleLogin
-                            onSuccess={handleGoogleSuccess}
-                            onError={handleGoogleFailure}
-                            buttonText="Sign in with Google"
-                            theme="filled_blue"
-                            size="large"
-                            width="100%"
-                            style={{ marginBottom: '20px' }}
-                        />
+                       <GoogleLogin
+  onSuccess={handleGoogleSuccess}
+  onError={handleGoogleFailure}
+  buttonText="Sign in with Google"
+  theme="filled_blue"
+  size="large"
+  style={{ width: '100%', maxWidth: '400px', marginBottom: '20px' }}
+/>
                         <p style={{ textAlign: 'center', margin: '10px 0' }}>or</p>
                         <h3>Sign in with your email and password</h3>
                         <form onSubmit={handleSubmit}>
