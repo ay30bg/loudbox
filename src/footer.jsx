@@ -48,7 +48,7 @@ function Footer() {
               <span className="toggle-icon">{isContactOpen ? '−' : '+'}</span>
             </div>
             <div className={`footer-contact-content ${isContactOpen ? '' : 'hidden'}`}>
-              <p>Email: support@loudbox.com</p>
+              <p>Email: loudbox.tickets@gmail.com</p>
               <p>Phone: +234 (903) 495-1446</p>
               <p>Address: 123 Event St, City, Country</p>
             </div>
@@ -61,7 +61,7 @@ function Footer() {
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
                 <FaFacebook />
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+              <a href="https://twitter.com" target="https://x.com/loudboxtickets" rel="noopener noreferrer">
                 <BsTwitterX />
               </a>
               <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
