@@ -1,0 +1,198 @@
+/* ThankYouPage.css */
+
+/* Import Poppins and Inter from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+.thank-you-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    padding: 20px;
+    font-family: 'Inter', sans-serif;
+    /* Default font for body text */
+}
+
+.thank-you-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    padding: 30px;
+    text-align: center;
+}
+
+.thank-you-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.success-icon {
+    color: #28a745;
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.thank-you-header h2 {
+    font-family: 'Poppins', sans-serif;
+    /* Poppins for headings */
+    font-weight: 600;
+    font-size: 2rem;
+    color: #333;
+    margin: 0;
+}
+
+.confirmation-message {
+    font-family: 'Inter', sans-serif;
+    /* Inter for body text */
+    font-weight: 400;
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.confirmation-message strong {
+    font-weight: 600;
+    color: #333;
+}
+
+.summary-divider {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 20px 0;
+}
+
+.order-details {
+    text-align: left;
+    margin: 20px 0;
+}
+
+.order-details h3 {
+    font-family: 'Poppins', sans-serif;
+    /* Poppins for headings */
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    font-family: 'Inter', sans-serif;
+    /* Inter as fallback for consistency */
+    font-size: 1rem;
+    color: #555;
+}
+
+.detail-label {
+    font-family: 'Poppins', sans-serif;
+    /* Poppins for labels */
+    font-weight: 600;
+    color: #333;
+}
+
+.detail-value {
+    font-family: 'Inter', sans-serif;
+    /* Inter for values */
+    font-weight: 400;
+    color: #555;
+}
+
+.customer-contact {
+    align-items: center;
+    gap: 10px;
+    font-family: 'Inter', sans-serif;
+    /* Inter for customer details */
+}
+
+.contact-icon {
+    color: #007bff;
+    font-size: 1.2rem;
+}
+
+.gift-details {
+    margin: 20px 0 30px;
+    padding-top: 15px;
+    border-top: 1px dashed #ddd;
+}
+
+.gift-details h4 {
+    font-family: 'Poppins', sans-serif;
+    /* Poppins for headings */
+    font-weight: 500;
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.summary-dot-divider {
+    border: none;
+    border-top: 1px dashed #ddd;
+    margin: 20px 0;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.return-home-button {
+    width: 100%;
+    max-width: 500px;
+    height: 35px;
+    margin: 10px 0;
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+    /* Inter for button text */
+    font-weight: 500;
+    font-size: 0.875rem;
+    cursor: pointer;
+    text-align: center;
+    background-color: #17153a;
+    color: #fff;
+    border: 0.5px solid #e0e0e0;
+    transition: background-color 0.2s, transform 0.1s;
+    box-sizing: border-box;
+}
+
+.return-home-button:hover {
+    background-color: #0f0d2e;
+    transform: translateY(-1px);
+}
+
+@media (max-width: 600px) {
+    .thank-you-card {
+        padding: 20px;
+    }
+
+    .thank-you-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .confirmation-message {
+        font-size: 1rem;
+    }
+
+    .order-details h3 {
+        font-size: 1.2rem;
+    }
+
+    .detail-item {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .return-home-button {
+        max-width: 90%;
+        height: 45px;
+        font-size: 0.875rem;
+        margin: 8px -15px;
+    }
+}
