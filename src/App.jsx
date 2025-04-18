@@ -8,6 +8,7 @@ import SignUp from './signup';
 import EventDetails from './eventDetails';
 import TicketPurchase from './ticketPurchase';
 import OrderSummary from './orderSummary';
+import ThankYouPage from './thankYouPage';
 
 function App() {
   console.log('App rendered');
@@ -58,11 +59,17 @@ function App() {
       navigate('/order-summary/' + eventId, { state: data });
     };
 
+    const navigateToThankYou = (eventId, options = {}) => {
+      console.log('Navigating to thank you page for event:', eventId);
+      navigate('/thank-you/' + eventId, options);
+    };
+
+
     const currentPath = window.location.pathname.split('/')[1] || 'landing';
 
     return (
       <div>
-        {['event-details', 'ticket-purchase', 'order-summary'].includes(currentPath) && (
+        {['event-details', 'ticket-purchase', 'order-summary', 'thank-you'].includes(currentPath) && (
           <Header
             onLogout={handleLogout}
             navigateToLanding={navigateToLanding}
@@ -110,10 +117,20 @@ function App() {
             element={
               <OrderSummary
                 navigateBack={navigateToTicketPurchase}
+                navigateToThankYou={navigateToThankYou}
+              />
+            }
+          />
+          <Route
+            path="/thank-you/:id"
+            element={
+              <ThankYouPage
+                navigateToLanding={navigateToLanding}
               />
             }
           />
         </Routes>
+
       </div>
     );
   }
