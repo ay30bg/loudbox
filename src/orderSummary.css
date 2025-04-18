@@ -334,7 +334,7 @@
   /* Mobile Phones (≤480px) */
   @media (max-width: 480px) {
     .order-summary-container {
-      width: 95%;
+      width: 90%;
         min-height: 100vh;
         margin: 15px auto;
       }
