@@ -141,7 +141,7 @@ function OrderSummary({ navigateBack }) {
         }
 
         const handler = window.PaystackPop.setup({
-            key: 'pk_test_6b703a5955176568e45c9fd67a879c0a6d7f9842', // Replace with your Paystack public key
+            key: 'pk_live_a8e81a28a5055c73966d7046d9f4469837d9fee7', // Replace with your Paystack public key
             email: email || 'guest@example.com', // Use customer email or fallback
             amount: totalPrice * 100, // Paystack expects amount in kobo (NGN * 100)
             currency: 'NGN',
