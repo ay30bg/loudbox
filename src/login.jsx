@@ -105,7 +105,7 @@ function Login({ onLogin, navigateToSignUp }) {
   buttonText="Sign in with Google"
   theme="filled_blue"
   size="large"
-  width="400"
+  width="350"
   style={{  marginBottom: '20px' }}
 />
                         <p style={{ textAlign: 'center', margin: '10px 0' }}>or</p>
