@@ -140,7 +140,7 @@ const handlePayment = async () => {
   }
 
   const handler = window.PaystackPop.setup({
-    key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY || 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
+    key: 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
     email: email || 'guest@example.com',
     amount: totalPrice * 100,
     currency: 'NGN',
