@@ -16,8 +16,7 @@ function TicketDetailsPage() {
   useEffect(() => {
     const fetchTicketDetails = async () => {
       try {
-        //const apiUrl = `/api/tickets/${transactionReference}`; // Uses proxy
-        const apiUrl = `https://loudbox-backend.vercel.app/api/tickets/${transactionReference}`;
+        const apiUrl = `/api/tickets/${transactionReference}`;
         console.log('Fetching from:', apiUrl);
         const response = await fetch(apiUrl);
         console.log('Response status:', response.status);
@@ -25,12 +24,17 @@ function TicketDetailsPage() {
         if (!response.ok) {
           const text = await response.text();
           console.log('Response text:', text.slice(0, 100));
-          throw new Error(`HTTP error! status: ${response.status}, response: ${text.slice(0, 100)}`);
+          if (response.status === 404) {
+            console.log('Ticket not found, falling back to state data');
+            setTicketData(null); // Use state data
+          } else {
+            throw new Error(`HTTP error! status: ${response.status}, response: ${text.slice(0, 100)}`);
+          }
+        } else {
+          const data = await response.json();
+          console.log('Backend data:', data);
+          setTicketData(data);
         }
-
-        const data = await response.json();
-        console.log('Backend data:', data);
-        setTicketData(data);
         setLoading(false);
       } catch (err) {
         console.error('Fetch error:', err.message);
@@ -116,7 +120,7 @@ function TicketDetailsPage() {
             <p>Present this QR code at the event entrance for verification.</p>
           </div>
         ) : (
-          <p>No QR code available. Contact support if this persists.</p>
+          <p>No QR code available. Using temporary ticket data.</p>
         )}
       </div>
     </div>
