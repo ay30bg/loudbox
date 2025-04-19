@@ -1,20 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import './ticketDetailsPage.css';
-
-// Placeholder QR code (base64-encoded PNG for demo)
-const placeholderQrCode = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADKSURBVHhe7dEBDQAgAMAw+/4vNqCLF3M3wAIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECL8B/wX3V2rKAAAAAElFTkSuQmCC';
 
 function TicketDetailsPage() {
   const { transactionReference } = useParams();
   const { state } = useLocation();
+  const [ticketData, setTicketData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Debug logs
   console.log('TicketDetailsPage rendered');
   console.log('transactionReference:', transactionReference);
   console.log('state:', state);
 
-  // Fallback to state data
+  useEffect(() => {
+    const fetchTicketDetails = async () => {
+      try {
+        const apiUrl = `/api/tickets/${transactionReference}`; // Uses proxy
+        // For testing: const apiUrl = `https://your-backend.vercel.app/api/tickets/${transactionReference}`;
+        console.log('Fetching from:', apiUrl);
+        const response = await fetch(apiUrl);
+        console.log('Response status:', response.status);
+
+        if (!response.ok) {
+          const text = await response.text();
+          console.log('Response text:', text.slice(0, 100));
+          throw new Error(`HTTP error! status: ${response.status}, response: ${text.slice(0, 100)}`);
+        }
+
+        const data = await response.json();
+        console.log('Backend data:', data);
+        setTicketData(data);
+        setLoading(false);
+      } catch (err) {
+        console.error('Fetch error:', err.message);
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+    fetchTicketDetails();
+  }, [transactionReference]);
+
   const {
     eventTitle = 'Event',
     ticketQuantity = 1,
@@ -25,11 +51,25 @@ function TicketDetailsPage() {
     recipientFirstName = '',
     recipientLastName = '',
     recipientEmail = '',
-    ticketId = 'TICKET123', // Mock ticketId for verification
+    ticketId = 'TICKET123',
   } = state || {};
 
-  // If no state data, show fallback UI
-  if (!state) {
+  if (loading) {
+    return <div className="ticket-details-container">Loading ticket details...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="ticket-details-container">
+        <h2>Error Loading Ticket</h2>
+        <p>{error}</p>
+        <p>Transaction Reference: {transactionReference}</p>
+        <p>Please contact support.</p>
+      </div>
+    );
+  }
+
+  if (!state && !ticketData) {
     return (
       <div className="ticket-details-container">
         <h2>No Ticket Data Available</h2>
@@ -39,11 +79,13 @@ function TicketDetailsPage() {
     );
   }
 
+  const displayData = ticketData || state;
+
   return (
     <div className="ticket-details-container">
       <h2>Your Ticket</h2>
       <div className="ticket-card">
-        <h3>{eventTitle}</h3>
+        <h3>{displayData.eventTitle}</h3>
         <div className="detail-item">
           <span className="detail-label">Ticket Holder:</span>
           <span className="detail-value">
@@ -62,14 +104,20 @@ function TicketDetailsPage() {
           <span className="detail-label">Transaction Reference:</span>
           <span className="detail-value">{transactionReference}</span>
         </div>
-        <div className="detail-item">
-          <span className="detail-label">Ticket ID:</span>
-          <span className="detail-value">{ticketId}</span>
-        </div>
-        <div className="qr-code-container">
-          <img src={placeholderQrCode} alt="Ticket QR Code" className="qr-code" />
-          <p>Present this QR code at the event entrance for verification (placeholder).</p>
-        </div>
+        {displayData.ticketId && (
+          <div className="detail-item">
+            <span className="detail-label">Ticket ID:</span>
+            <span className="detail-value">{displayData.ticketId}</span>
+          </div>
+        )}
+        {displayData.qrCode ? (
+          <div className="qr-code-container">
+            <img src={displayData.qrCode} alt="Ticket QR Code" className="qr-code" />
+            <p>Present this QR code at the event entrance for verification.</p>
+          </div>
+        ) : (
+          <p>No QR code available. Contact support if this persists.</p>
+        )}
       </div>
     </div>
   );
