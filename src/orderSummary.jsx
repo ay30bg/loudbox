@@ -134,7 +134,7 @@ function OrderSummary({ navigateBack, navigateToThankYou  }) {
 
     // Paystack payment handler
 const handlePayment = async () => {
-  if (!isPaystackLoaded || !window.PaystackPop) {
+  if (!window.PaystackPop) {
     alert('Paystack is not loaded yet. Please wait a moment or retry.');
     return;
   }
@@ -168,7 +168,7 @@ const handlePayment = async () => {
       if (response.status === 'success') {
         console.log(`Payment successful! Transaction reference: ${response.reference}`);
         try {
-          const emailResponse = await fetch('http://localhost:5000/api/paystack/send-ticket-email', {
+          const emailResponse = await fetch('https://loudbox-backend.vercel.app/api/paystack/send-ticket-email', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
