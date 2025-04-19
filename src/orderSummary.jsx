@@ -173,7 +173,7 @@ const handlePayment = () => {
       if (response.status === 'success') {
         try {
           // Call backend to verify payment and send ticket email
-          const res = await fetch('https://loudbox-backend.onrender.com/api/paystack/send-ticket-email', {
+          const res = await fetch('https://loudbox-backend.vercel.app/api/paystack/send-ticket-email', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
