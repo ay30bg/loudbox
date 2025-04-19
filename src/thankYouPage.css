@@ -139,10 +139,16 @@
 
 .action-buttons {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    gap: 10px;
+    width: 100%;
+    margin-top: 20px;
+    padding: 0 10px; /* Ensure buttons don’t touch edges */
+    box-sizing: border-box;
 }
 
+.view-ticket-button,
 .return-home-button {
     width: 100%;
     max-width: 500px;
@@ -162,8 +168,20 @@
     box-sizing: border-box;
 }
 
-.return-home-button:hover {
+.view-ticket-button:hover {
     background-color: #0f0d2e;
+    transform: translateY(-1px);
+}
+
+.return-home-button{
+    font-family: 'Inter', sans-serif;
+    font-weight: 500; /* Mimics Graphik */
+    background-color: #fff;
+    color: #000;
+}
+
+.return-home-button:hover{
+    background-color: #f8f8f8;
     transform: translateY(-1px);
 }
 
