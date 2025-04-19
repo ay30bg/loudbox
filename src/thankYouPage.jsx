@@ -1,13 +1,14 @@
 // ThankYouPage.js
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { FaCheckCircle } from 'react-icons/fa';
 import './thankYouPage.css';
 
-function ThankYouPage({ navigateToLanding }) {
+function ThankYouPage({ navigateToLanding, navigateToViewTicket }) {
   const navigate = useNavigate();
   const { id } = useParams();
   const { state } = useLocation();
+  const [error, setError] = useState(null);
 
   // Protect the page: Redirect if payment wasn't successful
   useEffect(() => {
@@ -30,12 +31,25 @@ function ThankYouPage({ navigateToLanding }) {
     recipientLastName = '',
     recipientEmail = '',
     transactionReference = 'N/A',
+    ticketId = 'TICKET123', // Add for verification
   } = state || {};
 
   const handleReturnHome = () => {
     localStorage.removeItem('paymentSuccessful'); // Clear payment status
     navigateToLanding();
   };
+
+  const handleViewTicket = () => {
+    console.log('handleViewTicket called with transactionReference:', transactionReference);
+    if (transactionReference && transactionReference !== 'N/A') {
+      console.log('Navigating to ticket details:', transactionReference);
+      navigateToViewTicket(transactionReference, state);
+    } else {
+      console.error('Invalid transaction reference');
+      setError('Unable to view ticket: Invalid transaction reference');
+    }
+  };
+
 
   return (
     <div className="thank-you-container">
@@ -48,12 +62,17 @@ function ThankYouPage({ navigateToLanding }) {
           Your payment for <strong>{eventTitle}</strong> was successful. A confirmation email will be sent to{' '}
           <strong>{email}</strong> soon.
         </p>
+        {error && <div className="error-message">{error}</div>}
         <hr className="summary-divider" />
         <div className="order-details">
           <h3>Order Summary</h3>
           <div className="detail-item">
             <span className="detail-label">Transaction Reference:</span>
             <span className="detail-value">{transactionReference}</span>
+          </div>
+          <div className="detail-item">
+            <span className="detail-label">Ticket ID:</span>
+            <span className="detail-value">{ticketId}</span>
           </div>
           <div className="detail-item">
              <span className='detail-label'>Customer Name</span>
@@ -95,6 +114,13 @@ function ThankYouPage({ navigateToLanding }) {
         </div>
         <hr className="summary-dot-divider" />
         <div className="action-buttons">
+        <button
+            onClick={handleViewTicket}
+            className="view-ticket-button"
+            aria-label="View your ticket"
+          >
+            View Ticket
+          </button>
           <button
             onClick={handleReturnHome}
             className="return-home-button"
