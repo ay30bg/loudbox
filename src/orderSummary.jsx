@@ -101,262 +101,248 @@ const mockEvents = [
     },
 ];
 
-function OrderSummary({ navigateBack, navigateToThankYou  }) {
-    const { id } = useParams();
-    const { state } = useLocation();
-    const [eventData, setEventData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [showFileDetails, setShowFileDetails] = useState(false);
+function OrderSummary({ navigateBack, navigateToThankYou }) {
+  const { id } = useParams();
+  const { state } = useLocation();
+  const [eventData, setEventData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [showFileDetails, setShowFileDetails] = useState(false);
 
-    useEffect(() => {
-        const foundEvent = mockEvents.find((e) => e.id === id);
-        setEventData(foundEvent);
-        setLoading(false);
-    }, [id]);
+  useEffect(() => {
+    const foundEvent = mockEvents.find((e) => e.id === id);
+    setEventData(foundEvent);
+    setLoading(false);
+  }, [id]);
 
-    const toggleFileDetails = () => {
-        setShowFileDetails((prev) => !prev);
+  const toggleFileDetails = () => {
+    setShowFileDetails((prev) => !prev);
+  };
+
+  const {
+    firstName = 'Guest',
+    lastName = '',
+    email = 'No email provided',
+    phoneNumber = 'No phone provided',
+    ticketQuantity = 1,
+    totalPrice = 0,
+    isGift = false,
+    recipientFirstName = '',
+    recipientLastName = '',
+    recipientEmail = '',
+  } = state || {};
+
+  // Function to handle ticket email sending
+  const sendTicketEmail = async (reference) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/paystack/send-ticket-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          reference,
+          customerEmail: email,
+          recipientEmail: isGift ? recipientEmail : null,
+          eventTitle: eventData.title,
+          ticketQuantity,
+          totalPrice,
+          firstName,
+          lastName,
+          isGift,
+        }),
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        console.log('Ticket email sent:', result.message);
+        localStorage.setItem('paymentSuccessful', 'true');
+        navigateToThankYou(id, {
+          state: {
+            eventTitle: eventData.title,
+            ticketQuantity,
+            totalPrice,
+            firstName,
+            lastName,
+            email,
+            isGift,
+            recipientFirstName,
+            recipientLastName,
+            recipientEmail,
+            transactionReference: reference,
+          },
+        });
+      } else {
+        console.error('Backend error:', result.error);
+        alert(`Failed to send ticket: ${result.error}`);
+      }
+    } catch (error) {
+      console.error('Error sending ticket email:', error);
+      alert('Error processing payment. Please contact support.');
+    }
+  };
+
+  // Paystack payment handler
+  const handlePayment = () => {
+    console.log('Pay button clicked', { email, totalPrice, eventData });
+    if (!window.PaystackPop) {
+      alert('Paystack script not loaded. Please try again.');
+      return;
+    }
+
+    const handler = window.PaystackPop.setup({
+      key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY || 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
+      email: email || 'guest@example.com',
+      amount: totalPrice * 100, // Convert to kobo
+      currency: 'NGN',
+      ref: `TICKET-${Math.floor(Math.random() * 1000000)}-${Date.now()}`,
+      metadata: {
+        custom_fields: [
+          { display_name: 'Event Title', variable_name: 'event_title', value: eventData.title },
+          { display_name: 'Ticket Quantity', variable_name: 'ticket_quantity', value: ticketQuantity },
+          { display_name: 'Customer Name', variable_name: 'customer_name', value: `${firstName} ${lastName}` },
+          { display_name: 'Recipient Email', variable_name: 'recipient_email', value: isGift ? recipientEmail : email },
+        ],
+      },
+      callback: (response) => {
+        console.log('Paystack callback:', response);
+        if (response.status === 'success') {
+          sendTicketEmail(response.reference);
+        } else {
+          alert('Payment failed. Please try again.');
+        }
+      },
+      onClose: () => {
+        console.log('Paystack popup closed');
+        alert('Payment cancelled.');
+      },
+    });
+
+    handler.openIframe();
+  };
+
+  // Load Paystack script
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://js.paystack.co/v1/inline.js';
+    script.async = true;
+    script.onload = () => console.log('Paystack script loaded');
+    script.onerror = () => alert('Failed to load Paystack script. Please try again.');
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
     };
+  }, []);
 
-    // Destructure user data from state with defaults
-    const {
-        firstName = 'Guest',
-        lastName = '',
-        email = 'No email provided',
-        phoneNumber = 'No phone provided',
-        ticketQuantity = 1,
-        totalPrice = 0,
-        isGift = false,
-        recipientFirstName = '',
-        recipientLastName = '',
-        recipientEmail = '',
-    } = state || {};
-
-    // Paystack payment handler
-const handlePayment = () => {
-  if (!window.PaystackPop) {
-    alert('Paystack script not loaded. Please try again.');
-    return;
+  if (loading) {
+    return <div>Loading event data...</div>;
   }
 
-  const handler = window.PaystackPop.setup({
-    key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY || 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
-    email: email || 'guest@example.com',
-    amount: totalPrice * 100, // Convert to kobo
-    currency: 'NGN',
-    ref: `TICKET-${Math.floor(Math.random() * 1000000)}-${Date.now()}`,
-    metadata: {
-      custom_fields: [
-        {
-          display_name: 'Event Title',
-          variable_name: 'event_title',
-          value: eventData.title,
-        },
-        {
-          display_name: 'Ticket Quantity',
-          variable_name: 'ticket_quantity',
-          value: ticketQuantity,
-        },
-        {
-          display_name: 'Customer Name',
-          variable_name: 'customer_name',
-          value: `${firstName} ${lastName}`,
-        },
-        {
-          display_name: 'Recipient Email',
-          variable_name: 'recipient_email',
-          value: isGift ? recipientEmail : email,
-        },
-      ],
-    },
-    callback: async (response) => {
-      if (response.status === 'success') {
-        try {
-          // Call backend to verify payment and send ticket email
-          const res = await fetch('https://loudbox-backend.vercel.app/api/paystack/send-ticket-email', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              reference: response.reference,
-              customerEmail: email,
-              recipientEmail: isGift ? recipientEmail : null,
-              eventTitle: eventData.title,
-              ticketQuantity,
-              totalPrice,
-              firstName,
-              lastName,
-              isGift,
-            }),
-          });
-
-          const result = await res.json();
-          if (res.ok) {
-            console.log(result.message);
-            localStorage.setItem('paymentSuccessful', 'true');
-            navigateToThankYou(id, {
-              state: {
-                eventTitle: eventData.title,
-                ticketQuantity,
-                totalPrice,
-                firstName,
-                lastName,
-                email,
-                isGift,
-                recipientFirstName,
-                recipientLastName,
-                recipientEmail,
-                transactionReference: response.reference,
-              },
-            });
-          } else {
-            alert(`Failed to send ticket: ${result.error}`);
-          }
-        } catch (error) {
-          console.error('Error sending ticket email:', error);
-          alert('Error processing payment. Please contact support.');
-        }
-      } else {
-        alert('Payment failed. Please try again.');
-      }
-    },
-    onClose: () => {
-      alert('Payment cancelled.');
-    },
-  });
-
-  handler.openIframe();
-};
-                
-                     
-
-    // Load Paystack script dynamically
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.src = 'https://js.paystack.co/v1/inline.js';
-        script.async = true;
-        document.body.appendChild(script);
-
-        return () => {
-            document.body.removeChild(script); // Cleanup on component unmount
-        };
-    }, []);
-
-
-
-    if (loading) {
-        return <div>Loading event data...</div>;
-    }
-
-    if (!eventData) {
-        return (
-            <div>
-                No event found for ID: {id}. Please check the event ID or go back.
-                <button onClick={() => navigateBack({ id })} aria-label="Back to ticket purchase">
-                    Back
-                </button>
-            </div>
-        );
-    }
-
+  if (!eventData) {
     return (
-        <div className="order-summary-container">
-            <div className="order-summary-card">
-                <div className="order-header-container">
-                    <h2>Buy {eventData.title} Ticket</h2>
-                </div>
-                <hr className="summary-divider" />
-                <div className='customer-contact'>
-                    <FaUser className='contact-icon' />
-                    <h4 className="customer-name">
-                        {firstName || 'N/A'} {lastName || 'N/A'}
-                    </h4>
-                </div>
-                <div className="customer-contact">
-                    <FaEnvelope className='contact-icon' />
-                    <p className="customer-email">{email || 'No email provided'}</p>
-                </div>
-                <div className="customer-contact">
-                    <FaPhone className='contact-icon' />
-                    <p className="customer-phone">{phoneNumber || 'No phone provided'}</p>
-                </div>
-                {isGift && (
-                    <div className="gift-details">
-                        <h4>Gift Details</h4>
-                        <p><strong>Recipient Name:</strong> {recipientFirstName || 'Not provided'} {recipientLastName || 'Not provided'}</p>
-                        <p><strong>Recipient Email:</strong> {recipientEmail || 'Not provided'}</p>
-                    </div>
-                )}
-                <br />
-                <div className="file-display-group">
-                    <div className="file-display-wrapper">
-                        <span className="file-display-text">
-                            1 file attached{' '}
-                            <FaAngleDown
-                                className="angle-down"
-                                onClick={toggleFileDetails}
-                                aria-label="Toggle ticket file details"
-                            />
-                        </span>
-                    </div>
-                    {showFileDetails && (
-                        <div className="file-details">
-                            <div className="file-details-content">
-                                {eventData.ticketFileType.toLowerCase() === 'pdf' ? (
-                                    <FaFilePdf className="file-icon" />
-                                ) : (
-                                    <FaFileImage className="file-icon" />
-                                )}
-                                <div className="file-info">
-                                    <p className="file-name">{eventData.ticketFileName}</p>
-                                    <p className="file-meta">
-                                        Type: {eventData.ticketFileType.toUpperCase()} | Size: {eventData.ticketFileSize}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
-                <hr className='summary-dot-divider' />
-                <div className="checkout-container">
-
-                    <div className="checkout">
-                        <div className='ticket-quantity-group'>
-                        <h5 className='ticket-event-name'>{eventData.title} Ticket</h5>
-                        <h5>x{ticketQuantity}</h5>
-                        </div>
-                        
-                        <h5>NGN {(totalPrice / ticketQuantity).toLocaleString()}</h5>
-                    </div>
-                    <div className="checkout-total">
-                        <h5>Total</h5>
-                        <h5>NGN {totalPrice.toLocaleString()}</h5>
-                    </div>
-
-                </div>
-                <hr className='summary-dot-divider' />
-                <div className="action-buttons">
-                    <button
-                        onClick={handlePayment}
-                        aria-label={`Pay NGN ${totalPrice.toLocaleString()} for ${eventData.title}`}
-                        className='payment-button'
-                    >
-                        Pay NGN {totalPrice.toLocaleString()}
-                    </button>
-                    <button
-                        onClick={() => navigateBack(eventData)}
-                        aria-label="Back to ticket purchase"
-                        className='back-ticket-purchase-btn'
-                    >
-                        Back
-                    </button>
-                </div>
-            </div>
-        </div>
+      <div>
+        No event found for ID: {id}. Please check the event ID or go back.
+        <button onClick={() => navigateBack({ id })} aria-label="Back to ticket purchase">
+          Back
+        </button>
+      </div>
     );
+  }
+
+  return (
+    <div className="order-summary-container">
+      <div className="order-summary-card">
+        <div className="order-header-container">
+          <h2>Buy {eventData.title} Ticket</h2>
+        </div>
+        <hr className="summary-divider" />
+        <div className='customer-contact'>
+          <FaUser className='contact-icon' />
+          <h4 className="customer-name">
+            {firstName || 'N/A'} {lastName || 'N/A'}
+          </h4>
+        </div>
+        <div className="customer-contact">
+          <FaEnvelope className='contact-icon' />
+          <p className="customer-email">{email || 'No email provided'}</p>
+        </div>
+        <div className="customer-contact">
+          <FaPhone className='contact-icon' />
+          <p className="customer-phone">{phoneNumber || 'No phone provided'}</p>
+        </div>
+        {isGift && (
+          <div className="gift-details">
+            <h4>Gift Details</h4>
+            <p><strong>Recipient Name:</strong> {recipientFirstName || 'Not provided'} {recipientLastName || 'Not provided'}</p>
+            <p><strong>Recipient Email:</strong> {recipientEmail || 'Not provided'}</p>
+          </div>
+        )}
+        <br />
+        <div className="file-display-group">
+          <div className="file-display-wrapper">
+            <span className="file-display-text">
+              1 file attached{' '}
+              <FaAngleDown
+                className="angle-down"
+                onClick={toggleFileDetails}
+                aria-label="Toggle ticket file details"
+              />
+            </span>
+          </div>
+          {showFileDetails && (
+            <div className="file-details">
+              <div className="file-details-content">
+                {eventData.ticketFileType.toLowerCase() === 'pdf' ? (
+                  <FaFilePdf className="file-icon" />
+                ) : (
+                  <FaFileImage className="file-icon" />
+                )}
+                <div className="file-info">
+                  <p className="file-name">{eventData.ticketFileName}</p>
+                  <p className="file-meta">
+                    Type: {eventData.ticketFileType.toUpperCase()} | Size: {eventData.ticketFileSize}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+        <hr className='summary-dot-divider' />
+        <div className="checkout-container">
+          <div className="checkout">
+            <div className='ticket-quantity-group'>
+              <h5 className='ticket-event-name'>{eventData.title} Ticket</h5>
+              <h5>x{ticketQuantity}</h5>
+            </div>
+            <h5>NGN {(totalPrice / ticketQuantity).toLocaleString()}</h5>
+          </div>
+          <div className="checkout-total">
+            <h5>Total</h5>
+            <h5>NGN {totalPrice.toLocaleString()}</h5>
+          </div>
+        </div>
+        <hr className='summary-dot-divider' />
+        <div className="action-buttons">
+          <button
+            onClick={handlePayment}
+            aria-label={`Pay NGN ${totalPrice.toLocaleString()} for ${eventData.title}`}
+            className='payment-button'
+          >
+            Pay NGN {totalPrice.toLocaleString()}
+          </button>
+          <button
+            onClick={() => navigateBack(eventData)}
+            aria-label="Back to ticket purchase"
+            className='back-ticket-purchase-btn'
+          >
+            Back
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 OrderSummary.defaultProps = {
-    navigateBack: () => console.log('navigateBack not provided'),
+  navigateBack: () => console.log('navigateBack not provided'),
 };
 
 export default OrderSummary;
