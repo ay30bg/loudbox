@@ -9,6 +9,7 @@ import EventDetails from './eventDetails';
 import TicketPurchase from './ticketPurchase';
 import OrderSummary from './orderSummary';
 import ThankYouPage from './thankYouPage';
+import TicketDetailsPage from './ticketDetailsPage'; // Ensure correct path
 
 function App() {
   console.log('App rendered');
@@ -64,12 +65,16 @@ function App() {
       navigate('/thank-you/' + eventId, options);
     };
 
+    const navigateToViewTicket = (transactionReference, state) => {
+      console.log('Navigating to ticket details:', transactionReference);
+      navigate(`/ticket/${transactionReference}`, { state });
+    };
 
     const currentPath = window.location.pathname.split('/')[1] || 'landing';
 
     return (
       <div>
-        {['event-details', 'ticket-purchase', 'order-summary', 'thank-you'].includes(currentPath) && (
+        {['event-details', 'ticket-purchase', 'order-summary', 'thank-you', 'ticket'].includes(currentPath) && (
           <Header
             onLogout={handleLogout}
             navigateToLanding={navigateToLanding}
@@ -126,11 +131,20 @@ function App() {
             element={
               <ThankYouPage
                 navigateToLanding={navigateToLanding}
+                navigateToViewTicket={navigateToViewTicket}
               />
             }
           />
+          <Route
+            path="/ticket/:transactionReference"
+            element={<TicketDetailsPage />}
+          />
+          {/* Catch-all route for debugging */}
+          <Route
+            path="*"
+            element={<div>404: No route matched. URL: {window.location.pathname}</div>}
+          />
         </Routes>
-
       </div>
     );
   }
