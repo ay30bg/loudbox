@@ -16,8 +16,8 @@ function TicketDetailsPage() {
   useEffect(() => {
     const fetchTicketDetails = async () => {
       try {
-        const apiUrl = `/api/tickets/${transactionReference}`; // Uses proxy
-        // For testing: const apiUrl = `https://your-backend.vercel.app/api/tickets/${transactionReference}`;
+        //const apiUrl = `/api/tickets/${transactionReference}`; // Uses proxy
+        const apiUrl = `https://loudbox-backend.vercel.app/api/tickets/${transactionReference}`;
         console.log('Fetching from:', apiUrl);
         const response = await fetch(apiUrl);
         console.log('Response status:', response.status);
