@@ -133,74 +133,101 @@ function OrderSummary({ navigateBack, navigateToThankYou  }) {
     } = state || {};
 
     // Paystack payment handler
-    const handlePayment = () => {
-        // Ensure PaystackPop is available
-        if (!window.PaystackPop) {
-            alert('Paystack script not loaded. Please try again.');
-            return;
+const handlePayment = () => {
+  if (!window.PaystackPop) {
+    alert('Paystack script not loaded. Please try again.');
+    return;
+  }
+
+  const handler = window.PaystackPop.setup({
+    key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY || 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
+    email: email || 'guest@example.com',
+    amount: totalPrice * 100, // Convert to kobo
+    currency: 'NGN',
+    ref: `TICKET-${Math.floor(Math.random() * 1000000)}-${Date.now()}`,
+    metadata: {
+      custom_fields: [
+        {
+          display_name: 'Event Title',
+          variable_name: 'event_title',
+          value: eventData.title,
+        },
+        {
+          display_name: 'Ticket Quantity',
+          variable_name: 'ticket_quantity',
+          value: ticketQuantity,
+        },
+        {
+          display_name: 'Customer Name',
+          variable_name: 'customer_name',
+          value: `${firstName} ${lastName}`,
+        },
+        {
+          display_name: 'Recipient Email',
+          variable_name: 'recipient_email',
+          value: isGift ? recipientEmail : email,
+        },
+      ],
+    },
+    callback: async (response) => {
+      if (response.status === 'success') {
+        try {
+          // Call backend to verify payment and send ticket email
+          const res = await fetch('https://loudbox-backend.onrender.com/api/paystack/send-ticket-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              reference: response.reference,
+              customerEmail: email,
+              recipientEmail: isGift ? recipientEmail : null,
+              eventTitle: eventData.title,
+              ticketQuantity,
+              totalPrice,
+              firstName,
+              lastName,
+              isGift,
+            }),
+          });
+
+          const result = await res.json();
+          if (res.ok) {
+            console.log(result.message);
+            localStorage.setItem('paymentSuccessful', 'true');
+            navigateToThankYou(id, {
+              state: {
+                eventTitle: eventData.title,
+                ticketQuantity,
+                totalPrice,
+                firstName,
+                lastName,
+                email,
+                isGift,
+                recipientFirstName,
+                recipientLastName,
+                recipientEmail,
+                transactionReference: response.reference,
+              },
+            });
+          } else {
+            alert(`Failed to send ticket: ${result.error}`);
+          }
+        } catch (error) {
+          console.error('Error sending ticket email:', error);
+          alert('Error processing payment. Please contact support.');
         }
+      } else {
+        alert('Payment failed. Please try again.');
+      }
+    },
+    onClose: () => {
+      alert('Payment cancelled.');
+    },
+  });
 
-        const handler = window.PaystackPop.setup({
-            key: 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df', // Replace with your Paystack public key
-            email: email || 'guest@example.com', // Use customer email or fallback
-            amount: totalPrice * 100, // Paystack expects amount in kobo (NGN * 100)
-            currency: 'NGN',
-            ref: `TICKET-${Math.floor(Math.random() * 1000000)}-${Date.now()}`, // Unique transaction reference
-            metadata: {
-                custom_fields: [
-                    {
-                        display_name: 'Event Title',
-                        variable_name: 'event_title',
-                        value: eventData.title,
-                    },
-                    {
-                        display_name: 'Ticket Quantity',
-                        variable_name: 'ticket_quantity',
-                        value: ticketQuantity,
-                    },
-                    {
-                        display_name: 'Customer Name',
-                        variable_name: 'customer_name',
-                        value: `${firstName} ${lastName}`,
-                    },
-                ],
-            },
-            callback: (response) => {
-                // Handle successful payment
-                if (response.status === 'success') {
-                    // Optionally, send transaction details to your backend for verification
-                    // e.g., fetch('/api/verify-payment', { method: 'POST', body: JSON.stringify({ reference: response.reference }) })
-                    console.log(`Payment successful! Transaction reference: ${response.reference}`);
-                    // Store payment status to protect ThankYouPage
-                    localStorage.setItem('paymentSuccessful', 'true');
-                    // Navigate to thank-you page with order details
-                    navigateToThankYou(id, {
-                        state: {
-                            eventTitle: eventData.title,
-                            ticketQuantity,
-                            totalPrice,
-                            firstName,
-                            lastName,
-                            email,
-                            isGift,
-                            recipientFirstName,
-                            recipientLastName,
-                            recipientEmail,
-                            transactionReference: response.reference,
-                        },
-                    });
-                } else {
-                    alert('Payment failed. Please try again.');
-                }
-            },
-            onClose: () => {
-                // Handle when the user closes the payment popup
-                alert('Payment cancelled.');
-            },
-        });
-
-        handler.openIframe(); // Open Paystack payment popup
-    };
+  handler.openIframe();
+};
+                
+                     
 
     // Load Paystack script dynamically
     useEffect(() => {
