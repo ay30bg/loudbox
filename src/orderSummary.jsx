@@ -101,7 +101,7 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
       };
 
       console.log('Sending ticket data to /api/tickets:', ticketData);
-      const ticketResponse = await fetch('/api/tickets', {
+      const ticketResponse = await fetch('https://loudbox-backend.vercel.app/api/tickets', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(ticketData),
