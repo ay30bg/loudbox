@@ -9,54 +9,65 @@ function TicketDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  console.log('TicketDetailsPage rendered');
-  console.log('transactionReference:', transactionReference);
-  console.log('state:', state);
-
   useEffect(() => {
     const fetchTicketDetails = async () => {
       try {
-        const apiUrl = `https://loudbox.vercel.app/api/tickets/${transactionReference}`;
-        console.log('Fetching from:', apiUrl);
+        const apiUrl = `${process.env.REACT_APP_API_URL}/api/tickets/${transactionReference}`;
+        if (process.env.NODE_ENV === 'development') {
+          console.log('Fetching from:', apiUrl);
+        }
         const response = await fetch(apiUrl);
-        console.log('Response status:', response.status);
 
         if (!response.ok) {
-          const text = await response.text();
-          console.log('Response text:', text.slice(0, 100));
           if (response.status === 404) {
-            console.log('Ticket not found, falling back to state data');
-            setTicketData(null); // Use state data
+            console.warn('Ticket not found, falling back to state data');
+            setTicketData(null);
           } else {
-            throw new Error(`HTTP error! status: ${response.status}, response: ${text.slice(0, 100)}`);
+            throw new Error(`HTTP error! status: ${response.status}`);
           }
         } else {
           const data = await response.json();
-          console.log('Backend data:', data);
           setTicketData(data);
         }
         setLoading(false);
       } catch (err) {
-        console.error('Fetch error:', err.message);
-        setError(err.message);
+        console.error('Fetch error:', err);
+        const userFriendlyError = err.message.includes('404')
+          ? 'Ticket not found. Please check the transaction reference.'
+          : 'Unable to load ticket details. Please try again later.';
+        setError(userFriendlyError);
         setLoading(false);
       }
     };
     fetchTicketDetails();
   }, [transactionReference]);
 
+  // Default state values
+  const stateDefaults = {
+    eventTitle: 'Event',
+    ticketQuantity: 1,
+    firstName: 'Guest',
+    lastName: '',
+    email: 'N/A',
+    isGift: false,
+    recipientFirstName: '',
+    recipientLastName: '',
+    recipientEmail: '',
+    ticketId: 'TICKET123',
+  };
+  const ticketState = state || {};
   const {
-    eventTitle = 'Event',
-    ticketQuantity = 1,
-    firstName = 'Guest',
-    lastName = '',
-    email = 'N/A',
-    isGift = false,
-    recipientFirstName = '',
-    recipientLastName = '',
-    recipientEmail = '',
-    ticketId = 'TICKET123',
-  } = state || {};
+    eventTitle = stateDefaults.eventTitle,
+    ticketQuantity = stateDefaults.ticketQuantity,
+    firstName = stateDefaults.firstName,
+    lastName = stateDefaults.lastName,
+    email = stateDefaults.email,
+    isGift = stateDefaults.isGift,
+    recipientFirstName = stateDefaults.recipientFirstName,
+    recipientLastName = stateDefaults.recipientLastName,
+    recipientEmail = stateDefaults.recipientEmail,
+    ticketId = stateDefaults.ticketId,
+  } = ticketState;
 
   if (loading) {
     return <div className="ticket-details-container">Loading ticket details...</div>;
@@ -83,7 +94,7 @@ function TicketDetailsPage() {
     );
   }
 
-  const displayData = ticketData || state;
+  const displayData = ticketData || ticketState;
 
   return (
     <div className="ticket-details-container">
