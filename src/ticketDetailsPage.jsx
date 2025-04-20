@@ -3,75 +3,71 @@ import { useParams, useLocation } from 'react-router-dom';
 import { QRCodeCanvas } from 'qrcode.react';
 import './ticketDetailsPage.css';
 
-// This is a picture of a fake QR code we show if something goes wrong
-const placeholderQrCode = 'data:image/png;base64,...';
+// Placeholder QR code (base64-encoded PNG for demo)
+const placeholderQrCode = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADKSURBVHhe7dEBDQAgAMAw+/4vNqCLF3M3wAIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECL8B/wX3V2rKAAAAAElFTkSuQmCC';
 
 function TicketDetailsPage() {
-  // Get the special code from the web page’s address (like “abcde” in “/ticket/abcde”)
   const { transactionReference } = useParams();
-  // Get ticket info from the last page (like a note with the ticket’s name)
   const { state } = useLocation();
-  // Keep track of the ticket info, whether from the note or the concert computer
   const [ticketData, setTicketData] = useState(state);
-  // Check if we’re still looking for the ticket info
   const [loading, setLoading] = useState(!state);
-  // Keep track if something goes wrong
   const [error, setError] = useState(null);
 
-  // Tell us what’s happening so we can find problems
-  console.log('Ticket page opened!');
-  console.log('Special code:', transactionReference);
-  console.log('Note from last page:', state);
-  console.log('Ticket info:', ticketData);
+  // Debug logs
+  console.log('TicketDetailsPage rendered');
+  console.log('transactionReference:', transactionReference);
+  console.log('state:', state);
+  console.log('ticketData:', ticketData);
 
-  // If we don’t have the note, ask the concert computer for the ticket info
+  // Fetch ticket data if state is missing
   useEffect(() => {
     if (!state && transactionReference) {
-      const askForTicket = async () => {
+      const fetchTicket = async () => {
         try {
           setLoading(true);
-          // Ask the computer for the ticket
-          const response = await fetch(`https://loudbox-backend.vercel.app/api/tickets/${transactionReference}`);
+          const response = await fetch(`https://loudbox-backend.vercel.app/api/tickets/${transactionReference}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+          });
           if (!response.ok) {
-            throw new Error('Oops! Couldn’t find the ticket.');
+            const errorText = await response.text();
+            throw new Error(`HTTP error! Status: ${response.status}, Message: ${errorText}`);
           }
           const data = await response.json();
-          setTicketData(data); // Save the ticket info
+          setTicketData(data);
         } catch (err) {
-          console.error('Problem:', err);
-          setError('Sorry, we couldn’t get your ticket. Try again or call for help.');
+          console.error('Fetch error:', err);
+          setError('Unable to load ticket details. Please try again or contact support.');
         } finally {
           setLoading(false);
         }
       };
-      askForTicket();
+      fetchTicket();
     }
   }, [transactionReference, state]);
 
-  // If we’re still looking, show a “wait a second” message
   if (loading) {
     return (
       <div className="ticket-details-container">
-        <h2>Hold on...</h2>
-        <p>Getting your ticket for {transactionReference || 'no code'}</p>
+        <h2>Loading...</h2>
+        <p>Loading ticket details for {transactionReference || 'N/A'}</p>
       </div>
     );
   }
 
-  // If something went wrong or we have no ticket info, show a help message
   if (error || !ticketData) {
     return (
       <div className="ticket-details-container">
-        <h2>{error ? 'Oops, Something’s Wrong!' : 'No Ticket Found'}</h2>
-        <p>Special code: {transactionReference || 'no code'}</p>
-        <p>Please call our helpers at support@loudbox.com.</p>
+        <h2>{error ? 'Error Loading Ticket' : 'No Ticket Data Available'}</h2>
+        <p>Transaction Reference: {transactionReference || 'N/A'}</p>
+        <p>Please contact support at support@loudbox.com.</p>
       </div>
     );
   }
 
-  // Get the ticket details, with backups if something’s missing
+  // Fallback to ticket data
   const {
-    eventTitle = 'Concert',
+    eventTitle = 'Event',
     ticketQuantity = 1,
     firstName = 'Guest',
     lastName = '',
@@ -80,45 +76,55 @@ function TicketDetailsPage() {
     recipientFirstName = '',
     recipientLastName = '',
     recipientEmail = '',
-    ticketId = 'TICKET123', // Pretend ticket name if none found
+    ticketId = 'TICKET123', // Mock ticketId for verification
   } = ticketData;
 
-  // Make the web address for the QR code
-  const qrCodeValue = `https://loudbox-backend.vercel.app/verify?ticketId=${encodeURIComponent(
+  // Construct QR code value (fixed to use /api/tickets/verify)
+  const qrCodeValue = `https://loudbox-backend.vercel.app/api/tickets/verify?ticketId=${encodeURIComponent(
     ticketId
   )}&code=${encodeURIComponent(transactionReference || 'N/A')}`;
-  console.log('QR code message:', qrCodeValue);
-  console.log('QR code message length:', qrCodeValue.length);
+  console.log('QRCode value:', qrCodeValue);
+  console.log('QRCode value length:', qrCodeValue.length);
 
-  // Check if the web address is good
-  if (!qrCodeValue || qrCodeValue.length < 10 || !ticketId || ticketId === 'TICKET123') {
-    console.warn('Bad QR code message:', qrCodeValue);
+  // Validate QR code value
+  if (
+    !qrCodeValue ||
+    qrCodeValue.length < 10 ||
+    !ticketId ||
+    ticketId === 'TICKET123' ||
+    !transactionReference
+  ) {
+    console.warn('Invalid QR code value:', qrCodeValue);
     return (
       <div className="ticket-details-container">
-        <h2>No QR Code Yet</h2>
-        <p>Special code: {transactionReference || 'no code'}</p>
-        <p>We couldn’t make a good QR code. Please call our helpers at support@loudbox.com.</p>
+        <h2>QR Code Unavailable</h2>
+        <p>Transaction Reference: {transactionReference || 'N/A'}</p>
+        <p>Unable to generate a valid QR code. Please contact support at support@loudbox.com.</p>
         {ticketId === 'TICKET123' && (
           <p style={{ color: 'orange' }}>
-            Uh-oh! We’re using a pretend ticket name. This won’t work at the door.
+            Warning: Using mock ticket ID. This may not work for verification.
+          </p>
+        )}
+        {!transactionReference && (
+          <p style={{ color: 'orange' }}>
+            Warning: No transaction reference found. This may not work for verification.
           </p>
         )}
         <div className="qr-code-container">
-          <img src={placeholderQrCode} alt="Fake QR Code" className="qr-code" />
-          <p>No real QR code available.</p>
+          <img src={placeholderQrCode} alt="Placeholder QR Code" className="qr-code" />
+          <p>QR code unavailable.</p>
         </div>
       </div>
     );
   }
 
-  // Show the ticket with the QR code
   return (
     <div className="ticket-details-container">
       <h2>Your Ticket</h2>
       <div className="ticket-card">
         <h3>{eventTitle}</h3>
         <div className="detail-item">
-          <span className="detail-label">Who’s going:</span>
+          <span className="detail-label">Ticket Holder:</span>
           <span className="detail-value">
             {isGift ? `${recipientFirstName} ${recipientLastName}` : `${firstName} ${lastName}`}
           </span>
@@ -128,26 +134,26 @@ function TicketDetailsPage() {
           <span className="detail-value">{isGift ? recipientEmail : email}</span>
         </div>
         <div className="detail-item">
-          <span className="detail-label">How many tickets:</span>
+          <span className="detail-label">Quantity:</span>
           <span className="detail-value">{ticketQuantity}</span>
         </div>
         <div className="detail-item">
-          <span className="detail-label">Special code:</span>
-          <span className="detail-value">{transactionReference || 'no code'}</span>
+          <span className="detail-label">Transaction Reference:</span>
+          <span className="detail-value">{transactionReference || 'N/A'}</span>
         </div>
         <div className="detail-item">
-          <span className="detail-label">Ticket name:</span>
+          <span className="detail-label">Ticket ID:</span>
           <span className="detail-value">{ticketId}</span>
         </div>
         <div className="qr-code-container">
           <QRCodeCanvas
             value={qrCodeValue}
             size={200}
-            level="M" // Makes the QR code strong
+            level="M" // Medium error correction for better reliability
             includeMargin={true}
-            onError={(e) => console.error('QR code problem:', e)}
+            onError={(e) => console.error('QRCodeCanvas error:', e)}
           />
-          <p>Show this QR code at the concert door to get in!</p>
+          <p>Present this QR code at the event entrance for verification.</p>
           <button
             onClick={() => {
               const canvas = document.querySelector('canvas');
@@ -159,7 +165,7 @@ function TicketDetailsPage() {
               }
             }}
           >
-            Save QR Code Picture
+            Download QR Code
           </button>
         </div>
       </div>
