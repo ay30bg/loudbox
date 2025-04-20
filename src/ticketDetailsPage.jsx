@@ -70,7 +70,7 @@ function TicketDetailsPage() {
       <p>Quantity: {ticket.ticketQuantity}</p>
       <p>Total Price: NGN {ticket.totalPrice.toLocaleString()}</p>
       <div className="qr-code">
-        <QRCode value={ticket.qrCode} size={200} />
+{/*         <QRCode value={ticket.qrCode} size={200} /> */}
       </div>
     </div>
   );
