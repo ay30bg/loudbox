@@ -160,7 +160,7 @@ function TicketDetailsPage() {
  <QRCodeCanvas
  value={qrCode}
  size={200}
- level="M" // Lower error correction to increase capacity
+ level="H" // Lower error correction to increase capacity
  includeMargin={true}
  />
  <p>Present this QR code at the event entrance for verification.</p>
