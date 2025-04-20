@@ -160,7 +160,7 @@ function TicketDetailsPage() {
  <QRCodeCanvas
  value={qrCode}
  size={200}
- level="Q" // 
+ level="Q" 
  includeMargin={true}
  />
  <p>Present this QR code at the event entrance for verification.</p>
