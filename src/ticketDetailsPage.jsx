@@ -1,47 +1,69 @@
 // src/TicketDetailsPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { QRCodeCanvas } from 'qrcode.react'; // Correct import
-import './ticketDetailsPage.css';function TicketDetailsPage() {
+import { QRCodeCanvas } from 'qrcode.react';
+import './ticketDetailsPage.css';
+
+// Placeholder QR code (base64-encoded PNG for demo)
+const placeholderQrCode = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADKSURBVHhe7dEBDQAgAMAw+/4vNqCLF3M3wAIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECL8B/wX3V2rKAAAAAElFTkSuQmCC';
+
+function TicketDetailsPage() {
   const { transactionReference } = useParams();
   const [ticket, setTicket] = useState(null);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);  useEffect(() => {
+  const [loading, setLoading] = useState(true);
+
+  console.log('TicketDetailsPage rendered');
+  console.log('transactionReference:', transactionReference);
+
+  useEffect(() => {
     const fetchTicket = async () => {
       try {
         console.log('Attempting to fetch ticket:', transactionReference);
-        const response = await fetch(https://loudbox-backend.vercel.app/api/tickets/${transactionReference}, {
+        const response = await fetch(`https://loudbox-backend.vercel.app/api/tickets/${transactionReference}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
 
-    console.log('Response status:', response.status);
-    console.log('Response headers:', Object.fromEntries(response.headers.entries()));
-    console.log('Response ok:', response.ok);
+        console.log('Response status:', response.status);
+        console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+        console.log('Response ok:', response.ok);
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`HTTP error! Status: ${response.status}, Message: ${errorText}`);
-    }
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`HTTP error! Status: ${response.status}, Message: ${errorText}`);
+        }
 
-    const data = await response.json();
-    console.log('Ticket data:', data);
-    setTicket(data);
-  } catch (err) {
-    console.error('Fetch error:', err);
-    setError(`Unable to load ticket details: ${err.message}`);
-  } finally {
-    setLoading(false);
-  }
-};
+        const data = await response.json();
+        console.log('Ticket data:', data);
+        setTicket(data);
+      } catch (err) {
+        console.error('Fetch error:', err);
+        setError(`Unable to load ticket details: ${err.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-fetchTicket();
+    fetchTicket();
+  }, [transactionReference]);
 
-  }, [transactionReference]);  if (loading) {
-    return <div>Loading ticket details...</div>;
-  }  if (error) {
+  console.log('loading:', loading);
+  console.log('error:', error);
+  console.log('ticket:', ticket);
+
+  if (loading) {
     return (
-      <div className="error-container">
+      <div className="ticket-details-container" style={{ border: '2px solid blue', padding: '20px' }}>
+        <h2>Loading...</h2>
+        <p>Loading ticket details for {transactionReference}</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="ticket-details-container" style={{ border: '2px solid red', padding: '20px' }}>
         <h2>Error Loading Ticket</h2>
         <p>{error}</p>
         <p>Transaction Reference: {transactionReference}</p>
@@ -49,22 +71,45 @@ fetchTicket();
         <button onClick={() => window.location.reload()}>Retry</button>
       </div>
     );
-  }  if (!ticket) {
-    return <div>No ticket found for this reference.</div>;
-  }  return (
-    <div className="ticket-details-container">
+  }
+
+  if (!ticket) {
+    return (
+      <div className="ticket-details-container" style={{ border: '2px solid orange', padding: '20px' }}>
+        <h2>No Ticket Found</h2>
+        <p>Transaction Reference: {transactionReference}</p>
+        <p>No ticket details found. Please contact support.</p>
+        <div className="qr-code-container">
+          <img src={placeholderQrCode} alt="Placeholder QR Code" className="qr-code" />
+          <p>QR code unavailable.</p>
+        </div>
+      </div>
+    );
+  }
+
+  const qrCodeValue = ticket.qrCode || ticket.ticketId.slice(0, 8); // Fallback to ticketId
+  console.log('QRCode value:', qrCodeValue);
+  console.log('QRCode value length:', qrCodeValue.length);
+
+  return (
+    <div className="ticket-details-container" style={{ border: '2px solid green', padding: '20px' }}>
       <h2>{ticket.eventTitle}</h2>
       <p>Ticket ID: {ticket.ticketId}</p>
       <p>Status: {ticket.status}</p>
       <p>Quantity: {ticket.ticketQuantity}</p>
       <p>Total Price: NGN {ticket.totalPrice.toLocaleString()}</p>
-      <div className="qr-code">
-        <QRCodeCanvas 
-          value={ticket.qrCode} 
-          level="H"
-          size={200} />
+      <div className="qr-code-container">
+        <QRCodeCanvas
+          value={qrCodeValue}
+          size={250}
+          level="L" // Lower error correction for more capacity
+          includeMargin={true}
+          onError={(e) => console.error('QRCodeCanvas error:', e)}
+        />
+        <p>Present this QR code at the event entrance for verification.</p>
       </div>
     </div>
   );
-}export default TicketDetailsPage; when i scanned the qr code/ no usable data found
+}
 
+export default TicketDetailsPage;
