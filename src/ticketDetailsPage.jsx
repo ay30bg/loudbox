@@ -1,6 +1,7 @@
+// src/TicketDetailsPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { QRCodeCanvas } from 'qrcode.react'; // Correct named import
+import { QRCodeSVG } from 'qrcode.react';
 import './ticketDetailsPage.css';
 
 function TicketDetailsPage() {
@@ -13,13 +14,10 @@ function TicketDetailsPage() {
     const fetchTicket = async () => {
       try {
         console.log('Attempting to fetch ticket:', transactionReference);
-        const response = await fetch(
-          `https://loudbox-backend.vercel.app/api/tickets/${transactionReference}`,
-          {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-          }
-        );
+        const response = await fetch(`https://loudbox-backend.vercel.app/api/tickets/${transactionReference}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
 
         console.log('Response status:', response.status);
         console.log('Response headers:', Object.fromEntries(response.headers.entries()));
@@ -45,7 +43,7 @@ function TicketDetailsPage() {
   }, [transactionReference]);
 
   if (loading) {
-    return <div className="ticket-details-container">Loading ticket details...</div>;
+    return <div>Loading ticket details...</div>;
   }
 
   if (error) {
@@ -61,27 +59,18 @@ function TicketDetailsPage() {
   }
 
   if (!ticket) {
-    return (
-      <div className="ticket-details-container">
-        <h2>No Ticket Found</h2>
-        <p>No ticket found for reference: {transactionReference}.</p>
-        <p>Please contact support.</p>
-      </div>
-    );
+    return <div>No ticket found for this reference.</div>;
   }
 
   return (
     <div className="ticket-details-container">
       <h2>{ticket.eventTitle}</h2>
-      <div className="ticket-details">
-        <p><strong>Ticket ID:</strong> {ticket.ticketId}</p>
-        <p><strong>Status:</strong> {ticket.status}</p>
-        <p><strong>Quantity:</strong> {ticket.ticketQuantity}</p>
-        <p><strong>Total Price:</strong> NGN {ticket.totalPrice.toLocaleString()}</p>
-      </div>
-      <div className="qr-code-container">
-        <QRCodeCanvas value={ticket.qrCode} size={200} level="M" />
-        <p>Scan this QR code at the event entrance for verification.</p>
+      <p>Ticket ID: {ticket.ticketId}</p>
+      <p>Status: {ticket.status}</p>
+      <p>Quantity: {ticket.ticketQuantity}</p>
+      <p>Total Price: NGN {ticket.totalPrice.toLocaleString()}</p>
+      <div className="qr-code">
+        <QRCodeSVG value={ticket.qrCode} size={200} />
       </div>
     </div>
   );
