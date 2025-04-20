@@ -101,12 +101,13 @@ const mockEvents = [
     },
 ];
 
-function OrderSummary({ navigateBack, navigateToThankYou  }) {
+function OrderSummary({ navigateBack, navigateToThankYou }) {
     const { id } = useParams();
     const { state } = useLocation();
     const [eventData, setEventData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showFileDetails, setShowFileDetails] = useState(false);
+    const [paymentError, setPaymentError] = useState(null);
 
     useEffect(() => {
         const foundEvent = mockEvents.find((e) => e.id === id);
@@ -133,19 +134,21 @@ function OrderSummary({ navigateBack, navigateToThankYou  }) {
     } = state || {};
 
     // Paystack payment handler
-    const handlePayment = () => {
-        // Ensure PaystackPop is available
+    const handlePayment = async () => {
         if (!window.PaystackPop) {
-            alert('Paystack script not loaded. Please try again.');
+            setPaymentError('Paystack script not loaded. Please try again.');
             return;
         }
 
+        setPaymentError(null);
+        setLoading(true);
+
         const handler = window.PaystackPop.setup({
             key: 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df', // Replace with your Paystack public key
-            email: email || 'guest@example.com', // Use customer email or fallback
-            amount: totalPrice * 100, // Paystack expects amount in kobo (NGN * 100)
+            email: email || 'guest@example.com',
+            amount: totalPrice * 100, // Paystack expects amount in kobo
             currency: 'NGN',
-            ref: `TICKET-${Math.floor(Math.random() * 1000000)}-${Date.now()}`, // Unique transaction reference
+            ref: `TICKET-${Math.floor(Math.random() * 1000000)}-${Date.now()}`,
             metadata: {
                 custom_fields: [
                     {
@@ -165,44 +168,68 @@ function OrderSummary({ navigateBack, navigateToThankYou  }) {
                     },
                 ],
             },
-            callback: (response) => {
-                // Handle successful payment
+            callback: async (response) => {
                 if (response.status === 'success') {
-                    // Optionally, send transaction details to your backend for verification
-                    // e.g., fetch('/api/verify-payment', { method: 'POST', body: JSON.stringify({ reference: response.reference }) })
-                    console.log(`Payment successful! Transaction reference: ${response.reference}`);
-                    // Store payment status to protect ThankYouPage
-                    localStorage.setItem('paymentSuccessful', 'true');
-                    // Navigate to thank-you page with order details
-                    navigateToThankYou(id, {
-                        state: {
+                    try {
+                        // Create ticket in MongoDB
+                        const ticketData = {
+                            ticketId: `TICKET-${Date.now()}`,
+                            transactionReference: response.reference,
+                            eventId: id,
                             eventTitle: eventData.title,
-                            ticketQuantity,
-                            totalPrice,
                             firstName,
                             lastName,
                             email,
                             isGift,
-                            recipientFirstName,
-                            recipientLastName,
-                            recipientEmail,
-                            transactionReference: response.reference,
-                        },
-                    });
+                            recipientFirstName: isGift ? recipientFirstName : undefined,
+                            recipientLastName: isGift ? recipientLastName : undefined,
+                            recipientEmail: isGift ? recipientEmail : undefined,
+                            ticketQuantity,
+                            totalPrice,
+                        };
+
+                        const ticketResponse = await fetch('/api/tickets', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(ticketData),
+                        });
+
+                        if (!ticketResponse.ok) {
+                            throw new Error(`Failed to create ticket: ${ticketResponse.status}`);
+                        }
+
+                        const ticketResult = await ticketResponse.json();
+                        console.log('Ticket created:', ticketResult);
+
+                        // Store payment status
+                        localStorage.setItem('paymentSuccessful', 'true');
+                        // Navigate to thank-you page
+                        navigateToThankYou(id, {
+                            state: {
+                                ...ticketData,
+                                transactionReference: ticketResult.transactionReference,
+                                ticketId: ticketResult.ticketId,
+                            },
+                        });
+                    } catch (err) {
+                        console.error('Error creating ticket:', err);
+                        setPaymentError('Payment successful, but failed to create ticket. Please contact support.');
+                    }
                 } else {
-                    alert('Payment failed. Please try again.');
+                    setPaymentError('Payment failed. Please try again.');
                 }
+                setLoading(false);
             },
             onClose: () => {
-                // Handle when the user closes the payment popup
-                alert('Payment cancelled.');
+                setPaymentError('Payment cancelled.');
+                setLoading(false);
             },
         });
 
-        handler.openIframe(); // Open Paystack payment popup
+        handler.openIframe();
     };
 
-    // Load Paystack script dynamically
+    // Load Paystack script
     useEffect(() => {
         const script = document.createElement('script');
         script.src = 'https://js.paystack.co/v1/inline.js';
@@ -210,11 +237,9 @@ function OrderSummary({ navigateBack, navigateToThankYou  }) {
         document.body.appendChild(script);
 
         return () => {
-            document.body.removeChild(script); // Cleanup on component unmount
+            document.body.removeChild(script);
         };
     }, []);
-
-
 
     if (loading) {
         return <div>Loading event data...</div>;
@@ -291,34 +316,34 @@ function OrderSummary({ navigateBack, navigateToThankYou  }) {
                 </div>
                 <hr className='summary-dot-divider' />
                 <div className="checkout-container">
-
                     <div className="checkout">
                         <div className='ticket-quantity-group'>
-                        <h5 className='ticket-event-name'>{eventData.title} Ticket</h5>
-                        <h5>x{ticketQuantity}</h5>
+                            <h5 className='ticket-event-name'>{eventData.title} Ticket</h5>
+                            <h5>x{ticketQuantity}</h5>
                         </div>
-                        
                         <h5>NGN {(totalPrice / ticketQuantity).toLocaleString()}</h5>
                     </div>
                     <div className="checkout-total">
                         <h5>Total</h5>
                         <h5>NGN {totalPrice.toLocaleString()}</h5>
                     </div>
-
                 </div>
                 <hr className='summary-dot-divider' />
+                {paymentError && <p className="error-message">{paymentError}</p>}
                 <div className="action-buttons">
                     <button
                         onClick={handlePayment}
                         aria-label={`Pay NGN ${totalPrice.toLocaleString()} for ${eventData.title}`}
                         className='payment-button'
+                        disabled={loading}
                     >
-                        Pay NGN {totalPrice.toLocaleString()}
+                        {loading ? 'Processing...' : `Pay NGN ${totalPrice.toLocaleString()}`}
                     </button>
                     <button
                         onClick={() => navigateBack(eventData)}
                         aria-label="Back to ticket purchase"
                         className='back-ticket-purchase-btn'
+                        disabled={loading}
                     >
                         Back
                     </button>
