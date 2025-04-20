@@ -1,7 +1,7 @@
 // src/TicketDetailsPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import QRCode from 'qrcode.react'; // Correct import
+import QRCode from 'qrcode.react'; 
 import './ticketDetailsPage.css';
 
 function TicketDetailsPage() {
