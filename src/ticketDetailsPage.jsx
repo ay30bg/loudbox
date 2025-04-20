@@ -81,9 +81,10 @@ function TicketDetailsPage() {
     );
   }
 
-  // Fallback to state data
+  // Use ticket data (from backend or state)
   const {
     eventTitle = 'Event',
+    ticketId = 'TICKET123',
     ticketQuantity = 1,
     firstName = 'Guest',
     lastName = '',
@@ -92,11 +93,12 @@ function TicketDetailsPage() {
     recipientFirstName = '',
     recipientLastName = '',
     recipientEmail = '',
-    ticketId = 'TICKET123', // Mock ticketId for verification
-  } = state || {};
+    qrCode = JSON.stringify({ ticketId, transactionReference }), // QR code data
+  } = ticket || {};
 
-  // If no state data, show fallback UI
-  if (!state) {
+ 
+
+  
     return (
       <div className="ticket-details-container">
         <h2>No Ticket Data Available</h2>
