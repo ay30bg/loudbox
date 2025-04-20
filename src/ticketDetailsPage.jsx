@@ -1,5 +1,4 @@
-// src/TicketDetailsPage.jsx
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { QRCodeCanvas } from 'qrcode.react';
 import './ticketDetailsPage.css';
@@ -10,18 +9,13 @@ const placeholderQrCode = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAAB
 function TicketDetailsPage() {
   const { transactionReference } = useParams();
   const { state } = useLocation();
-  const [ticket, setTicket] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  console.log('TicketDetailsPage rendered');
-  console.log('transactionReference:', transactionReference);
-  console.log('state:', state);
 
   useEffect(() => {
     const fetchTicket = async () => {
       try {
-        console.log('Fetching ticket:', transactionReference);
+        console.log('Attempting to fetch ticket:', transactionReference);
         const response = await fetch(`https://loudbox-backend.vercel.app/api/tickets/${transactionReference}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
@@ -42,46 +36,21 @@ function TicketDetailsPage() {
       } catch (err) {
         console.error('Fetch error:', err);
         setError(`Unable to load ticket details: ${err.message}`);
-        if (state) {
-          console.log('Falling back to state data');
-          setTicket({
-            eventTitle: state.eventTitle || 'Event',
-            ticketId: state.ticketId || 'TICKET123',
-            transactionReference: state.transactionReference || transactionReference,
-            ticketQuantity: state.ticketQuantity || 1,
-            firstName: state.firstName || 'Guest',
-            lastName: state.lastName || '',
-            email: state.email || 'N/A',
-            isGift: state.isGift || false,
-            recipientFirstName: state.recipientFirstName || '',
-            recipientLastName: state.recipientLastName || '',
-            recipientEmail: state.recipientEmail || '',
-          });
-        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchTicket();
-  }, [transactionReference, state]);
-
-  console.log('loading:', loading);
-  console.log('error:', error);
-  console.log('ticket:', ticket);
+  }, [transactionReference]);
 
   if (loading) {
-    return (
-      <div className="ticket-details-container" style={{ border: '2px solid blue', padding: '20px' }}>
-        <h2>Loading...</h2>
-        <p>Loading ticket details for {transactionReference}</p>
-      </div>
-    );
+    return <div>Loading ticket details...</div>;
   }
 
-  if (!ticket && error) {
+  if (error) {
     return (
-      <div className="ticket-details-container" style={{ border: '2px solid red', padding: '20px' }}>
+      <div className="error-container">
         <h2>Error Loading Ticket</h2>
         <p>{error}</p>
         <p>Transaction Reference: {transactionReference}</p>
@@ -92,22 +61,17 @@ function TicketDetailsPage() {
   }
 
   if (!ticket) {
-    return (
-      <div className="ticket-details-container" style={{ border: '2px solid orange', padding: '20px' }}>
-        <h2>No Ticket Data Available</h2>
-        <p>Transaction Reference: {transactionReference}</p>
-        <p>No ticket details found. Please contact support.</p>
-        <div className="qr-code-container">
-          <img src={placeholderQrCode} alt="Placeholder QR Code" className="qr-code" />
-          <p>QR code unavailable (placeholder).</p>
-        </div>
-      </div>
-    );
+    return <div>No ticket found for this reference.</div>;
   }
+  
+  // // Debug logs
+  // console.log('TicketDetailsPage rendered');
+  // console.log('transactionReference:', transactionReference);
+  // console.log('state:', state);
 
+  // Fallback to state data
   const {
     eventTitle = 'Event',
-    ticketId = 'TICKET123',
     ticketQuantity = 1,
     firstName = 'Guest',
     lastName = '',
@@ -116,14 +80,22 @@ function TicketDetailsPage() {
     recipientFirstName = '',
     recipientLastName = '',
     recipientEmail = '',
-    qrCode = ticketId.slice(0, 10), // Shorten to first 10 chars
-  } = ticket;
+    ticketId = 'TICKET123', // Mock ticketId for verification
+  } = state || {};
 
-  console.log('QRCode value:', qrCode);
-  console.log('QRCode value length:', qrCode.length);
+  // // If no state data, show fallback UI
+  // if (!state) {
+  //   return (
+  //     <div className="ticket-details-container">
+  //       <h2>No Ticket Data Available</h2>
+  //       <p>Transaction Reference: {transactionReference}</p>
+  //       <p>Please contact support.</p>
+  //     </div>
+  //   );
+  // }
 
   return (
-    <div className="ticket-details-container" style={{ border: '2px solid green', padding: '20px' }}>
+    <div className="ticket-details-container">
       <h2>Your Ticket</h2>
       <div className="ticket-card">
         <h3>{eventTitle}</h3>
@@ -150,22 +122,10 @@ function TicketDetailsPage() {
           <span className="detail-value">{ticketId}</span>
         </div>
         <div className="qr-code-container">
-          {qrCode ? (
-            <>
-              <QRCodeCanvas
-                value={qrCode}
-                size={300} // Larger size for more capacity
-                level="L" // Lowest error correction
-                includeMargin={true}
-              />
-              <p>Present this QR code at the event entrance for verification.</p>
-            </>
-          ) : (
-            <>
-              <img src={placeholderQrCode} alt="Placeholder QR Code" className="qr-code" />
-              <p>QR code unavailable. Please contact support.</p>
-            </>
-          )}
+          <img src={placeholderQrCode} alt="Ticket QR Code" className="qr-code" />
+         <QRCodeCanvas  size={200}/>
+          <QRCode value={ticket.qrCode} size={200} />
+          <p>Present this QR code at the event entrance for verification (placeholder).</p>
         </div>
       </div>
     </div>
