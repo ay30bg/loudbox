@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, useLocation } from 'react-router-dom';
-import { QRCodeCanvas } from 'qrcode.react';
+import { QRCodeSVG } from 'qrcode.react';
 import './ticketDetailsPage.css';
 
 // Placeholder QR code (base64-encoded PNG for demo)
@@ -69,7 +69,7 @@ function TicketDetailsPage() {
         </div>
         <div className="qr-code-container">
           <img src={placeholderQrCode} alt="Ticket QR Code" className="qr-code" />
-         <QRCodeCanvas  size={200}/>
+         <QRCodeSVG  size={200}/>
          {/* <QRCode value={ticket.qrCode} size={200} /> */}
           <p>Present this QR code at the event entrance for verification (placeholder).</p>
         </div>
