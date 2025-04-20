@@ -1,7 +1,7 @@
 // src/TicketDetailsPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import QRCode from 'qrcode.react'; // Try default import
+import QRCodeCanvas from 'qrcode.react'; // Try default import
 // Alternative: import { QRCode } from 'qrcode.react'; // Uncomment if default import fails
 import './ticketDetailsPage.css';
 
@@ -71,7 +71,7 @@ function TicketDetailsPage() {
       <p>Quantity: {ticket.ticketQuantity}</p>
       <p>Total Price: NGN {ticket.totalPrice.toLocaleString()}</p>
       <div className="qr-code">
-        <QRCode value={ticket.qrCode} size={200} />
+        <QRCodeCanvas value={ticket.qrCode} size={200} />
       </div>
     </div>
   );
