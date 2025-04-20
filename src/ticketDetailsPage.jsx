@@ -92,21 +92,43 @@ function TicketDetailsPage() {
   console.log('QRCode value length:', qrCodeValue.length);
 
   return (
-    <div className="ticket-details-container" style={{ border: '2px solid green', padding: '20px' }}>
-      <h2>{ticket.eventTitle}</h2>
-      <p>Ticket ID: {ticket.ticketId}</p>
-      <p>Status: {ticket.status}</p>
-      <p>Quantity: {ticket.ticketQuantity}</p>
-      <p>Total Price: NGN {ticket.totalPrice.toLocaleString()}</p>
-      <div className="qr-code-container">
-        <QRCodeCanvas
+     <div className="ticket-details-container">
+      <h2>Your Ticket</h2>
+      <div className="ticket-card">
+        <h3>{eventTitle}</h3>
+        <div className="detail-item">
+          <span className="detail-label">Ticket Holder:</span>
+          <span className="detail-value">
+            {isGift ? `${recipientFirstName} ${recipientLastName}` : `${firstName} ${lastName}`}
+          </span>
+        </div>
+        <div className="detail-item">
+          <span className="detail-label">Email:</span>
+          <span className="detail-value">{isGift ? recipientEmail : email}</span>
+        </div>
+        <div className="detail-item">
+          <span className="detail-label">Quantity:</span>
+          <span className="detail-value">{ticketQuantity}</span>
+        </div>
+        <div className="detail-item">
+          <span className="detail-label">Transaction Reference:</span>
+          <span className="detail-value">{transactionReference}</span>
+        </div>
+        <div className="detail-item">
+          <span className="detail-label">Ticket ID:</span>
+          <span className="detail-value">{ticketId}</span>
+        </div>
+        <div className="qr-code-container">
+          {/* <img src={placeholderQrCode} alt="Ticket QR Code" className="qr-code" /> */}
+         <QRCodeCanvas
           value={qrCodeValue}
           size={250}
-          level="L" // Lower error correction for more capacity
           includeMargin={true}
           onError={(e) => console.error('QRCodeCanvas error:', e)}
         />
-        <p>Present this QR code at the event entrance for verification.</p>
+         {/* <QRCode value={ticket.qrCode} size={200} /> */}
+          <p>Present this QR code at the event entrance for verification (placeholder).</p>
+        </div>
       </div>
     </div>
   );
