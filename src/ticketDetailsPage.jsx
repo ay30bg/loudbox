@@ -42,13 +42,18 @@ function TicketDetailsPage() {
     fetchTicket();
   }, [transactionReference]);
 
-  if (loading) {
-    return <div>Loading ticket details...</div>;
+   if (loading) {
+    return (
+      <div className="ticket-details-container" style={{ border: '2px solid blue', padding: '20px' }}>
+        <h2>Loading...</h2>
+        <p>Loading ticket details for {transactionReference}</p>
+      </div>
+    );
   }
 
-  if (error) {
+   if (error) {
     return (
-      <div className="error-container">
+      <div className="ticket-details-container" style={{ border: '2px solid red', padding: '20px' }}>
         <h2>Error Loading Ticket</h2>
         <p>{error}</p>
         <p>Transaction Reference: {transactionReference}</p>
@@ -58,9 +63,23 @@ function TicketDetailsPage() {
     );
   }
 
-  if (!ticket) {
-    return <div>No ticket found for this reference.</div>;
+ if (!ticket) {
+    return (
+      <div className="ticket-details-container" style={{ border: '2px solid orange', padding: '20px' }}>
+        <h2>No Ticket Found</h2>
+        <p>Transaction Reference: {transactionReference}</p>
+        <p>No ticket details found. Please contact support.</p>
+        <div className="qr-code-container">
+          <img src={placeholderQrCode} alt="Placeholder QR Code" className="qr-code" />
+          <p>QR code unavailable.</p>
+        </div>
+      </div>
+    );
   }
+
+  const qrCodeValue = ticket.qrCode || ticket.ticketId.slice(0, 8); // Fallback to ticketId
+  console.log('QRCode value:', qrCodeValue);
+  console.log('QRCode value length:', qrCodeValue.length);
 
   return (
     <div className="ticket-details-container">
@@ -70,7 +89,13 @@ function TicketDetailsPage() {
       <p>Quantity: {ticket.ticketQuantity}</p>
       <p>Total Price: NGN {ticket.totalPrice.toLocaleString()}</p>
       <div className="qr-code">
-        <QRCodeCanvas value={ticket.qrCode} size={200} />
+       <QRCodeCanvas
+          value={qrCodeValue}
+          size={250}
+          level="L"
+          includeMargin={true}
+          onError={(e) => console.error('QRCodeCanvas error:', e)}
+        />
       </div>
     </div>
   );
