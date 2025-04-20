@@ -1,7 +1,7 @@
 // src/ticketDetailsPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-// import QRCode from 'qrcode.react';
+import QRCode from 'qrcode.react';
 import './ticketDetailsPage.css';
 
 function TicketDetailsPage() {
@@ -70,7 +70,7 @@ function TicketDetailsPage() {
       <p>Quantity: {ticket.ticketQuantity}</p>
       <p>Total Price: NGN {ticket.totalPrice.toLocaleString()}</p>
       <div className="qr-code">
-{/*       <QRCode value={ticket.qrCode} size={200} />  */}
+      <QRCode value={ticket.qrCode} size={200} /> 
       </div>
     </div>
   );
