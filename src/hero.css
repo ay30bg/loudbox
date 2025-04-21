@@ -99,73 +99,6 @@
   background-color: white;
 }
 
-/* Responsive adjustments */
-@media (min-width: 768px) {
-  .hero-container {
-    height: 240px;
-    width: 100%;
-  }
-
-  .hero-form {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .event-field {
-    width: 300px;
-    height: 45px;
-    border-radius: 3px;
-  }
-
-  .location-field {
-    width: 190px;
-    border-radius: 3px;
-  }
-
-  .hero-form select {
-    width: 230px;
-    border-radius: 3px;
-  }
-
-  .hero-form input[type="button"] {
-    width: 100px;
-    height: 45px;
-    border-radius: 4px;
-  }
-}
-
-@media (max-width: 911px) and (min-width: 768px) {
-  .hero-form {
-    gap: 7px;
-  }
-
-  .event-field {
-    width: 260px;
-    height: 45px;
-    border-radius: 3px;
-  }
-
-  .location-field {
-    width: 170px;
-    border-radius: 3px;
-  }
-
-  .hero-form select {
-    width: 200px;
-    border-radius: 3px;
-  }
-
-  .hero-form input[type="button"] {
-    width: 90px;
-    height: 45px;
-    border-radius: 4px;
-  }
-}
-
-
 /* Error states */
 .error {
   border: 2px solid #ff4d4f; /* Red border for invalid inputs */
@@ -243,6 +176,75 @@
   font-size: 16px;
   color: #808080;
 }
+
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .hero-container {
+    height: 240px;
+    width: 100%;
+  }
+
+  .hero-form {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .event-field {
+    width: 300px;
+    height: 45px;
+    border-radius: 3px;
+  }
+
+  .location-field {
+    width: 190px;
+    border-radius: 3px;
+  }
+
+  .hero-form select {
+    width: 230px;
+    border-radius: 3px;
+  }
+
+  .hero-form input[type="button"] {
+    width: 100px;
+    height: 45px;
+    border-radius: 4px;
+  }
+}
+
+@media (max-width: 911px) and (min-width: 768px) {
+  .hero-form {
+    gap: 7px;
+  }
+
+  .event-field {
+    width: 260px;
+    height: 45px;
+    border-radius: 3px;
+  }
+
+  .location-field {
+    width: 170px;
+    border-radius: 3px;
+  }
+
+  .hero-form select {
+    width: 200px;
+    border-radius: 3px;
+  }
+
+  .hero-form input[type="button"] {
+    width: 90px;
+    height: 45px;
+    border-radius: 4px;
+  }
+}
+
+
 
 /* Responsive adjustments for new elements */
 @media (min-width: 768px) {
