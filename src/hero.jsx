@@ -5,7 +5,7 @@ import debounce from "lodash/debounce";
 import "./hero.css";
 
 function Hero() {
-  const navigate = useNavigate(); // Kept for potential future use
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     event: "",
     category: "",
@@ -13,7 +13,6 @@ function Hero() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [searchResults, setSearchResults] = useState(null);
 
   // Debounced input handler
   const debouncedHandleChange = useCallback(
@@ -35,7 +34,6 @@ function Hero() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setSearchResults(null);
 
     // Validation
     if (!formData.event.trim()) {
@@ -67,15 +65,14 @@ function Hero() {
       }
 
       const data = await response.json();
-      setSearchResults(data.events || []);
 
       // Save to localStorage
       const recentSearches = JSON.parse(localStorage.getItem("recentSearches") || "[]");
       recentSearches.unshift(formData);
       localStorage.setItem("recentSearches", JSON.stringify(recentSearches.slice(0, 5)));
 
-      // Optional: Redirect (commented out)
-      // navigate("/results", { state: { events: data.events || [] } });
+      // Redirect to results page
+      navigate("/results", { state: { events: data.events || [] } });
     } catch (error) {
       console.error("Search error:", error);
       setError("Failed to fetch events. Please try again later.");
@@ -89,22 +86,6 @@ function Hero() {
       <div className="hero-text">
         <h2>Buy tickets to events happening around you</h2>
       </div>
-      {searchResults && (
-        <div className="search-results">
-          <h3>Search Results</h3>
-          {searchResults.length > 0 ? (
-            <ul>
-              {searchResults.map((event, index) => (
-                <li key={index}>
-                  {event.name} - {event.location} ({event.category})
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No events found.</p>
-          )}
-        </div>
-      )}
       <form onSubmit={handleSubmit} className="hero-form">
         <div className={`input-wrapper ${error && !formData.event ? "error" : ""}`}>
           <FaCalendar className="input-icon" />
