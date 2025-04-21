@@ -70,7 +70,7 @@
   color: #E60278;
 }
 
-.hero-form input[type="button"] {
+.hero-form input[type="submit"] {
   font-family: 'Poppins', sans-serif; /* Changed to Poppins */
   font-weight: 600; /* Bold, matches confirm-ticket-btn */
   background-color: #E60278;
