@@ -49,6 +49,11 @@ body,html{
     margin: 10px auto;
     display: block;
   }
+
+.download-button{
+  width: 100px;
+  background-color: #17153a;
+}
   
   .ticket-card h3 {
     margin-top: 0;
