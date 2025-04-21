@@ -99,6 +99,8 @@
   background-color: white;
 }
 
+/* Add to existing hero.css */
+
 /* Error states */
 .error {
   border: 2px solid #ff4d4f; /* Red border for invalid inputs */
@@ -130,7 +132,7 @@
 
 .hero-form input[type="submit"].loading,
 .hero-form input[type="submit"]:disabled {
-  background-color: #b3005c; /* Darker pink for disabled state */
+  background-color: #b3005c; /* Darker pink */
   cursor: not-allowed;
   opacity: 0.7;
 }
@@ -139,9 +141,9 @@
 .search-results {
   margin-top: 20px;
   padding: 15px;
-  background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 4px;
-  color: #17153a; /* Dark color for readability */
+  color: #17153a;
   font-family: "Inter", sans-serif;
   text-align: left;
   max-width: 90%;
@@ -177,6 +179,44 @@
   color: #808080;
 }
 
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .error-message {
+    font-size: 16px;
+  }
+
+  .search-results {
+    max-width: 80%;
+    padding: 20px;
+  }
+
+  .search-results h3 {
+    font-size: 20px;
+  }
+
+  .search-results li {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 911px) and (min-width: 768px) {
+  .error-message {
+    font-size: 14px;
+  }
+
+  .search-results {
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  .search-results h3 {
+    font-size: 18px;
+  }
+
+  .search-results li {
+    font-size: 16px;
+  }
+}
 
 /* Responsive adjustments */
 @media (min-width: 768px) {
@@ -246,53 +286,5 @@
 
 
 
-/* Responsive adjustments for new elements */
-@media (min-width: 768px) {
-  .error-message {
-    font-size: 16px;
-  }
 
-  .search-results {
-    max-width: 80%;
-    padding: 20px;
-  }
 
-  .search-results h3 {
-    font-size: 20px;
-  }
-
-  .search-results li {
-    font-size: 18px;
-  }
-
-  .hero-form input[type="submit"] {
-    width: 100px;
-    height: 45px;
-    border-radius: 4px;
-  }
-}
-
-@media (max-width: 911px) and (min-width: 768px) {
-  .error-message {
-    font-size: 14px;
-  }
-
-  .search-results {
-    max-width: 90%;
-    padding: 15px;
-  }
-
-  .search-results h3 {
-    font-size: 18px;
-  }
-
-  .search-results li {
-    font-size: 16px;
-  }
-
-  .hero-form input[type="submit"] {
-    width: 90px;
-    height: 45px;
-    border-radius: 4px;
-  }
-}
