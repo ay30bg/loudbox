@@ -265,7 +265,7 @@
 /* Mobile-specific styles for search button */
 @media (max-width: 767px) {
   .hero-form input[type="submit"] {
-    width: 200px;
+    width: 349px;
     height: 36px;
     font-size: 16px;
     padding: 8px;
@@ -275,7 +275,7 @@
 /* Large viewport styles for search button */
 @media (min-width: 912px) {
   .hero-form input[type="submit"] {
-    width: 80px;
+    width: 150px;
     height: 40px;
     font-size: 16px;
     padding: 8px;
