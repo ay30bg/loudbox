@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { FaEnvelope, FaPhone, FaFilePdf, FaFileImage, FaAngleDown, FaUser } from 'react-icons/fa';
 import './orderSummary.css';
+import axios from 'axios';
 
 // Mock events (unchanged)
 const mockEvents = [
@@ -220,6 +221,15 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
     setIsPaying(true); // Show blur effect
 
     try {
+      const response = await axios.post('https://loudbox-backend.vercel.app/api/payments/initialize-transaction', {
+        email,
+        amount: totalPrice,
+        eventId: id,
+        ticketQuantity,
+      });
+
+      const { authorization_url, reference } = response.data;
+      
       const handler = window.PaystackPop.setup({
         key: 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
         email: email || 'guest@example.com',
