@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { QRCodeSVG } from 'qrcode.react';
+import { QRCodeCanvas } from 'qrcode.react';
 import html2canvas from 'html2canvas';
 import './ticketDetailsPage.css';
 
@@ -156,7 +156,7 @@ function TicketDetailsPage() {
           </>
         )}
         <div className="qr-code-container">
-          <QRCodeSVG className="qr-code" value={qrCodeValue} size={200} />
+          <QRCodeCanvas className="qr-code" value={qrCodeValue} size={200} />
         </div>
       </div>
       <button className="download-button" onClick={handleDownload}>
