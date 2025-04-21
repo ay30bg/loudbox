@@ -1,11 +1,11 @@
 import React, { useState, useCallback } from "react";
 import { FaCalendar, FaShapes, FaLocationArrow } from "react-icons/fa6";
-import { useHistory } from "react-router-dom"; // For redirecting to results page
+import { useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
 import debounce from "lodash/debounce"; // Install: npm install lodash
 import "./hero.css";
 
 function Hero() {
-  const history = useHistory(); // For redirecting
+  const navigate = useNavigate(); // Replace useHistory with useNavigate
   const [formData, setFormData] = useState({
     event: "",
     category: "",
@@ -75,7 +75,7 @@ function Hero() {
       localStorage.setItem("recentSearches", JSON.stringify(recentSearches.slice(0, 5)));
 
       // Optional: Redirect to results page
-      // history.push("/results", { events: data.events || [] });
+      // navigate("/results", { state: { events: data.events || [] } });
     } catch (error) {
       console.error("Search error:", error);
       setError("Failed to fetch events. Please try again later.");
