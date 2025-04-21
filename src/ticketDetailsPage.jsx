@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { QRCodeCanvas } from 'qrcode.react';
+import html2canvas from 'html2canvas';
 import './ticketDetailsPage.css';
 
 // Placeholder QR code (base64-encoded PNG for demo)
@@ -45,6 +46,25 @@ function TicketDetailsPage() {
       fetchTicket();
     }
   }, [transactionReference, state]);
+
+  const handleDownload = async () => {
+    if (ticketRef.current) {
+      try {
+        const canvas = await html2canvas(ticketRef.current, {
+          scale: 2, // High resolution
+          useCORS: true,
+          backgroundColor: '#ffffff', // White background
+        });
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png');
+        link.download = `ticket-${ticketData.ticketId}.png`;
+        link.click();
+      } catch (error) {
+        console.error('Error generating ticket image:', error);
+        alert('Failed to download ticket. Please try again.');
+      }
+    }
+  };
 
   if (loading) {
     return (
@@ -155,17 +175,7 @@ function TicketDetailsPage() {
           />
           <p>Present this QR code at the event entrance for verification.</p>
           <button
-            className="download-button"
-            onClick={() => {
-              const canvas = document.querySelector('canvas');
-              if (canvas) {
-                const link = document.createElement('a');
-                link.href = canvas.toDataURL('image/png');
-                link.download = `ticket-${ticketId}.png`;
-                link.click();
-              }
-            }}
-          >
+            className="download-button" onClick={handleDownload} >
             Download QR Code
           </button>
         </div>
