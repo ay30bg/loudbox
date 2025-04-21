@@ -3,6 +3,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { FaEnvelope, FaPhone, FaFilePdf, FaFileImage, FaAngleDown, FaUser } from 'react-icons/fa';
 import './orderSummary.css';
 
+// Mock events (unchanged)
 const mockEvents = [
   {
     id: '1',
@@ -23,82 +24,82 @@ const mockEvents = [
     ticketFileSize: '1.2 MB',
     basePrice: 3000,
   },
- {
-        id: '2',
-        eventOwner: 'Asake',
-        title: 'Lungu Boy Tour',
-        eventImage: 'https://www.okayafrica.com/media-library/cover-artwork-for-lungu-boy-by-asake.png?id=53143626&width=1200&height=800&quality=85&coordinates=0%2C0%2C0%2C0',
-        description: 'Asake quick stop at Ziggo Dome ',
-        venue: 'Ziggo Dome',
-        city: 'Amsterdam',
-        category: 'Concert',
-        month: 'DEC',
-        date: '10',
-        year: '2025',
-        time: '19:00',
-        about: '',
-        ticketFileName: 'Asake Lungu Boy Tour Ticket',
-        ticketFileType: 'PNG',
-        ticketFileSize: '100.7 KB',
-        basePrice: 2000,
-    },
-    {
-        id: '3',
-        eventOwner: 'Toyin Abraham',
-        title: ' Alakada Bad and Boujee',
-        eventImage: 'https://whatkeptmeup.com/wp-content/uploads/2024/12/photo_5444956519515942501_y.jpg',
-        description: 'Watch Alakada Bad & Boujee with Toyin Abraham',
-        venue: 'Genesis Cinema, Lagos',
-        city: 'Lagos',
-        category: 'Movie',
-        month: 'JUL',
-        date: '29',
-        year: '2025',
-        time: '16:00',
-        about: 'Laugh out loud with Alakada: Bad and Boujee! Toyin Abraham returns as Yetunde, a young woman faking a lavish lifestyle, in this hilarious Nollywood comedy-drama. Released on December 20, 2024, the film has grossed over ₦285.9 million in just two weeks, taking Nigerian cinemas by storm. Don’t miss the fun—watch it now!',
-        ticketFileName: 'Alakada Bad & Boujee Ticket',
-        ticketFileType: 'PNG',
-        ticketFileSize: '1.5 MB',
-        basePrice: 1500,
-    },
-    {
-        id: '4',
-        eventOwner: 'Wizkid',
-        title: 'Hellfest',
-        eventImage: 'https://rotatemagazine.com/wp-content/uploads/2024/11/Wizkid-Photo-1536x1109.webp',
-        description: 'Wizkid Live in Paris',
-        venue: 'Stade de France',
-        city: 'Paris',
-        category: 'Concert',
-        month: 'SEP',
-        date: '19',
-        year: '2025',
-        time: '20:00',
-        about: 'Grammy award winning singer/songwriter Ayodeji Ibrahim Balogun (aka Wizkid) began his career in music when he was just 11 years old in Lagos, Nigeria. His first record, Lil Prinz, was recorded in 2001 in collaboration with Glorious Five, a group consisting of Balogun and his friends from church. In 2006, he started pursuing music full-time, at first collaborating with various Nigerian pop acts including OJB Jezreel, Naeto C, and Banky W. By 2011, he was ready to record his debut studio album as a solo artist: Superstar was released via Empire Mates Entertainment to great critical and public acclaim across Africa, propelling him to stardom in his home country. After multiple delays and label disagreements, Balogun released his sophomore album titled Ayo in 2014. This second studio album had a multitude of guest appearances, including a spot from Femi Kuti. It also featured Baloguns global breakthrough track "Ojuelegba." Not only did the single cement his status as one of Nigerias biggest pop acts, it was also picked up and remixed by Drake and Skepta, thrusting Wizkid into the international spotlight. In return, Wizkid appeared on Drakes 2016 smash single "One Dance." ',
-        ticketFileName: 'Hellfest Ticket',
-        ticketFileType: 'PNG',
-        ticketFileSize: '1.9 MB',
-        basePrice: 3000,
-    },
-    {
-        id: '5',
-        eventOwner: 'Burna Boy',
-        title: 'Burna & Friends Concert',
-        eventImage: 'https://s1.ticketm.net/dam/a/11f/490b5e5d-4dc6-478f-a4b8-873d8351f11f_RETINA_PORTRAIT_3_2.jpg',
-        description: 'Burna Boy Birthday Concert',
-        venue: 'o2 Arena',
-        city: 'London',
-        category: 'Concert',
-        month: 'JAN',
-        date: '31',
-        year: '2025',
-        time: '17:00',
-        about: 'Burna Boy Live: 2025 Tour Heats Up! The African Giant brings his electrifying energy to the Stade de France on April 18, with an 80,000-capacity crowd, followed by a UK exclusive at Manchester’s Co-op Live on April 21. After a fiery Nairobi show on March 1, fans can’t stop raving about his ‘spiritual’ vibes and ‘insane’ stage presence—get your tickets now!',
-        ticketFileName: 'Burna & Friends Concert Ticket',
-        ticketFileType: 'PNG',
-        ticketFileSize: '120.9 KB',
-        basePrice: 2500
-    },
+  {
+    id: '2',
+    eventOwner: 'Asake',
+    title: 'Lungu Boy Tour',
+    eventImage: 'https://www.okayafrica.com/media-library/cover-artwork-for-lungu-boy-by-asake.png?id=53143626&width=1200&height=800&quality=85&coordinates=0%2C0%2C0%2C0',
+    description: 'Asake quick stop at Ziggo Dome ',
+    venue: 'Ziggo Dome',
+    city: 'Amsterdam',
+    category: 'Concert',
+    month: 'DEC',
+    date: '10',
+    year: '2025',
+    time: '19:00',
+    about: '',
+    ticketFileName: 'Asake Lungu Boy Tour Ticket',
+    ticketFileType: 'PNG',
+    ticketFileSize: '100.7 KB',
+    basePrice: 2000,
+  },
+  {
+    id: '3',
+    eventOwner: 'Toyin Abraham',
+    title: ' Alakada Bad and Boujee',
+    eventImage: 'https://whatkeptmeup.com/wp-content/uploads/2024/12/photo_5444956519515942501_y.jpg',
+    description: 'Watch Alakada Bad & Boujee with Toyin Abraham',
+    venue: 'Genesis Cinema, Lagos',
+    city: 'Lagos',
+    category: 'Movie',
+    month: 'JUL',
+    date: '29',
+    year: '2025',
+    time: '16:00',
+    about: 'Laugh out loud with Alakada: Bad and Boujee! Toyin Abraham returns as Yetunde, a young woman faking a lavish lifestyle, in this hilarious Nollywood comedy-drama. Released on December 20, 2024, the film has grossed over ₦285.9 million in just two weeks, taking Nigerian cinemas by storm. Don’t miss the fun—watch it now!',
+    ticketFileName: 'Alakada Bad & Boujee Ticket',
+    ticketFileType: 'PNG',
+    ticketFileSize: '1.5 MB',
+    basePrice: 1500,
+  },
+  {
+    id: '4',
+    eventOwner: 'Wizkid',
+    title: 'Hellfest',
+    eventImage: 'https://rotatemagazine.com/wp-content/uploads/2024/11/Wizkid-Photo-1536x1109.webp',
+    description: 'Wizkid Live in Paris',
+    venue: 'Stade de France',
+    city: 'Paris',
+    category: 'Concert',
+    month: 'SEP',
+    date: '19',
+    year: '2025',
+    time: '20:00',
+    about: 'Grammy award winning singer/songwriter Ayodeji Ibrahim Balogun (aka Wizkid) began his career in music when he was just 11 years old in Lagos, Nigeria. His first record, Lil Prinz, was recorded in 2001 in collaboration with Glorious Five, a group consisting of Balogun and his friends from church. In 2006, he started pursuing music full-time, at first collaborating with various Nigerian pop acts including OJB Jezreel, Naeto C, and Banky W. By 2011, he was ready to record his debut studio album as a solo artist: Superstar was released via Empire Mates Entertainment to great critical and public acclaim across Africa, propelling him to stardom in his home country. After multiple delays and label disagreements, Balogun released his sophomore album titled Ayo in 2014. This second studio album had a multitude of guest appearances, including a spot from Femi Kuti. It also featured Baloguns global breakthrough track "Ojuelegba." Not only did the single cement his status as one of Nigerias biggest pop acts, it was also picked up and remixed by Drake and Skepta, thrusting Wizkid into the international spotlight. In return, Wizkid appeared on Drakes 2016 smash single "One Dance." ',
+    ticketFileName: 'Hellfest Ticket',
+    ticketFileType: 'PNG',
+    ticketFileSize: '1.9 MB',
+    basePrice: 3000,
+  },
+  {
+    id: '5',
+    eventOwner: 'Burna Boy',
+    title: 'Burna & Friends Concert',
+    eventImage: 'https://s1.ticketm.net/dam/a/11f/490b5e5d-4dc6-478f-a4b8-873d8351f11f_RETINA_PORTRAIT_3_2.jpg',
+    description: 'Burna Boy Birthday Concert',
+    venue: 'o2 Arena',
+    city: 'London',
+    category: 'Concert',
+    month: 'JAN',
+    date: '31',
+    year: '2025',
+    time: '17:00',
+    about: 'Burna Boy Live: 2025 Tour Heats Up! The African Giant brings his electrifying energy to the Stade de France on April 18, with an 80,000-capacity crowd, followed by a UK exclusive at Manchester’s Co-op Live on April 21. After a fiery Nairobi show on March 1, fans can’t stop raving about his ‘spiritual’ vibes and ‘insane’ stage presence—get your tickets now!',
+    ticketFileName: 'Burna & Friends Concert Ticket',
+    ticketFileType: 'PNG',
+    ticketFileSize: '120.9 KB',
+    basePrice: 2500
+  },
 ];
 
 function OrderSummary({ navigateBack, navigateToThankYou }) {
@@ -109,6 +110,7 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
   const [showFileDetails, setShowFileDetails] = useState(false);
   const [paymentError, setPaymentError] = useState(null);
   const [isPaystackLoaded, setIsPaystackLoaded] = useState(false);
+  const [isPaying, setIsPaying] = useState(false); // New state for payment popup
 
   useEffect(() => {
     const foundEvent = mockEvents.find((e) => e.id === id);
@@ -200,8 +202,9 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
       });
     } catch (err) {
       console.error('Error creating ticket:', err);
-      setPaymentError('Payment successful, but failed to create ticket. Please contact support.');
-      setLoading(false);
+      setPaymentError(`Payment successful, but failed to create ticket: ${err.message}. Please contact support.`);
+    } finally {
+      setIsPaying(false);
     }
   };
 
@@ -213,11 +216,11 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
     }
 
     setPaymentError(null);
-    setLoading(true);
+    setIsPaying(true); // Show blur effect
 
     try {
       const handler = window.PaystackPop.setup({
-        key: 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df', // Replace with your Paystack public key
+        key: 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
         email: email || 'guest@example.com',
         amount: totalPrice * 100,
         currency: 'NGN',
@@ -248,21 +251,21 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
           } else {
             setPaymentError('Payment failed. Please try again.');
             console.error('Payment failed:', response);
-            setLoading(false);
+            setIsPaying(false);
           }
         },
         onClose: () => {
           setPaymentError('Payment cancelled.');
           console.log('Paystack popup closed');
-          setLoading(false);
+          setIsPaying(false);
         },
       });
 
       handler.openIframe();
     } catch (err) {
       console.error('Payment setup error:', err);
-      setPaymentError('Error initiating payment. Please try again.');
-      setLoading(false);
+      setPaymentError(`Error initiating payment: ${err.message}. Please try again.`);
+      setIsPaying(false);
     }
   };
 
@@ -282,31 +285,36 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
   }
 
   return (
-    <div className="order-summary-container">
+    <div className={`order-summary-container ${isPaying ? 'blurred' : ''}`}>
       <div className="order-summary-card">
         <div className="order-header-container">
           <h2>Buy {eventData.title} Ticket</h2>
         </div>
         <hr className="summary-divider" />
-        <div className='customer-contact'>
-          <FaUser className='contact-icon' />
+        <div className="customer-contact">
+          <FaUser className="contact-icon" />
           <h4 className="customer-name">
             {firstName || 'N/A'} {lastName || 'N/A'}
           </h4>
         </div>
         <div className="customer-contact">
-          <FaEnvelope className='contact-icon' />
+          <FaEnvelope className="contact-icon" />
           <p className="customer-email">{email || 'No email provided'}</p>
         </div>
         <div className="customer-contact">
-          <FaPhone className='contact-icon' />
+          <FaPhone className="contact-icon" />
           <p className="customer-phone">{phoneNumber || 'No phone provided'}</p>
         </div>
         {isGift && (
           <div className="gift-details">
             <h4>Gift Details</h4>
-            <p><strong>Recipient Name:</strong> {recipientFirstName || 'Not provided'} {recipientLastName || 'Not provided'}</p>
-            <p><strong>Recipient Email:</strong> {recipientEmail || 'Not provided'}</p>
+            <p>
+              <strong>Recipient Name:</strong> {recipientFirstName || 'Not provided'}{' '}
+              {recipientLastName || 'Not provided'}
+            </p>
+            <p>
+              <strong>Recipient Email:</strong> {recipientEmail || 'Not provided'}
+            </p>
           </div>
         )}
         <br />
@@ -339,11 +347,11 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
             </div>
           )}
         </div>
-        <hr className='summary-dot-divider' />
+        <hr className="summary-dot-divider" />
         <div className="checkout-container">
           <div className="checkout">
-            <div className='ticket-quantity-group'>
-              <h5 className='ticket-event-name'>{eventData.title} Ticket</h5>
+            <div className="ticket-quantity-group">
+              <h5 className="ticket-event-name">{eventData.title} Ticket</h5>
               <h5>x{ticketQuantity}</h5>
             </div>
             <h5>NGN {(totalPrice / ticketQuantity).toLocaleString()}</h5>
@@ -353,22 +361,22 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
             <h5>NGN {totalPrice.toLocaleString()}</h5>
           </div>
         </div>
-        <hr className='summary-dot-divider' />
+        <hr className="summary-dot-divider" />
         {paymentError && <p className="error-message">{paymentError}</p>}
         <div className="action-buttons">
           <button
             onClick={handlePayment}
             aria-label={`Pay NGN ${totalPrice.toLocaleString()} for ${eventData.title}`}
-            className='payment-button'
-            disabled={loading || !isPaystackLoaded}
+            className="payment-button"
+            disabled={isPaying || !isPaystackLoaded}
           >
-            {loading ? 'Processing...' : `Pay NGN ${totalPrice.toLocaleString()}`}
+            {isPaying ? 'Processing...' : `Pay NGN ${totalPrice.toLocaleString()}`}
           </button>
           <button
             onClick={() => navigateBack(eventData)}
             aria-label="Back to ticket purchase"
-            className='back-ticket-purchase-btn'
-            disabled={loading}
+            className="back-ticket-purchase-btn"
+            disabled={isPaying}
           >
             Back
           </button>
