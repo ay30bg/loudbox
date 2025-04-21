@@ -155,6 +155,7 @@ function TicketDetailsPage() {
           />
           <p>Present this QR code at the event entrance for verification.</p>
           <button
+            className="download-button"
             onClick={() => {
               const canvas = document.querySelector('canvas');
               if (canvas) {
