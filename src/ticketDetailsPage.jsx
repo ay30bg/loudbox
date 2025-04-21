@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
-import html2canvas from 'html2canvas';
+// import html2canvas from 'html2canvas';
 import './ticketDetailsPage.css';
 
 function TicketDetailsPage() {
@@ -30,24 +30,24 @@ function TicketDetailsPage() {
     fetchTicket();
   }, [transactionReference]);
 
-  const handleDownload = async () => {
-    if (ticketRef.current) {
-      try {
-        const canvas = await html2canvas(ticketRef.current, {
-          scale: 2, // High resolution
-          useCORS: true,
-          backgroundColor: '#ffffff', // White background
-        });
-        const link = document.createElement('a');
-        link.href = canvas.toDataURL('image/png');
-        link.download = `ticket-${ticketData.ticketId}.png`;
-        link.click();
-      } catch (error) {
-        console.error('Error generating ticket image:', error);
-        alert('Failed to download ticket. Please try again.');
-      }
-    }
-  };
+  // const handleDownload = async () => {
+  //   if (ticketRef.current) {
+  //     try {
+  //       const canvas = await html2canvas(ticketRef.current, {
+  //         scale: 2, // High resolution
+  //         useCORS: true,
+  //         backgroundColor: '#ffffff', // White background
+  //       });
+  //       const link = document.createElement('a');
+  //       link.href = canvas.toDataURL('image/png');
+  //       link.download = `ticket-${ticketData.ticketId}.png`;
+  //       link.click();
+  //     } catch (error) {
+  //       console.error('Error generating ticket image:', error);
+  //       alert('Failed to download ticket. Please try again.');
+  //     }
+  //   }
+  // };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -108,7 +108,7 @@ function TicketDetailsPage() {
           <p>LoudBox - Your Ticket to Great Events</p>
         </div>
       </div>
-      <button className="download-button" onClick={handleDownload}>
+      <button className="download-button" >
         Download Ticket
       </button>
     </div>
