@@ -1,11 +1,11 @@
 import React, { useState, useCallback } from "react";
 import { FaCalendar, FaShapes, FaLocationArrow } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
-import debounce from "lodash/debounce"; // Install: npm install lodash
+import { useNavigate } from "react-router-dom";
+import debounce from "lodash/debounce";
 import "./hero.css";
 
 function Hero() {
-  const navigate = useNavigate(); // Replace useHistory with useNavigate
+  const navigate = useNavigate(); // Kept for potential future use
   const [formData, setFormData] = useState({
     event: "",
     category: "",
@@ -74,7 +74,7 @@ function Hero() {
       recentSearches.unshift(formData);
       localStorage.setItem("recentSearches", JSON.stringify(recentSearches.slice(0, 5)));
 
-      // Optional: Redirect to results page
+      // Optional: Redirect (commented out)
       // navigate("/results", { state: { events: data.events || [] } });
     } catch (error) {
       console.error("Search error:", error);
@@ -89,6 +89,22 @@ function Hero() {
       <div className="hero-text">
         <h2>Buy tickets to events happening around you</h2>
       </div>
+      {searchResults && (
+        <div className="search-results">
+          <h3>Search Results</h3>
+          {searchResults.length > 0 ? (
+            <ul>
+              {searchResults.map((event, index) => (
+                <li key={index}>
+                  {event.name} - {event.location} ({event.category})
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No events found.</p>
+          )}
+        </div>
+      )}
       <form onSubmit={handleSubmit} className="hero-form">
         <div className={`input-wrapper ${error && !formData.event ? "error" : ""}`}>
           <FaCalendar className="input-icon" />
@@ -140,22 +156,6 @@ function Hero() {
         />
       </form>
       {error && <p className="error-message">{error}</p>}
-      {searchResults && (
-        <div className="search-results">
-          <h3>Search Results</h3>
-          {searchResults.length > 0 ? (
-            <ul>
-              {searchResults.map((event, index) => (
-                <li key={index}>
-                  {event.name} - {event.location} ({event.category})
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No events found.</p>
-          )}
-        </div>
-      )}
     </div>
   );
 }
