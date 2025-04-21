@@ -1,10 +1,19 @@
+body,html{
+  background-color: #f5f5f5;
+}
+
 .ticket-details-container {
     max-width: 600px;
     margin: 50px auto;
     padding: 20px;
     text-align: center;
-    background-color: aqua;
+    background-color: #17153a;
+    border-radius: 8px;
     border: 2px solid #ddd; /* Debug border */
+  }
+
+  .ticket-details-container h2{
+    color: #fff;
   }
   
   .ticket-card {
