@@ -15,6 +15,7 @@ const CardSlider = ({ onCardClick }) => {
             artistName: 'Davido',
             eventImage: 'https://wallpapercat.com/w/middle-retina/4/0/2/2250759-2560x1631-desktop-hd-davido-background-image.jpg',
             title: 'Davido Live In Concert',
+            subaccount_code: 'ACCT_567462xff65gop0',
             content: 'Catch Davido live on stage this summer!',
             fullContent: 'Catch Davido live on stage this summer! Join us for an electrifying performance featuring hits like "Fall" and "If" at the Lagos Arena on July 15th. Tickets are selling fast—don’t miss out on this unforgettable night!',
             venue: 'State Farm Arena',
