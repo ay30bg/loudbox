@@ -1,60 +1,86 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
-// import html2canvas from 'html2canvas';
-import './ticketDetailsPage.css';
+import html2canvas from 'html2canvas';
+import './TicketDetailsPage.css';
 
 function TicketDetailsPage() {
   const { transactionReference } = useParams();
   const [ticketData, setTicketData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const ticketRef = useRef(null);
 
   useEffect(() => {
+    console.log('TicketDetailsPage - Fetching ticket for:', transactionReference);
     const fetchTicket = async () => {
       try {
         const response = await fetch(
           `https://loudbox-backend.vercel.app/api/tickets/${transactionReference}`
         );
+        console.log('TicketDetailsPage - Fetch response status:', response.status);
         if (!response.ok) {
-          throw new Error('Ticket not found');
+          throw new Error(`Failed to fetch ticket: ${response.statusText}`);
         }
         const data = await response.json();
+        console.log('TicketDetailsPage - Ticket data:', data);
         setTicketData(data);
         setLoading(false);
-      } catch (error) {
-        console.error('Error fetching ticket:', error);
+      } catch (err) {
+        console.error('TicketDetailsPage - Error fetching ticket:', err);
+        setError(err.message);
         setLoading(false);
       }
     };
     fetchTicket();
   }, [transactionReference]);
 
-  // const handleDownload = async () => {
-  //   if (ticketRef.current) {
-  //     try {
-  //       const canvas = await html2canvas(ticketRef.current, {
-  //         scale: 2, // High resolution
-  //         useCORS: true,
-  //         backgroundColor: '#ffffff', // White background
-  //       });
-  //       const link = document.createElement('a');
-  //       link.href = canvas.toDataURL('image/png');
-  //       link.download = `ticket-${ticketData.ticketId}.png`;
-  //       link.click();
-  //     } catch (error) {
-  //       console.error('Error generating ticket image:', error);
-  //       alert('Failed to download ticket. Please try again.');
-  //     }
-  //   }
-  // };
+  const handleDownload = async () => {
+    if (ticketRef.current) {
+      try {
+        console.log('TicketDetailsPage - Generating ticket image');
+        const canvas = await html2canvas(ticketRef.current, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#f9f9f9',
+        });
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png');
+        link.download = `ticket-${ticketData?.ticketId || 'unknown'}.png`;
+        link.click();
+        console.log('TicketDetailsPage - Ticket image downloaded');
+      } catch (error) {
+        console.error('TicketDetailsPage - Error generating ticket image:', error);
+        alert('Failed to download ticket. Please try again.');
+      }
+    } else {
+      console.warn('TicketDetailsPage - ticketRef is not set');
+    }
+  };
+
+  if (error) {
+    return (
+      <div className="ticket-details-container">
+        <h2>Error</h2>
+        <p>{error}</p>
+      </div>
+    );
+  }
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="ticket-details-container">
+        <h2>Loading...</h2>
+      </div>
+    );
   }
 
   if (!ticketData) {
-    return <div>Ticket not found</div>;
+    return (
+      <div className="ticket-details-container">
+        <h2>Ticket not found</h2>
+      </div>
+    );
   }
 
   const {
@@ -72,43 +98,68 @@ function TicketDetailsPage() {
   const qrCodeValue = `https://loudbox-backend.vercel.app/api/verify?ticketId=${encodeURIComponent(
     ticketId
   )}&code=${encodeURIComponent(transRef || 'N/A')}`;
+  console.log('TicketDetailsPage - QRCode value:', qrCodeValue);
 
   return (
     <div className="ticket-details-container">
       <h2>Your Ticket</h2>
       <div className="ticket-card" ref={ticketRef}>
-        <div className="ticket-header">
-          <h3>{eventTitle}</h3>
-          <p>Event ID: {eventId}</p>
+        <h3>{eventTitle || 'Unknown Event'}</h3>
+        <div className="detail-item">
+          <span className="detail-label">Event ID:</span>
+          <span className="detail-value">{eventId || 'N/A'}</span>
         </div>
-        <div className="ticket-body">
-          <div className="ticket-info">
-            <p><strong>Ticket ID:</strong> {ticketId}</p>
-            <p><strong>Transaction Reference:</strong> {transRef}</p>
-            <p><strong>Quantity:</strong> {ticketQuantity}</p>
-            <p><strong>Total Price:</strong> NGN {totalPrice.toLocaleString()}</p>
-            <p>
-              <strong>Holder:</strong> {ticketHolder.firstName} {ticketHolder.lastName}
-            </p>
-            <p><strong>Email:</strong> {ticketHolder.email}</p>
-            {isGift && (
-              <div className="gift-info">
-                <p>
-                  <strong>Gift Recipient:</strong> {recipient.firstName} {recipient.lastName}
-                </p>
-                <p><strong>Recipient Email:</strong> {recipient.email}</p>
-              </div>
-            )}
-          </div>
-          <div className="ticket-qr">
-            <QRCodeSVG value={qrCodeValue} size={150} />
-          </div>
+        <div className="detail-item">
+          <span className="detail-label">Ticket ID:</span>
+          <span className="detail-value">{ticketId || 'N/A'}</span>
         </div>
-        <div className="ticket-footer">
-          <p>LoudBox - Your Ticket to Great Events</p>
+        <div className="detail-item">
+          <span className="detail-label">Transaction Reference:</span>
+          <span className="detail-value">{transRef || 'N/A'}</span>
+        </div>
+        <div className="detail-item">
+          <span className="detail-label">Quantity:</span>
+          <span className="detail-value">{ticketQuantity || 'N/A'}</span>
+        </div>
+        <div className="detail-item">
+          <span className="detail-label">Total Price:</span>
+          <span className="detail-value">
+            {totalPrice ? `NGN ${totalPrice.toLocaleString()}` : 'N/A'}
+          </span>
+        </div>
+        <div className="detail-item">
+          <span className="detail-label">Holder:</span>
+          <span className="detail-value">
+            {ticketHolder?.firstName && ticketHolder?.lastName
+              ? `${ticketHolder.firstName} ${ticketHolder.lastName}`
+              : 'N/A'}
+          </span>
+        </div>
+        <div className="detail-item">
+          <span className="detail-label">Email:</span>
+          <span className="detail-value">{ticketHolder?.email || 'N/A'}</span>
+        </div>
+        {isGift && (
+          <>
+            <div className="detail-item">
+              <span className="detail-label">Gift Recipient:</span>
+              <span className="detail-value">
+                {recipient?.firstName && recipient?.lastName
+                  ? `${recipient.firstName} ${recipient.lastName}`
+                  : 'N/A'}
+              </span>
+            </div>
+            <div className="detail-item">
+              <span className="detail-label">Recipient Email:</span>
+              <span className="detail-value">{recipient?.email || 'N/A'}</span>
+            </div>
+          </>
+        )}
+        <div className="qr-code-container">
+          <QRCodeSVG className="qr-code" value={qrCodeValue} size={200} />
         </div>
       </div>
-      <button className="download-button" >
+      <button className="download-button" onClick={handleDownload}>
         Download Ticket
       </button>
     </div>
