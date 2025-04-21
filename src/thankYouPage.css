@@ -168,11 +168,6 @@
     box-sizing: border-box;
 }
 
-.view-ticket-button{
-    font-family: 'Inter', sans-serif;
-    font-weight: 500; /* Mimics Graphik *
-}
-
 .view-ticket-button:hover {
     background-color: #0f0d2e;
     transform: translateY(-1px);
