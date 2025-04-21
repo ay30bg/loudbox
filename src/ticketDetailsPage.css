@@ -57,6 +57,7 @@ body,html{
   color: #fff;
   border: none;
   border-radius: 4px;
+  pointer: Cursor;
 }
 
 .download-button:hover {
