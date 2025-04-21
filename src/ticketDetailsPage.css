@@ -25,7 +25,7 @@ body, html {
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: #fff;
     text-align: left;
   }
   
@@ -58,15 +58,16 @@ body, html {
 .download-button{
   width: 90%;
   height: 35px;
-  background-color: #17153a;
-  color: #fff;
+  margin: 10px 0;
+  background-color: #fff;
+  color: #000;
   border: none;
   border-radius: 4px;
   pointer: Cursor;
 }
 
 .download-button:hover {
-    background-color: #0f0d2e;
+    background-color: #f8f8f8;
     transform: translateY(-1px);
 }
   
