@@ -1,29 +1,28 @@
 import React, { useState, useCallback } from "react";
 import { FaCalendar, FaShapes, FaLocationArrow } from "react-icons/fa6";
+import { useHistory } from "react-router-dom"; // For redirecting to results page
 import debounce from "lodash/debounce"; // Install: npm install lodash
 import "./hero.css";
 
 function Hero() {
-  // Form input state
+  const history = useHistory(); // For redirecting
   const [formData, setFormData] = useState({
     event: "",
     category: "",
     location: "",
   });
-
-  // UI states
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [searchResults, setSearchResults] = useState(null);
 
-  // Handle input changes with debouncing
+  // Debounced input handler
   const debouncedHandleChange = useCallback(
     debounce((name, value) => {
       setFormData((prev) => ({
         ...prev,
         [name]: value,
       }));
-      setError(""); // Clear error on input change
+      setError("");
     }, 300),
     []
   );
@@ -33,7 +32,6 @@ function Hero() {
     debouncedHandleChange(name, value);
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -52,22 +50,17 @@ function Hero() {
     setIsLoading(true);
 
     try {
-      // Example API call (replace with your actual API endpoint)
-      const response = await fetch(
-        "https://api.example.com/events/search", // Replace with real API (e.g., Ticketmaster)
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            // Add API key if needed: 'Authorization': `Bearer ${YOUR_API_KEY}`
-          },
-          body: JSON.stringify({
-            query: formData.event,
-            category: formData.category || undefined,
-            location: formData.location,
-          }),
-        }
-      );
+      const response = await fetch("http://localhost:5000/api/events/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: formData.event,
+          category: formData.category || undefined,
+          location: formData.location,
+        }),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to fetch events");
@@ -76,15 +69,13 @@ function Hero() {
       const data = await response.json();
       setSearchResults(data.events || []);
 
-      // Save to localStorage (optional)
-      const recentSearches = JSON.parse(
-        localStorage.getItem("recentSearches") || "[]"
-      );
+      // Save to localStorage
+      const recentSearches = JSON.parse(localStorage.getItem("recentSearches") || "[]");
       recentSearches.unshift(formData);
-      localStorage.setItem(
-        "recentSearches",
-        JSON.stringify(recentSearches.slice(0, 5))
-      );
+      localStorage.setItem("recentSearches", JSON.stringify(recentSearches.slice(0, 5)));
+
+      // Optional: Redirect to results page
+      // history.push("/results", { events: data.events || [] });
     } catch (error) {
       console.error("Search error:", error);
       setError("Failed to fetch events. Please try again later.");
@@ -99,9 +90,7 @@ function Hero() {
         <h2>Buy tickets to events happening around you</h2>
       </div>
       <form onSubmit={handleSubmit} className="hero-form">
-        <div
-          className={`input-wrapper ${error && !formData.event ? "error" : ""}`}
-        >
+        <div className={`input-wrapper ${error && !formData.event ? "error" : ""}`}>
           <FaCalendar className="input-icon" />
           <input
             type="text"
@@ -131,9 +120,7 @@ function Hero() {
             <option value="Film">Film</option>
           </select>
         </div>
-        <div
-          className={`input-wrapper ${error && !formData.location ? "error" : ""}`}
-        >
+        <div className={`input-wrapper ${error && !formData.location ? "error" : ""}`}>
           <FaLocationArrow className="input-icon" />
           <input
             type="text"
@@ -146,7 +133,7 @@ function Hero() {
           />
         </div>
         <input
-          type="submit" // Changed to submit to trigger form submission
+          type="submit"
           value={isLoading ? "Searching..." : "Search"}
           disabled={isLoading}
           className={isLoading ? "loading" : ""}
