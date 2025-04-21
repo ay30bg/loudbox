@@ -1,9 +1,10 @@
+/* src/hero.css */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 .hero-container {
   display: flex;
   flex-direction: column;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', sans-serif; /* Default to Inter for body */
   max-width: 1500px;
   width: 100%;
   height: 500px;
@@ -22,8 +23,8 @@
 }
 
 .hero-text h2 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
+  font-family: 'Poppins', sans-serif; /* Changed to Poppins */
+  font-weight: 600; /* Bold, matches TicketPurchase.jsx */
 }
 
 .hero-form {
@@ -47,7 +48,7 @@
   width: 350px;
   height: 45px;
   padding: 10px 10px 10px 40px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', sans-serif; /* Changed to Inter */
   font-weight: 400;
   font-size: 16px;
   border-radius: 4px;
@@ -58,7 +59,7 @@
 
 .event-field::placeholder,
 .location-field::placeholder {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', sans-serif; /* Changed to Inter */
   color: #808080;
 }
 
@@ -69,9 +70,9 @@
   color: #E60278;
 }
 
-.hero-form input[type="submit"] {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
+.hero-form input[type="button"] {
+  font-family: 'Poppins', sans-serif; /* Changed to Poppins */
+  font-weight: 600; /* Bold, matches confirm-ticket-btn */
   background-color: #E60278;
   border: none;
   width: 349px;
@@ -81,7 +82,6 @@
   padding: 10px;
   font-size: 18px;
   border-radius: 4px;
-  transition: background-color 0.2s;
 }
 
 /* Optional: Style the dropdown arrow */
@@ -97,69 +97,6 @@
   font-size: 16px;
   color: #17153a;
   background-color: white;
-}
-
-/* Error states */
-.error {
-  border: 2px solid #ff4d4f;
-}
-
-.error-message {
-  font-family: "Inter", sans-serif;
-  color: #ff4d4f;
-  font-size: 14px;
-  margin-top: 10px;
-  text-align: center;
-}
-
-/* Loading state for button */
-.hero-form input[type="submit"].loading,
-.hero-form input[type="submit"]:disabled {
-  background-color: #b3005c;
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-/* Search results (adjusted for positioning above form) */
-.search-results {
-  margin-bottom: 20px; /* Space below results, before form */
-  padding: 15px;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 4px;
-  color: #17153a;
-  font-family: "Inter", sans-serif;
-  text-align: left;
-  max-width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.search-results h3 {
-  font-family: "Poppins", sans-serif;
-  font-weight: 600;
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.search-results ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.search-results li {
-  padding: 10px 0;
-  border-bottom: 1px solid #eee;
-  font-size: 16px;
-}
-
-.search-results li:last-child {
-  border-bottom: none;
-}
-
-.search-results p {
-  font-size: 16px;
-  color: #808080;
 }
 
 /* Responsive adjustments */
@@ -193,27 +130,10 @@
     border-radius: 3px;
   }
 
-  .hero-form input[type="submit"] {
+  .hero-form input[type="button"] {
     width: 100px;
     height: 45px;
     border-radius: 4px;
-  }
-
-  .error-message {
-    font-size: 16px;
-  }
-
-  .search-results {
-    max-width: 80%;
-    padding: 20px;
-  }
-
-  .search-results h3 {
-    font-size: 20px;
-  }
-
-  .search-results li {
-    font-size: 18px;
   }
 }
 
@@ -238,46 +158,9 @@
     border-radius: 3px;
   }
 
-  .hero-form input[type="submit"] {
+  .hero-form input[type="button"] {
     width: 90px;
     height: 45px;
     border-radius: 4px;
-  }
-
-  .error-message {
-    font-size: 14px;
-  }
-
-  .search-results {
-    max-width: 90%;
-    padding: 15px;
-  }
-
-  .search-results h3 {
-    font-size: 18px;
-  }
-
-  .search-results li {
-    font-size: 16px;
-  }
-}
-
-/* Mobile-specific styles for search button */
-@media (max-width: 767px) {
-  .hero-form input[type="submit"] {
-    width: 349px; /* Accommodates "Searching..." */
-    height: 36px;
-    font-size: 16px;
-    padding: 8px;
-  }
-}
-
-/* Large viewport styles for search button */
-@media (min-width: 912px) {
-  .hero-form input[type="submit"] {
-    width: 150px;
-    height: 40px;
-    font-size: 16px;
-    padding: 8px;
   }
 }
