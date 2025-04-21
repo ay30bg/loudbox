@@ -255,7 +255,7 @@
     border-radius: 3px;
   }
 
-  .hero-form input[type="button"] {
+  .hero-form input[type="submit"] {
     width: 90px;
     height: 45px;
     border-radius: 4px;
