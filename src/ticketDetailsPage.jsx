@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
 import html2canvas from 'html2canvas';
-import './TicketDetailsPage.css';
+import './ticketDetailsPage.css';
 
 function TicketDetailsPage() {
   const { transactionReference } = useParams();
