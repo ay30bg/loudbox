@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { FaEnvelope, FaPhone, FaFilePdf, FaFileImage, FaAngleDown, FaUser } from 'react-icons/fa';
 import './orderSummary.css';
-import axios from 'axios';
 
-// Mock events (updated with subaccount_code)
+// Mock events (unchanged)
 const mockEvents = [
   {
     id: '1',
@@ -112,7 +111,7 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
   const [showFileDetails, setShowFileDetails] = useState(false);
   const [paymentError, setPaymentError] = useState(null);
   const [isPaystackLoaded, setIsPaystackLoaded] = useState(false);
-  const [isPaying, setIsPaying] = useState(false);
+  const [isPaying, setIsPaying] = useState(false); // New state for payment popup
 
   useEffect(() => {
     const foundEvent = mockEvents.find((e) => e.id === id);
@@ -136,6 +135,7 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
       setPaymentError('Failed to load payment system. Please try again later.');
     };
     document.body.appendChild(script);
+
     return () => {
       if (document.body.contains(script)) {
         document.body.removeChild(script);
@@ -209,7 +209,7 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
     }
   };
 
-  const handlePayment = async () => {
+  const handlePayment = () => {
     if (!isPaystackLoaded || !window.PaystackPop) {
       setPaymentError('Payment system not ready. Please try again.');
       console.error('PaystackPop not available');
@@ -217,25 +217,15 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
     }
 
     setPaymentError(null);
-    setIsPaying(true);
+    setIsPaying(true); // Show blur effect
 
     try {
-      // Call backend to initialize transaction
-      const response = await axios.post('https://loudbox-backend.vercel.app/api/payments/initialize-transaction', {
-        email,
-        amount: totalPrice,
-        eventId: id,
-        ticketQuantity,
-      });
-
-      const { authorization_url, reference } = response.data;
-
       const handler = window.PaystackPop.setup({
-        key: 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df', // Replace with live key
+        key: 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
         email: email || 'guest@example.com',
         amount: totalPrice * 100,
         currency: 'NGN',
-        ref: reference,
+        ref: `TICKET-${Math.floor(Math.random() * 1000000)}-${Date.now()}`,
         metadata: {
           custom_fields: [
             {
