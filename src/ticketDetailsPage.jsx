@@ -79,8 +79,8 @@ function TicketDetailsPage() {
     ticketId = 'TICKET123', // Mock ticketId for verification
   } = ticketData;
 
-  // Construct QR code value (fixed to use /api/tickets/verify)
-  const qrCodeValue = `https://loudbox-backend.vercel.app/api/tickets/verify?ticketId=${encodeURIComponent(
+  // Construct QR code value (fixed to use /api/verify)
+  const qrCodeValue = `https://loudbox-backend.vercel.app/api/verify?ticketId=${encodeURIComponent(
     ticketId
   )}&code=${encodeURIComponent(transactionReference || 'N/A')}`;
   console.log('QRCode value:', qrCodeValue);
