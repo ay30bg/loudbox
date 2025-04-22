@@ -9,7 +9,8 @@ import EventDetails from './eventDetails';
 import TicketPurchase from './ticketPurchase';
 import OrderSummary from './orderSummary';
 import ThankYouPage from './thankYouPage';
-import TicketDetailsPage from './ticketDetailsPage'; // Ensure correct path
+import TicketDetailsPage from './ticketDetailsPage';
+import ConcertCategory from './concertCategory';
 
 function App() {
   console.log('App rendered');
@@ -70,11 +71,18 @@ function App() {
       navigate(`/ticket/${transactionReference}`, { state });
     };
 
+    const navigateToCategory = (category) => {
+      console.log('Navigating to category:', category);
+      if (category === 'concerts') {
+        navigate('/concerts');
+      }
+    };
+
     const currentPath = window.location.pathname.split('/')[1] || 'landing';
 
     return (
       <div>
-        {['event-details', 'ticket-purchase', 'order-summary', 'thank-you', 'ticket'].includes(currentPath) && (
+        {['event-details', 'ticket-purchase', 'order-summary', 'thank-you', 'ticket', 'concerts'].includes(currentPath) && (
           <Header
             onLogout={handleLogout}
             navigateToLanding={navigateToLanding}
@@ -96,6 +104,7 @@ function App() {
                 onLogout={handleLogout}
                 navigateToEventDetails={navigateToEventDetails}
                 navigateToLanding={navigateToLanding}
+                navigateToCategory={navigateToCategory}
               />
             }
           />
@@ -138,6 +147,12 @@ function App() {
           <Route
             path="/ticket/:transactionReference"
             element={<TicketDetailsPage />}
+          />
+          <Route
+            path="/concerts"
+            element={<ConcertCategory
+              navigateToEventDetails={navigateToEventDetails}
+            />}
           />
           {/* Catch-all route for debugging */}
           <Route
