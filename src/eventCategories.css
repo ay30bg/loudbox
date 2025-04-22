@@ -35,6 +35,10 @@
   object-fit: cover;
 }
 
+.category-image:hover {
+ transform: scale(1.2); /* Zoom out the image on hover */
+}
+
 .category-label {
   font-family: 'Inter', sans-serif; /* Changed to Inter */
   font-weight: 400;
