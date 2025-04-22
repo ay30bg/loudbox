@@ -141,7 +141,7 @@ const mockEvents = [
         id: '8',
         title: 'Sabi Girl Concert',
         eventImage: 'https://i0.wp.com/media.premiumtimesng.com/wp-content/files/2024/07/image5-8-e1721996216227.jpeg?resize=1140%2C570&ssl=1',
-        description: '',
+        description: 'Ayra Starr Live in Auckland',
         venue: 'Spark Arena',
         city: 'Auckland',
         category: 'Concert',
