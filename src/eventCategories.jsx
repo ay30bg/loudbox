@@ -2,7 +2,7 @@
 import React from 'react';
 import './eventCategories.css';
 
-const EventsCategories = () => {
+const EventsCategories = ({ navigateToCategory }) => {
   const categories = [
     { name: 'Concerts', 
       image: 'https://media.gettyimages.com/id/1486616253/photo/turku-finland-blind-channel-performs-at-ruisrock-festival-2022-at-ruissalo-island-on-july-8.jpg?s=612x612&w=0&k=20&c=KvbGGIuV4uI8hVTq4V5UuXli2QwEzuNA2O7X9IE6xzw=',
@@ -30,7 +30,17 @@ const EventsCategories = () => {
       <h2>Categories</h2>
       <div className="categories-grid">
         {categories.map((category, index) => (
-          <div key={index} className="category-item">
+          <div 
+           key={index} 
+           className="category-item" 
+           onClick={() => {
+            if (category.name === 'Concerts' && navigateToCategory) {
+              navigateToCategory('concerts');
+            }
+          }}
+          style={{ cursor: category.name === 'Concerts' ? 'pointer' : 'default' }}
+          >
+           
             {category.image ? (
               <>
                 <img src={category.image} alt={category.name} className="category-image" />
