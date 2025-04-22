@@ -10,7 +10,8 @@ import Footer from "./footer";
 function LandingPage({
     onLogout,
     navigateToEventDetails,
-    navigateToLanding
+    navigateToLanding,
+    navigateToCategory,
 }) {
     console.log('LandingPage rendered, navigateToEventDetails:', navigateToEventDetails); // Log 6
 
@@ -18,8 +19,12 @@ function LandingPage({
         <div className="landing-page-container">
             <Header onLogout={onLogout} navigateToLanding={navigateToLanding} />
             <Hero />
-            <UpcomingEvent navigateToEventDetails={navigateToEventDetails}/>
-            <EventsCategories />
+            <UpcomingEvent 
+            navigateToEventDetails={navigateToEventDetails}
+            />
+            <EventsCategories 
+            navigateToCategory={navigateToCategory}
+            />
             <EventHighlight />
             <Footer />
         </div>
