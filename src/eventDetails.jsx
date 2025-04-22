@@ -136,7 +136,7 @@ const mockEvents = [
         about: '',
     },
 ];
-];
+
 
 function EventDetails({ navigateToTicketPurchase }) {
     const { id } = useParams();
