@@ -10,7 +10,7 @@ body,html{
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #fff;
+    background-color: #f5f5f5;
     font-family: 'Inter', sans-serif; /* Base font for body text */
 }
 
