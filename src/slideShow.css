@@ -80,10 +80,20 @@
     }
   
     .slide-content h2 {
-      font-size: 20px;
+      display: none;
     }
   
     .slide-content p {
-      font-size: 14px;
+      display: none;
+    }
+
+    .slide-content {
+     background-color: transparent; 
+     margin: -18px -20px;
+     }
+  
+    .slide-content button{
+      width: 150px;
+      height: 50px;
     }
   }
