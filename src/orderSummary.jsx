@@ -176,7 +176,6 @@ const mockEvents = [
     },
 ];
 
-
 function OrderSummary({ navigateBack, navigateToThankYou }) {
   const { id } = useParams();
   const { state } = useLocation();
@@ -277,13 +276,6 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
     setIsPaying(true);
 
     try {
-      const token = localStorage.getItem('jwtToken'); // From login
-      if (!token) {
-        setPaymentError('Please log in to make a payment.');
-        setIsPaying(false);
-        return;
-      }
-
       const response = await axios.post(
         'http://localhost:5000/api/paystack/initialize',
         {
@@ -291,11 +283,6 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
           amount: totalPrice,
           subaccountCode: eventData.subaccount_code,
           eventId: id,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         }
       );
 
@@ -316,12 +303,7 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
           if (paystackResponse.status === 'success') {
             try {
               const verifyResponse = await axios.get(
-                `http://localhost:5000/api/paystack/verify/${paystackResponse.reference}`,
-                {
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                }
+                `http://localhost:5000/api/paystack/verify/${paystackResponse.reference}`
               );
               if (verifyResponse.data.success && verifyResponse.data.data.status === 'success') {
                 createTicket(paystackResponse);
