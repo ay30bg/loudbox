@@ -277,7 +277,7 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
 
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/paystack/initialize',
+        'http://loudbox-backend/api/initialize',
         {
           email: email || 'guest@example.com',
           amount: totalPrice,
