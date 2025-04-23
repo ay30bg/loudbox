@@ -277,7 +277,7 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
 
     try {
       const response = await axios.post(
-        'http://loudbox-backend.vercel.app/api/initialize',
+        'http://loudbox-backend.vercel.app/api/paystack/initialize',
         {
           email: email || 'guest@example.com',
           amount: totalPrice,
@@ -303,7 +303,7 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
           if (paystackResponse.status === 'success') {
             try {
               const verifyResponse = await axios.get(
-                `http://localhost:5000/api/paystack/verify/${paystackResponse.reference}`
+                `http://loudbox-backend.vercel.app/api/paystack/verify/${paystackResponse.reference}`
               );
               if (verifyResponse.data.success && verifyResponse.data.data.status === 'success') {
                 createTicket(paystackResponse);
