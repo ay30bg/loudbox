@@ -277,7 +277,7 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
 
     try {
       const response = await axios.post(
-        'http://loudbox-backend/api/initialize',
+        'http://loudbox-backend.vercel.app/api/initialize',
         {
           email: email || 'guest@example.com',
           amount: totalPrice,
