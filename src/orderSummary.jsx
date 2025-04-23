@@ -176,23 +176,11 @@ const mockEvents = [
     },
 ];
 
-function OrderSummary({ navigateBack, navigateToThankYou }) {
-  const { id } = useParams();
-  const { state } = useLocation();
-  const [eventData, setEventData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [showFileDetails, setShowFileDetails] = useState(false);
+const OrderSummary = ({ id, eventData, totalPrice }) => {
+  const [email, setEmail] = useState('');
   const [paymentError, setPaymentError] = useState(null);
   const [isPaying, setIsPaying] = useState(false);
-
-  useEffect(() => {
-    const foundEvent = mockEvents.find((e) => e.id === id);
-    if (!foundEvent) {
-      console.error(`No event found for ID: ${id}`);
-    }
-    setEventData(foundEvent);
-    setLoading(false);
-  }, [id]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -211,259 +199,139 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
     };
   }, []);
 
-  const toggleFileDetails = () => {
-    setShowFileDetails((prev) => !prev);
-  };
-
-  const {
-    firstName = 'Guest',
-    lastName = '',
-    email = 'No email provided',
-    phoneNumber = 'No phone provided',
-    ticketQuantity = 1,
-    totalPrice = 0,
-    isGift = false,
-    recipientFirstName = '',
-    recipientLastName = '',
-    recipientEmail = '',
-  } = state || {};
-
-  const createTicket = async (response) => {
+  const createTicket = async (paystackResponse) => {
     try {
-      const ticketData = {
-        ticketId: `TICKET-${Date.now()}`,
-        transactionReference: response.reference,
-        eventId: id,
-        eventTitle: eventData?.title || 'Unknown Event',
-        firstName,
-        lastName,
-        email,
-        isGift,
-        recipientFirstName: isGift ? recipientFirstName : undefined,
-        recipientLastName: isGift ? recipientLastName : undefined,
-        recipientEmail: isGift ? recipientEmail : undefined,
-        ticketQuantity,
-        totalPrice,
-      };
-
-      console.log('Sending ticket data to /api/tickets:', ticketData);
-      const ticketResponse = await axios.post('https://loudbox-backend.vercel.app/api/tickets', ticketData);
-
-      console.log('Ticket created:', ticketResponse.data);
-      localStorage.setItem('paymentSuccessful', 'true');
-      navigateToThankYou(id, {
-        state: {
-          ...ticketData,
-          transactionReference: ticketResponse.data.transactionReference,
-          ticketId: ticketResponse.data.ticketId,
+      const response = await axios.post(
+        'https://loudbox-backend.vercel.app/api/tickets',
+        {
+          eventId: id,
+          userId: null,
+          reference: paystackResponse.reference,
+          amount: totalPrice,
         },
-      });
+        { timeout: 10000 }
+      );
+      console.log('Ticket created:', response.data);
+      navigate('/thank-you');
     } catch (err) {
-      console.error('Error creating ticket:', err);
-      setPaymentError(`Payment successful, but failed to create ticket: ${err.message}. Please contact support.`);
-    } finally {
+      console.error('Ticket creation error:', err);
+      setPaymentError('Failed to create ticket. Please contact support.');
       setIsPaying(false);
     }
   };
 
- const handlePayment = async () => {
-  if (!window.PaystackPop) {
-    setPaymentError('Payment system not ready. Please try again.');
-    return;
-  }
-
-  setPaymentError(null);
-  setIsPaying(true);
-
-  try {
-    console.log('Sending to /initialize:', {
-      email: email || 'guest@example.com',
-      amount: totalPrice,
-      subaccountCode: eventData.subaccount_code,
-      eventId: id,
-    });
-    const response = await axios.post(
-      'https://loudbox-backend.vercel.app/api/paystack/initialize',
-      {
-        email: email || 'guest@example.com',
-        amount: totalPrice,
-        subaccountCode: eventData.subaccount_code,
-        eventId: id,
-      },
-      { timeout: 10000 }
-    );
-
-    console.log('Initialize response:', response.data);
-    if (!response.data.success) {
-      throw new Error(response.data.error || 'Failed to initialize payment');
+  const handlePayment = async () => {
+    if (!window.PaystackPop) {
+      setPaymentError('Payment system not ready. Please try again.');
+      return;
     }
 
-    const { authorization_url, reference } = response.data.data;
+    setPaymentError(null);
+    setIsPaying(true);
 
-    const handler = window.PaystackPop.setup({
-      key: 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
-      email: email || 'guest@example.com',
-      amount: totalPrice * 100,
-      currency: 'NGN',
-      ref: reference,
-      callback: async (paystackResponse) => {
-        console.log('Paystack response:', paystackResponse);
-        if (paystackResponse.status === 'success') {
-          try {
-            const verifyResponse = await axios.get(
-              `https://loudbox-backend.vercel.app/api/paystack/verify/${paystackResponse.reference}`,
-              { timeout: 10000 }
-            );
-            console.log('Verify response:', verifyResponse.data);
-            if (verifyResponse.data.success && verifyResponse.data.data.status === 'success') {
-              createTicket(paystackResponse);
-            } else {
-              setPaymentError('Payment verification failed.');
+    try {
+      // Ensure requestData is a valid JSON object
+      const requestData = {
+        email: email || 'guest@example.com',
+        amount: totalPrice,
+        subaccountCode: eventData?.subaccount_code,
+        eventId: id,
+      };
+      console.log('Prepared requestData:', requestData);
+
+      // Validate all required fields
+      if (!requestData.email || !requestData.amount || !requestData.subaccountCode || !requestData.eventId) {
+        throw new Error('Missing required fields: email, amount, subaccountCode, or eventId');
+      }
+      if (isNaN(requestData.amount) || requestData.amount <= 0) {
+        throw new Error('Amount must be a positive number');
+      }
+      if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(requestData.email)) {
+        throw new Error('Invalid email format');
+      }
+
+      // Log JSON string for debugging
+      const jsonData = JSON.stringify(requestData);
+      console.log('JSON DATA:', jsonData);
+
+      const response = await axios.post(
+        'https://loudbox-backend.vercel.app/api/paystack/initialize',
+        requestData,
+        {
+          headers: { 'Content-Type': 'application/json' },
+          timeout: 10000,
+        }
+      );
+
+      console.log('Initialize response:', response.data);
+      if (!response.data.success) {
+        throw new Error(response.data.error || 'Failed to initialize payment');
+      }
+
+      const { authorization_url, reference } = response.data.data;
+
+      const handler = window.PaystackPop.setup({
+        key: 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
+        email: requestData.email,
+        amount: requestData.amount * 100,
+        currency: 'NGN',
+        ref: reference,
+        callback: async (paystackResponse) => {
+          console.log('Paystack response:', paystackResponse);
+          if (paystackResponse.status === 'success') {
+            try {
+              const verifyResponse = await axios.get(
+                `https://loudbox-backend.vercel.app/api/paystack/verify/${paystackResponse.reference}`,
+                { timeout: 10000 }
+              );
+              console.log('Verify response:', verifyResponse.data);
+              if (verifyResponse.data.success && verifyResponse.data.data.status === 'success') {
+                await createTicket(paystackResponse);
+              } else {
+                setPaymentError('Payment verification failed.');
+                setIsPaying(false);
+              }
+            } catch (err) {
+              console.error('Verification error:', err);
+              setPaymentError(`Payment verification failed: ${err.message}`);
               setIsPaying(false);
             }
-          } catch (err) {
-            console.error('Verification error:', err);
-            setPaymentError(`Payment verification failed: ${err.message}`);
+          } else {
+            setPaymentError('Payment failed. Please try again.');
             setIsPaying(false);
           }
-        } else {
-          setPaymentError('Payment failed. Please try again.');
+        },
+        onClose: () => {
+          setPaymentError('Payment cancelled.');
           setIsPaying(false);
-        }
-      },
-      onClose: () => {
-        setPaymentError('Payment cancelled.');
-        setIsPaying(false);
-      },
-    });
+        },
+      });
 
-    handler.openIframe();
-  } catch (err) {
-    console.error('Payment setup error:', err);
-    setPaymentError(err.response?.data?.error || `Error initiating payment: ${err.message}. Please try again.`);
-    setIsPaying(false);
-  }
-};
-
-  if (loading) {
-    return <div>Loading event data...</div>;
-  }
-
-  if (!eventData) {
-    return (
-      <div>
-        No event found for ID: {id}. Please check the event ID or go back.
-        <button onClick={() => navigateBack({ id })} aria-label="Back to ticket purchase">
-          Back
-        </button>
-      </div>
-    );
-  }
+      handler.openIframe();
+    } catch (err) {
+      console.error('Payment setup error:', err);
+      setPaymentError(err.response?.data?.error || `Error initiating payment: ${err.message}. Please try again.`);
+      setIsPaying(false);
+    }
+  };
 
   return (
-    <div className={`order-summary-container ${isPaying ? 'blurred' : ''}`}>
-      <div className="order-summary-card">
-        <div className="order-header-container">
-          <h2>Buy {eventData.title} Ticket</h2>
-        </div>
-        <hr className="summary-divider" />
-        <div className="customer-contact">
-          <FaUser className="contact-icon" />
-          <h4 className="customer-name">
-            {firstName || 'N/A'} {lastName || 'N/A'}
-          </h4>
-        </div>
-        <div className="customer-contact">
-          <FaEnvelope className="contact-icon" />
-          <p className="customer-email">{email || 'No email provided'}</p>
-        </div>
-        <div className="customer-contact">
-          <FaPhone className="contact-icon" />
-          <p className="customer-phone">{phoneNumber || 'No phone provided'}</p>
-        </div>
-        {isGift && (
-          <div className="gift-details">
-            <h4>Gift Details</h4>
-            <p>
-              <strong>Recipient Name:</strong> {recipientFirstName || 'Not provided'}{' '}
-              {recipientLastName || 'Not provided'}
-            </p>
-            <p>
-              <strong>Recipient Email:</strong> {recipientEmail || 'Not provided'}
-            </p>
-          </div>
-        )}
-        <br />
-        <div className="file-display-group">
-          <div className="file-display-wrapper">
-            <span className="file-display-text">
-              1 file attached{' '}
-              <FaAngleDown
-                className="angle-down"
-                onClick={toggleFileDetails}
-                aria-label="Toggle ticket file details"
-              />
-            </span>
-          </div>
-          {showFileDetails && (
-            <div className="file-details">
-              <div className="file-details-content">
-                {eventData.ticketFileType.toLowerCase() === 'pdf' ? (
-                  <FaFilePdf className="file-icon" />
-                ) : (
-                  <FaFileImage className="file-icon" />
-                )}
-                <div className="file-info">
-                  <p className="file-name">{eventData.ticketFileName}</p>
-                  <p className="file-meta">
-                    Type: {eventData.ticketFileType.toUpperCase()} | Size: {eventData.ticketFileSize}
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-        <hr className="summary-dot-divider" />
-        <div className="checkout-container">
-          <div className="checkout">
-            <div className="ticket-quantity-group">
-              <h5 className="ticket-event-name">{eventData.title} Ticket</h5>
-              <h5>x{ticketQuantity}</h5>
-            </div>
-            <h5>NGN {(totalPrice / ticketQuantity).toLocaleString()}</h5>
-          </div>
-          <div className="checkout-total">
-            <h5>Total</h5>
-            <h5>NGN {totalPrice.toLocaleString()}</h5>
-          </div>
-        </div>
-        <hr className="summary-dot-divider" />
-        {paymentError && <p className="error-message">{paymentError}</p>}
-        <div className="action-buttons">
-          <button
-            onClick={handlePayment}
-            aria-label={`Pay NGN ${totalPrice.toLocaleString()} for ${eventData.title}`}
-            className="payment-button"
-            disabled={isPaying}
-          >
-            {isPaying ? 'Processing...' : `Pay NGN ${totalPrice.toLocaleString()}`}
-          </button>
-          <button
-            onClick={() => navigateBack(eventData)}
-            aria-label="Back to ticket purchase"
-            className="back-ticket-purchase-btn"
-            disabled={isPaying}
-          >
-            Back
-          </button>
-        </div>
-      </div>
+    <div>
+      <h2>Order Summary</h2>
+      <p>Event: {eventData?.title}</p>
+      <p>Total: NGN {totalPrice}</p>
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Enter your email"
+      />
+      <button onClick={handlePayment} disabled={isPaying}>
+        {isPaying ? 'Processing...' : `Pay NGN ${totalPrice}`}
+      </button>
+      {paymentError && <p style={{ color: 'red' }}>{paymentError}</p>}
     </div>
   );
-}
-
-OrderSummary.defaultProps = {
-  navigateBack: () => console.log('navigateBack not provided'),
 };
 
 export default OrderSummary;
