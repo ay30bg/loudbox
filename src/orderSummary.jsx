@@ -266,73 +266,84 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
     }
   };
 
-  const handlePayment = async () => {
-    if (!window.PaystackPop) {
-      setPaymentError('Payment system not ready. Please try again.');
-      return;
+ const handlePayment = async () => {
+  if (!window.PaystackPop) {
+    setPaymentError('Payment system not ready. Please try again.');
+    return;
+  }
+
+  setPaymentError(null);
+  setIsPaying(true);
+
+  try {
+    console.log('Sending to /initialize:', {
+      email: email || 'guest@example.com',
+      amount: totalPrice,
+      subaccountCode: eventData.subaccount_code,
+      eventId: id,
+    });
+    const response = await axios.post(
+      'https://loudbox-backend.vercel.app/api/paystack/initialize',
+      {
+        email: email || 'guest@example.com',
+        amount: totalPrice,
+        subaccountCode: eventData.subaccount_code,
+        eventId: id,
+      },
+      { timeout: 10000 }
+    );
+
+    console.log('Initialize response:', response.data);
+    if (!response.data.success) {
+      throw new Error(response.data.error || 'Failed to initialize payment');
     }
 
-    setPaymentError(null);
-    setIsPaying(true);
+    const { authorization_url, reference } = response.data.data;
 
-    try {
-      const response = await axios.post(
-        'https://loudbox-backend.vercel.app/api/paystack/initialize',
-        {
-          email: email || 'guest@example.com',
-          amount: totalPrice,
-          subaccountCode: eventData.subaccount_code,
-          eventId: id,
-        }
-      );
-
-      if (!response.data.success) {
-        throw new Error(response.data.error || 'Failed to initialize payment');
-      }
-
-      const { authorization_url, reference } = response.data.data;
-
-      const handler = window.PaystackPop.setup({
-        key: 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
-        email: email || 'guest@example.com',
-        amount: totalPrice * 100,
-        currency: 'NGN',
-        ref: reference,
-        callback: async (paystackResponse) => {
-          console.log('Paystack response:', paystackResponse);
-          if (paystackResponse.status === 'success') {
-            try {
-              const verifyResponse = await axios.get(
-                `https://loudbox-backend.vercel.app/api/paystack/verify/${paystackResponse.reference}`
-              );
-              if (verifyResponse.data.success && verifyResponse.data.data.status === 'success') {
-                createTicket(paystackResponse);
-              } else {
-                setPaymentError('Payment verification failed.');
-                setIsPaying(false);
-              }
-            } catch (err) {
-              setPaymentError('Payment verification failed: ' + err.message);
+    const handler = window.PaystackPop.setup({
+      key: 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
+      email: email || 'guest@example.com',
+      amount: totalPrice * 100,
+      currency: 'NGN',
+      ref: reference,
+      callback: async (paystackResponse) => {
+        console.log('Paystack response:', paystackResponse);
+        if (paystackResponse.status === 'success') {
+          try {
+            const verifyResponse = await axios.get(
+              `https://loudbox-backend.vercel.app/api/paystack/verify/${paystackResponse.reference}`,
+              { timeout: 10000 }
+            );
+            console.log('Verify response:', verifyResponse.data);
+            if (verifyResponse.data.success && verifyResponse.data.data.status === 'success') {
+              createTicket(paystackResponse);
+            } else {
+              setPaymentError('Payment verification failed.');
               setIsPaying(false);
             }
-          } else {
-            setPaymentError('Payment failed. Please try again.');
+          } catch (err) {
+            console.error('Verification error:', err);
+            setPaymentError(`Payment verification failed: ${err.message}`);
             setIsPaying(false);
           }
-        },
-        onClose: () => {
-          setPaymentError('Payment cancelled.');
+        } else {
+          setPaymentError('Payment failed. Please try again.');
           setIsPaying(false);
-        },
-      });
+        }
+      },
+      onClose: () => {
+        setPaymentError('Payment cancelled.');
+        setIsPaying(false);
+      },
+    });
 
-      handler.openIframe();
-    } catch (err) {
-      console.error('Payment setup error:', err);
-      setPaymentError(`Error initiating payment: ${err.message}. Please try again.`);
-      setIsPaying(false);
-    }
-  };
+    handler.openIframe();
+  } catch (err) {
+    console.error('Payment setup error:', err);
+    setPaymentError(err.response?.data?.error || `Error initiating payment: ${err.message}. Please try again.`);
+    setIsPaying(false);
+  }
+};
 
   if (loading) {
     return <div>Loading event data...</div>;
