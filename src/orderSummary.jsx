@@ -346,10 +346,15 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
 
       const handler = window.PaystackPop.setup({
         ...paystackData,
-        callback: async (response) => {
+        callback: (response) => {
           console.log('Paystack response:', response);
           if (response.status === 'success') {
-            await createTicket(response);
+            // Call createTicket asynchronously
+            createTicket(response).catch((err) => {
+              console.error('Async ticket creation error:', err);
+              setPaymentError(`Payment successful, but failed to create ticket: ${err.message}. Please contact support.`);
+              setIsPaying(false);
+            });
           } else {
             setPaymentError('Payment failed. Please try again.');
             console.error('Payment failed:', response);
