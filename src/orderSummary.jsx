@@ -187,7 +187,9 @@ const mockEvents = [
 
 function OrderSummary({ navigateBack, navigateToThankYou }) {
   const { id } = useParams();
-  const { state } = useLocation();
+  const
+
+{ state } = useLocation();
   const [eventData, setEventData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showFileDetails, setShowFileDetails] = useState(false);
@@ -293,6 +295,39 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
     }
   };
 
+  const handlePaymentCallback = async (response) => {
+    console.log('Paystack response:', response);
+    if (response.status === 'success') {
+      try {
+        const verifyResponse = await fetch('https://loudbox-backend.vercel.app/api/verify-payment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ reference: response.reference, eventId: id }),
+        });
+
+        if (!verifyResponse.ok) {
+          throw new Error('Payment verification failed.');
+        }
+
+        const verifyResult = await verifyResponse.json();
+        if (verifyResult.status === 'success') {
+          await createTicket(response);
+        } else {
+          setPaymentError('Payment verification failed. Please contact support.');
+          setIsPaying(false);
+        }
+      } catch (err) {
+        console.error('Verification error:', err);
+        setPaymentError(`Payment successful, but verification failed: ${err.message}. Please contact support.`);
+        setIsPaying(false);
+      }
+    } else {
+      setPaymentError('Payment failed. Please try again.');
+      console.error('Payment failed:', response);
+      setIsPaying(false);
+    }
+  };
+
   const handlePayment = () => {
     if (!isPaystackLoaded || !window.PaystackPop) {
       setPaymentError('Payment system not ready. Please try again.');
@@ -360,39 +395,11 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
             },
           ],
         },
-        callback: async (response) => {
-          console.log('Paystack response:', response);
-          if (response.status === 'success') {
-            try {
-              const verifyResponse = await fetch('https://loudbox-backend.vercel.app/api/verify-payment', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ reference: response.reference, eventId: id }),
-              });
-
-              if (!verifyResponse.ok) {
-                throw new Error('Payment verification failed.');
-              }
-
-              const verifyResult = await verifyResponse.json();
-              if (verifyResult.status === 'success') {
-                await createTicket(response);
-              } else {
-                setPaymentError('Payment verification failed. Please contact support.');
-                setIsPaying(false);
-              }
-            } catch (err) {
-              console.error('Verification error:', err);
-              setPaymentError(`Payment successful, but verification failed: ${err.message}. Please contact support.`);
-              setIsPaying(false);
-            }
-          } else {
-            setPaymentError('Payment failed. Please try again.');
-            console.error('Payment failed:', response);
-            setIsPaying(false);
-          }
+        callback: function (response) {
+          // Synchronous callback to satisfy Paystack's validation
+          handlePaymentCallback(response);
         },
-        onClose: () => {
+        onClose: function () {
           setPaymentError('Payment cancelled.');
           console.log('Paystack popup closed');
           setIsPaying(false);
@@ -506,7 +513,7 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
             onClick={handlePayment}
             aria-label={`Pay NGN ${totalPrice.toLocaleString()} for ${eventData.title}`}
             className="payment-button"
-            disabled={isPaying || !isPaystackLoaded} // Fixed: Removed invalid '彩色' token
+            disabled={isPaying || !isPaystackLoaded}
           >
             {isPaying ? 'Processing...' : `Pay NGN ${totalPrice.toLocaleString()}`}
           </button>
