@@ -3,6 +3,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { FaEnvelope, FaPhone, FaFilePdf, FaFileImage, FaAngleDown, FaUser } from 'react-icons/fa';
 import './orderSummary.css';
 
+// Mock events (updated with subaccount_code as shown above)
 // Mock events (unchanged)
 const mockEvents = [
   {
@@ -183,6 +184,7 @@ const mockEvents = [
     },
 ];
 
+
 function OrderSummary({ navigateBack, navigateToThankYou }) {
   const { id } = useParams();
   const { state } = useLocation();
@@ -191,7 +193,7 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
   const [showFileDetails, setShowFileDetails] = useState(false);
   const [paymentError, setPaymentError] = useState(null);
   const [isPaystackLoaded, setIsPaystackLoaded] = useState(false);
-  const [isPaying, setIsPaying] = useState(false); // New state for payment popup
+  const [isPaying, setIsPaying] = useState(false);
 
   useEffect(() => {
     const foundEvent = mockEvents.find((e) => e.id === id);
@@ -250,12 +252,16 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
         firstName,
         lastName,
         email,
+        phoneNumber,
         isGift,
         recipientFirstName: isGift ? recipientFirstName : undefined,
         recipientLastName: isGift ? recipientLastName : undefined,
-        recipientEmail: isGift ? recipientEmail : undefined,
+        recipientEmail: is _
+
+isGift ? recipientEmail : undefined,
         ticketQuantity,
         totalPrice,
+        subaccountCode: eventData?.subaccount_code || null, // Include subaccount_code
       };
 
       console.log('Sending ticket data to /api/tickets:', ticketData);
@@ -297,17 +303,24 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
     }
 
     setPaymentError(null);
-    setIsPaying(true); // Show blur effect
+    setIsPaying(true);
 
     try {
       const handler = window.PaystackPop.setup({
-        key: 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
+        key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY || 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df', // Use env variable
         email: email || 'guest@example.com',
-        amount: totalPrice * 100,
+        amount: totalPrice * 100, // Convert to kobo
         currency: 'NGN',
         ref: `TICKET-${Math.floor(Math.random() * 1000000)}-${Date.now()}`,
+        subaccount: eventData?.subaccount_code || undefined, // Add subaccount for split
+        bearer: eventData?.subaccount_code ? 'subaccount' : 'account', // Subaccount bears fees if specified
         metadata: {
           custom_fields: [
+            {
+              display_name: 'Event ID',
+              variable_name: 'event_id',
+              value: id,
+            },
             {
               display_name: 'Event Title',
               variable_name: 'event_title',
@@ -323,12 +336,58 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
               variable_name: 'customer_name',
               value: `${firstName} ${lastName}`,
             },
+            {
+              display_name: 'Is Gift',
+              variable_name: 'is_gift',
+              value: isGift ? 'Yes' : 'No',
+            },
+            ...(isGift
+              ? [
+                  {
+                    display_name: 'Recipient Name',
+                    variable_name: 'recipient_name',
+                    value: `${recipientFirstName} ${recipientLastName}`,
+                  },
+                  {
+                    display_name: 'Recipient Email',
+                    variable_name: 'recipient_email',
+                    value: recipientEmail,
+                  },
+                ]
+              : []),
+            {
+              display_name: 'Subaccount Code',
+              variable_name: 'subaccount_code',
+              value: eventData?.subaccount_code || 'None',
+            },
           ],
         },
-        callback: (response) => {
+        callback: async (response) => {
           console.log('Paystack response:', response);
           if (response.status === 'success') {
-            createTicket(response);
+            try {
+              const verifyResponse = await fetch('https://loudbox-backend.vercel.app/api/verify-payment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ reference: response.reference, eventId: id }),
+              });
+
+              if (!verifyResponse.ok) {
+                throw new Error('Payment verification failed.');
+              }
+
+              const verifyResult = await verifyResponse.json();
+              if (verifyResult.status === 'success') {
+                await createTicket(response);
+              } else {
+                setPaymentError('Payment verification failed. Please contact support.');
+                setIsPaying(false);
+              }
+            } catch (err) {
+              console.error('Verification error:', err);
+              setPaymentError(`Payment successful, but verification failed: ${err.message}. Please contact support.`);
+              setIsPaying(false);
+            }
           } else {
             setPaymentError('Payment failed. Please try again.');
             console.error('Payment failed:', response);
