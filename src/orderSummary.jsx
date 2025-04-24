@@ -3,7 +3,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { FaEnvelope, FaPhone, FaFilePdf, FaFileImage, FaAngleDown, FaUser } from 'react-icons/fa';
 import './orderSummary.css';
 
-// Mock events (updated with subaccount_code as shown above)
+// Mock events (with subaccount_code as provided)
 // Mock events (unchanged)
 const mockEvents = [
   {
@@ -256,12 +256,10 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
         isGift,
         recipientFirstName: isGift ? recipientFirstName : undefined,
         recipientLastName: isGift ? recipientLastName : undefined,
-        recipientEmail: is _
-
-isGift ? recipientEmail : undefined,
+        recipientEmail: isGift ? recipientEmail : undefined, // Fixed: Removed stray comment and corrected formatting
         ticketQuantity,
         totalPrice,
-        subaccountCode: eventData?.subaccount_code || null, // Include subaccount_code
+        subaccountCode: eventData?.subaccount_code || null,
       };
 
       console.log('Sending ticket data to /api/tickets:', ticketData);
@@ -307,13 +305,13 @@ isGift ? recipientEmail : undefined,
 
     try {
       const handler = window.PaystackPop.setup({
-        key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY || 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df', // Use env variable
+        key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY || 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
         email: email || 'guest@example.com',
-        amount: totalPrice * 100, // Convert to kobo
+        amount: totalPrice * 100,
         currency: 'NGN',
         ref: `TICKET-${Math.floor(Math.random() * 1000000)}-${Date.now()}`,
-        subaccount: eventData?.subaccount_code || undefined, // Add subaccount for split
-        bearer: eventData?.subaccount_code ? 'subaccount' : 'account', // Subaccount bears fees if specified
+        subaccount: eventData?.subaccount_code || undefined,
+        bearer: eventData?.subaccount_code ? 'subaccount' : 'account',
         metadata: {
           custom_fields: [
             {
@@ -508,26 +506,20 @@ isGift ? recipientEmail : undefined,
             onClick={handlePayment}
             aria-label={`Pay NGN ${totalPrice.toLocaleString()} for ${eventData.title}`}
             className="payment-button"
-            disabled={isPaying || !isPaystackLoaded}
-          >
-            {isPaying ? 'Processing...' : `Pay NGN ${totalPrice.toLocaleString()}`}
-          </button>
-          <button
-            onClick={() => navigateBack(eventData)}
-            aria-label="Back to ticket purchase"
-            className="back-ticket-purchase-btn"
-            disabled={isPaying}
-          >
-            Back
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
+            disabled={isPaying ||彩色
 
-OrderSummary.defaultProps = {
-  navigateBack: () => console.log('navigateBack not provided'),
+{
+  ticketId: `TICKET-${Date.now()}`,
+  transactionReference: reference,
+  eventId: event_id,
+  eventTitle: event_title || 'Unknown Event',
+  ticketQuantity: parseInt(ticket_quantity, 10) || 1,
+  totalPrice: amount / 100,
+  firstName: customer_name?.split(' ')[0] || 'Guest',
+  lastName: customer_name?.split(' ').slice(1).join(' ') || '',
+  email: customer.email,
+  isGift: is_gift === 'Yes',
+  recipientName: recipient_name,
+  recipientEmail: recipient_email,
+  subaccountCode: subaccount_code || null,
 };
-
-export default OrderSummary;
