@@ -5,6 +5,7 @@ import { FaEnvelope, FaPhone, FaFilePdf, FaFileImage, FaAngleDown, FaUser } from
 import './orderSummary.css';
 
 // Mock events (replace subaccount_code with actual codes)
+
 // Mock events (unchanged)
 const mockEvents = [
   {
@@ -348,7 +349,7 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
 
     try {
       // Initialize transaction via backend
-      const initResponse = await fetch('https://loudbox-backend.vercel.app/api/verify-payment/initialize', {
+      const initResponse = await fetch('https://loudbox-backend.vercel.app/api/initialize-transaction', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -386,7 +387,7 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
           handlePaymentCallback(response);
         },
         onClose: function () {
-          setPaymentError('Payment cancelled.'); // Fixed typo
+          setPaymentError('Payment cancelled.');
           console.log('Paystack popup closed');
           setIsPaying(false);
         },
