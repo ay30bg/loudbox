@@ -295,39 +295,39 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
     }
   };
 
-  const handlePaymentCallback = async (response) => {
-    console.log('Paystack response:', response);
-    if (response.status === 'success') {
-      try {
-        const verifyResponse = await fetch('https://loudbox-backend.vercel.app/api/verify-payment', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ reference: response.reference, eventId: id }),
-        });
+const handlePaymentCallback = async (response) => {
+  console.log('Paystack response:', response);
+  if (response.status === 'success') {
+    try {
+      const verifyResponse = await fetch('https://loudbox-backend.vercel.app/api/verify-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reference: response.reference, eventId: id }),
+      });
 
-        if (!verifyResponse.ok) {
-          throw new Error('Payment verification failed.');
-        }
+      if (!verifyResponse.ok) {
+        throw new Error('Payment verification failed.');
+      }
 
-        const verifyResult = await verifyResponse.json();
-        if (verifyResult.status === 'success') {
-          await createTicket(response);
-        } else {
-          setPaymentError('Payment verification failed. Please contact support.');
-          setIsPaying(false);
-        }
-      } catch (err) {
-        console.error('Verification error:', err);
-        setPaymentError(`Payment successful, but verification failed: ${err.message}. Please contact support.`);
+      const verifyResult = await verifyResponse.json();
+      if (verifyResult.status === 'success') {
+        await createTicket(response);
+      } else {
+        setPaymentError('Payment verification failed. Please contact support.');
         setIsPaying(false);
       }
-    } else {
-      setPaymentError('Payment failed. Please try again.');
-      console.error('Payment failed:', response);
+    } catch (err) {
+      console.error('Verification error:', err);
+      setPaymentError(`Payment successful, but verification failed: ${err.message}. Please contact support.`);
       setIsPaying(false);
     }
-  };
-
+  } else {
+    setPaymentError('Payment failed. Please try again.');
+    console.error('Payment failed:', response);
+    setIsPaying(false);
+  }
+};
+  
   const handlePayment = () => {
     if (!isPaystackLoaded || !window.PaystackPop) {
       setPaymentError('Payment system not ready. Please try again.');
