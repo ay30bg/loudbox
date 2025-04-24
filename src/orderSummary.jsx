@@ -386,7 +386,7 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
           handlePaymentCallback(response);
         },
         onClose: function () {
-          set płatError('Payment cancelled.');
+          setPaymentError('Payment cancelled.'); // Fixed typo
           console.log('Paystack popup closed');
           setIsPaying(false);
         },
