@@ -31,6 +31,7 @@ const mockEvents = [
     title: 'Lungu Boy Tour',
     eventImage: 'https://www.okayafrica.com/media-library/cover-artwork-for-lungu-boy-by-asake.png?id=53143626&width=1200&height=800&quality=85&coordinates=0%2C0%2C0%2C0',
     description: 'Asake quick stop at Ziggo Dome ',
+    subaccount_code: 'null', // Subaccount for Asake’s team
     venue: 'Ziggo Dome',
     city: 'Amsterdam',
     category: 'Concert',
@@ -50,6 +51,7 @@ const mockEvents = [
     title: ' Alakada Bad and Boujee',
     eventImage: 'https://whatkeptmeup.com/wp-content/uploads/2024/12/photo_5444956519515942501_y.jpg',
     description: 'Watch Alakada Bad & Boujee with Toyin Abraham',
+    subaccount_code: 'null', // Subaccount for Toyin’s team
     venue: 'Genesis Cinema, Lagos',
     city: 'Lagos',
     category: 'Movie',
@@ -69,6 +71,7 @@ const mockEvents = [
     title: 'Hellfest',
     eventImage: 'https://rotatemagazine.com/wp-content/uploads/2024/11/Wizkid-Photo-1536x1109.webp',
     description: 'Wizkid Live in Paris',
+    subaccount_code: 'null', // Subaccount for Wizkid’s team
     venue: 'Stade de France',
     city: 'Paris',
     category: 'Concert',
@@ -88,6 +91,7 @@ const mockEvents = [
     title: 'Burna & Friends Concert',
     eventImage: 'https://s1.ticketm.net/dam/a/11f/490b5e5d-4dc6-478f-a4b8-873d8351f11f_RETINA_PORTRAIT_3_2.jpg',
     description: 'Burna Boy Birthday Concert',
+    subaccount_code: 'null', // Subaccount for Burna’s team
     venue: 'o2 Arena',
     city: 'London',
     category: 'Concert',
@@ -106,6 +110,7 @@ const mockEvents = [
         title: 'Afrobeats Festival',
         eventImage: 'https://dailypost.ng/wp-content/uploads/2024/11/tiwasavage-068.jpg',
         description: 'Afrobeats Festival London',
+        subaccount_code: 'null', // Subaccount for Tiwa’s team
         venue: 'o2 Arena',
         city: 'London',
         category: 'Concert',
@@ -123,6 +128,7 @@ const mockEvents = [
         id: '7',
         title: 'Ravage Uprising',
         eventImage: 'https://mmo.aiircdn.com/370/622f188e91a93.jpeg',
+        subaccount_code: 'null', // Subaccount for Rema’s team
         description: 'Live at the o2',
         venue: 'o2 Arena',
         city: 'London',
@@ -142,6 +148,7 @@ const mockEvents = [
         title: 'Sabi Girl Concert',
         eventImage: 'https://i0.wp.com/media.premiumtimesng.com/wp-content/files/2024/07/image5-8-e1721996216227.jpeg?resize=1140%2C570&ssl=1',
         description: 'Ayra Starr Live in Auckland',
+        subaccount_code: 'null', // Subaccount for Ayra’s team
         venue: 'Spark Arena',
         city: 'Auckland',
         category: 'Concert',
@@ -160,6 +167,7 @@ const mockEvents = [
         title: 'Local Rappers',
         eventImage: 'https://unorthodoxreviews.com/wp-content/uploads/2023/09/WhatsApp-Image-2023-09-21-at-9.00.32-AM-1.jpeg',
         description: '',
+        subaccount_code: 'null', // Subaccount for Olamide’s team
         venue: 'Eko Energy City',
         city: 'Lagos',
         category: 'Concert',
