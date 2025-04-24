@@ -1,7 +1,9 @@
- import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { FaEnvelope, FaPhone, FaFilePdf, FaFileImage, FaAngleDown, FaUser } from 'react-icons/fa';
-import './orderSummary.css';// Mock events (unchanged)
+import './orderSummary.css';
+
+// Mock events (unchanged)
 const mockEvents = [
   {
     id: '1',
@@ -171,7 +173,9 @@ const mockEvents = [
         ticketFileSize: '60.4 KB',
         basePrice: 1000,
     },
-];function OrderSummary({ navigateBack, navigateToThankYou }) {
+];
+
+function OrderSummary({ navigateBack, navigateToThankYou }) {
   const { id } = useParams();
   const { state } = useLocation();
   const [eventData, setEventData] = useState(null);
@@ -180,13 +184,16 @@ const mockEvents = [
   const [paymentError, setPaymentError] = useState(null);
   const [isPaystackLoaded, setIsPaystackLoaded] = useState(false);
   const [isPaying, setIsPaying] = useState(false); // New state for payment popup  useEffect(() => {
-    const foundEvent = mockEvents.find((e) => e.id === id);
+  const foundEvent = mockEvents.find((e) => e.id === id);
+ 
     if (!foundEvent) {
       console.error(No event found for ID: ${id});
     }
     setEventData(foundEvent);
     setLoading(false);
-  }, [id]);  useEffect(() => {
+  }, [id]);  
+
+  useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://js.paystack.co/v1/inline.js';
     script.async = true;
