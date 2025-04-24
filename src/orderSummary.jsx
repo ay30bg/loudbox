@@ -1,9 +1,10 @@
+// frontend/src/OrderSummary.js
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { FaEnvelope, FaPhone, FaFilePdf, FaFileImage, FaAngleDown, FaUser } from 'react-icons/fa';
 import './orderSummary.css';
 
-// Mock events (with subaccount_code)
+// Mock events (replace subaccount_code with actual codes)
 // Mock events (unchanged)
 const mockEvents = [
   {
@@ -187,9 +188,7 @@ const mockEvents = [
 
 function OrderSummary({ navigateBack, navigateToThankYou }) {
   const { id } = useParams();
-  const
-
-{ state } = useLocation();
+  const { state } = useLocation();
   const [eventData, setEventData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showFileDetails, setShowFileDetails] = useState(false);
@@ -295,43 +294,52 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
     }
   };
 
-const handlePaymentCallback = async (response) => {
-  console.log('Paystack response:', response);
-  if (response.status === 'success') {
-    try {
-      const verifyResponse = await fetch('https://loudbox-backend.vercel.app/api/verify-payment', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reference: response.reference, eventId: id }),
-      });
+  const handlePaymentCallback = async (response) => {
+    console.log('Paystack response:', response);
+    if (response.status === 'success') {
+      try {
+        const verifyResponse = await fetch('https://loudbox-backend.vercel.app/api/verify-payment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ reference: response.reference, eventId: id }),
+        });
 
-      if (!verifyResponse.ok) {
-        throw new Error('Payment verification failed.');
-      }
+        if (!verifyResponse.ok) {
+          throw new Error('Payment verification failed.');
+        }
 
-      const verifyResult = await verifyResponse.json();
-      if (verifyResult.status === 'success') {
-        await createTicket(response);
-      } else {
-        setPaymentError('Payment verification failed. Please contact support.');
+        const verifyResult = await verifyResponse.json();
+        if (verifyResult.status === 'success') {
+          await createTicket(response);
+        } else {
+          setPaymentError('Payment verification failed. Please contact support.');
+          setIsPaying(false);
+        }
+      } catch (err) {
+        console.error('Verification error:', err);
+        setPaymentError(`Payment successful, but verification failed: ${err.message}. Please contact support.`);
         setIsPaying(false);
       }
-    } catch (err) {
-      console.error('Verification error:', err);
-      setPaymentError(`Payment successful, but verification failed: ${err.message}. Please contact support.`);
+    } else {
+      setPaymentError('Payment failed. Please try again.');
+      console.error('Payment failed:', response);
       setIsPaying(false);
     }
-  } else {
-    setPaymentError('Payment failed. Please try again.');
-    console.error('Payment failed:', response);
-    setIsPaying(false);
-  }
-};
-  
-  const handlePayment = () => {
+  };
+
+  const handlePayment = async () => {
     if (!isPaystackLoaded || !window.PaystackPop) {
       setPaymentError('Payment system not ready. Please try again.');
       console.error('PaystackPop not available');
+      return;
+    }
+
+    // Validate inputs
+    const paymentEmail = email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : 'guest@example.com';
+    const paymentAmount = Number(totalPrice) > 0 ? totalPrice : null;
+    if (!paymentAmount) {
+      setPaymentError('Invalid amount. Please check the ticket price.');
+      console.error('Invalid totalPrice:', totalPrice);
       return;
     }
 
@@ -339,68 +347,46 @@ const handlePaymentCallback = async (response) => {
     setIsPaying(true);
 
     try {
-      const handler = window.PaystackPop.setup({
-        key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY || 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
-        email: email || 'guest@example.com',
-        amount: totalPrice * 100,
-        currency: 'NGN',
-        ref: `TICKET-${Math.floor(Math.random() * 1000000)}-${Date.now()}`,
-        subaccount: eventData?.subaccount_code || undefined,
-        bearer: eventData?.subaccount_code ? 'subaccount' : 'account',
-        metadata: {
-          custom_fields: [
-            {
-              display_name: 'Event ID',
-              variable_name: 'event_id',
-              value: id,
-            },
-            {
-              display_name: 'Event Title',
-              variable_name: 'event_title',
-              value: eventData?.title || 'Unknown Event',
-            },
-            {
-              display_name: 'Ticket Quantity',
-              variable_name: 'ticket_quantity',
-              value: ticketQuantity,
-            },
-            {
-              display_name: 'Customer Name',
-              variable_name: 'customer_name',
-              value: `${firstName} ${lastName}`,
-            },
-            {
-              display_name: 'Is Gift',
-              variable_name: 'is_gift',
-              value: isGift ? 'Yes' : 'No',
-            },
-            ...(isGift
-              ? [
-                  {
-                    display_name: 'Recipient Name',
-                    variable_name: 'recipient_name',
-                    value: `${recipientFirstName} ${recipientLastName}`,
-                  },
-                  {
-                    display_name: 'Recipient Email',
-                    variable_name: 'recipient_email',
-                    value: recipientEmail,
-                  },
-                ]
-              : []),
-            {
-              display_name: 'Subaccount Code',
-              variable_name: 'subaccount_code',
-              value: eventData?.subaccount_code || 'None',
-            },
-          ],
-        },
+      // Initialize transaction via backend
+      const initResponse = await fetch('https://loudbox-backend.vercel.app/api/verify-payment/initialize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: paymentEmail,
+          amount: paymentAmount,
+          eventId: id,
+          eventTitle: eventData?.title || 'Unknown Event',
+          ticketQuantity,
+          customerName: `${firstName} ${lastName}`.trim() || 'Guest',
+          isGift,
+          recipientName: isGift ? `${recipientFirstName} ${recipientLastName}`.trim() : null,
+          recipientEmail: isGift ? recipientEmail : null,
+          subaccountCode: eventData?.subaccount_code || null,
+        }),
+      });
+
+      if (!initResponse.ok) {
+        const errorData = await initResponse.json();
+        throw new Error(errorData.message || 'Failed to initialize transaction.');
+      }
+
+      const initResult = await initResponse.json();
+      if (initResult.status !== 'success') {
+        throw new Error(initResult.message || 'Transaction initialization failed.');
+      }
+
+      const { access_code, reference } = initResult;
+
+      // Debug configuration
+      console.log('Paystack resume config:', { access_code, reference });
+
+      // Resume transaction with PaystackPop
+      const handler = window.PaystackPop.resumeTransaction(access_code, {
         callback: function (response) {
-          // Synchronous callback to satisfy Paystack's validation
           handlePaymentCallback(response);
         },
         onClose: function () {
-          setPaymentError('Payment cancelled.');
+          set płatError('Payment cancelled.');
           console.log('Paystack popup closed');
           setIsPaying(false);
         },
@@ -408,7 +394,7 @@ const handlePaymentCallback = async (response) => {
 
       handler.openIframe();
     } catch (err) {
-      console.error('Payment setup error:', err);
+      console.error('Payment initialization error:', err);
       setPaymentError(`Error initiating payment: ${err.message}. Please try again.`);
       setIsPaying(false);
     }
