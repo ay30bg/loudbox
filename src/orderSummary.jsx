@@ -322,10 +322,11 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
           },
         ],
       },
-      callback: async (response) => {
+      callback: (response) => {
         if (response.status === 'success') {
           console.log(`Payment successful! Transaction reference: ${response.reference}`);
-          await createTicket(response); // Call createTicket
+          // Call createTicket asynchronously outside the callback
+          createTicket(response);
         } else {
           setPaymentError('Payment failed. Please try again.');
           setIsPaying(false);
@@ -338,8 +339,7 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
     });
 
     handler.openIframe();
-  }
-
+  };
     // Load Paystack script dynamically
     useEffect(() => {
         const script = document.createElement('script');
