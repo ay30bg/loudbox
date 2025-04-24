@@ -1,12 +1,7 @@
-// frontend/src/OrderSummary.js
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { FaEnvelope, FaPhone, FaFilePdf, FaFileImage, FaAngleDown, FaUser } from 'react-icons/fa';
-import './orderSummary.css';
-
-// Mock events (replace subaccount_code with actual codes)
-
-// Mock events (unchanged)
+import './orderSummary.css';// Mock events (unchanged)
 const mockEvents = [
   {
     id: '1',
@@ -34,7 +29,6 @@ const mockEvents = [
     title: 'Lungu Boy Tour',
     eventImage: 'https://www.okayafrica.com/media-library/cover-artwork-for-lungu-boy-by-asake.png?id=53143626&width=1200&height=800&quality=85&coordinates=0%2C0%2C0%2C0',
     description: 'Asake quick stop at Ziggo Dome ',
-    subaccount_code: 'null', // Subaccount for Asake’s team
     venue: 'Ziggo Dome',
     city: 'Amsterdam',
     category: 'Concert',
@@ -54,7 +48,6 @@ const mockEvents = [
     title: ' Alakada Bad and Boujee',
     eventImage: 'https://whatkeptmeup.com/wp-content/uploads/2024/12/photo_5444956519515942501_y.jpg',
     description: 'Watch Alakada Bad & Boujee with Toyin Abraham',
-    subaccount_code: 'null', // Subaccount for Toyin’s team
     venue: 'Genesis Cinema, Lagos',
     city: 'Lagos',
     category: 'Movie',
@@ -74,7 +67,6 @@ const mockEvents = [
     title: 'Hellfest',
     eventImage: 'https://rotatemagazine.com/wp-content/uploads/2024/11/Wizkid-Photo-1536x1109.webp',
     description: 'Wizkid Live in Paris',
-    subaccount_code: 'null', // Subaccount for Wizkid’s team
     venue: 'Stade de France',
     city: 'Paris',
     category: 'Concert',
@@ -94,7 +86,6 @@ const mockEvents = [
     title: 'Burna & Friends Concert',
     eventImage: 'https://s1.ticketm.net/dam/a/11f/490b5e5d-4dc6-478f-a4b8-873d8351f11f_RETINA_PORTRAIT_3_2.jpg',
     description: 'Burna Boy Birthday Concert',
-    subaccount_code: 'null', // Subaccount for Burna’s team
     venue: 'o2 Arena',
     city: 'London',
     category: 'Concert',
@@ -113,7 +104,6 @@ const mockEvents = [
         title: 'Afrobeats Festival',
         eventImage: 'https://dailypost.ng/wp-content/uploads/2024/11/tiwasavage-068.jpg',
         description: 'Afrobeats Festival London',
-        subaccount_code: 'null', // Subaccount for Tiwa’s team
         venue: 'o2 Arena',
         city: 'London',
         category: 'Concert',
@@ -131,7 +121,6 @@ const mockEvents = [
         id: '7',
         title: 'Ravage Uprising',
         eventImage: 'https://mmo.aiircdn.com/370/622f188e91a93.jpeg',
-        subaccount_code: 'null', // Subaccount for Rema’s team
         description: 'Live at the o2',
         venue: 'o2 Arena',
         city: 'London',
@@ -151,7 +140,6 @@ const mockEvents = [
         title: 'Sabi Girl Concert',
         eventImage: 'https://i0.wp.com/media.premiumtimesng.com/wp-content/files/2024/07/image5-8-e1721996216227.jpeg?resize=1140%2C570&ssl=1',
         description: 'Ayra Starr Live in Auckland',
-        subaccount_code: 'null', // Subaccount for Ayra’s team
         venue: 'Spark Arena',
         city: 'Auckland',
         category: 'Concert',
@@ -170,7 +158,6 @@ const mockEvents = [
         title: 'Local Rappers',
         eventImage: 'https://unorthodoxreviews.com/wp-content/uploads/2023/09/WhatsApp-Image-2023-09-21-at-9.00.32-AM-1.jpeg',
         description: '',
-        subaccount_code: 'null', // Subaccount for Olamide’s team
         venue: 'Eko Energy City',
         city: 'Lagos',
         category: 'Concert',
@@ -184,10 +171,7 @@ const mockEvents = [
         ticketFileSize: '60.4 KB',
         basePrice: 1000,
     },
-];
-
-
-function OrderSummary({ navigateBack, navigateToThankYou }) {
+];function OrderSummary({ navigateBack, navigateToThankYou }) {
   const { id } = useParams();
   const { state } = useLocation();
   const [eventData, setEventData] = useState(null);
@@ -195,18 +179,14 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
   const [showFileDetails, setShowFileDetails] = useState(false);
   const [paymentError, setPaymentError] = useState(null);
   const [isPaystackLoaded, setIsPaystackLoaded] = useState(false);
-  const [isPaying, setIsPaying] = useState(false);
-
-  useEffect(() => {
+  const [isPaying, setIsPaying] = useState(false); // New state for payment popup  useEffect(() => {
     const foundEvent = mockEvents.find((e) => e.id === id);
     if (!foundEvent) {
-      console.error(`No event found for ID: ${id}`);
+      console.error(No event found for ID: ${id});
     }
     setEventData(foundEvent);
     setLoading(false);
-  }, [id]);
-
-  useEffect(() => {
+  }, [id]);  useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://js.paystack.co/v1/inline.js';
     script.async = true;
@@ -220,18 +200,15 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
     };
     document.body.appendChild(script);
 
-    return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
-      }
-    };
-  }, []);
+return () => {
+  if (document.body.contains(script)) {
+    document.body.removeChild(script);
+  }
+};
 
-  const toggleFileDetails = () => {
+  }, []);  const toggleFileDetails = () => {
     setShowFileDetails((prev) => !prev);
-  };
-
-  const {
+  };  const {
     firstName = 'Guest',
     lastName = '',
     email = 'No email provided',
@@ -242,170 +219,117 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
     recipientFirstName = '',
     recipientLastName = '',
     recipientEmail = '',
-  } = state || {};
-
-  const createTicket = async (response) => {
+  } = state || {};  const createTicket = async (response) => {
     try {
       const ticketData = {
-        ticketId: `TICKET-${Date.now()}`,
+        ticketId: TICKET-${Date.now()},
         transactionReference: response.reference,
         eventId: id,
         eventTitle: eventData?.title || 'Unknown Event',
         firstName,
         lastName,
         email,
-        phoneNumber,
         isGift,
         recipientFirstName: isGift ? recipientFirstName : undefined,
         recipientLastName: isGift ? recipientLastName : undefined,
         recipientEmail: isGift ? recipientEmail : undefined,
         ticketQuantity,
         totalPrice,
-        subaccountCode: eventData?.subaccount_code || null,
       };
 
-      console.log('Sending ticket data to /api/tickets:', ticketData);
-      const ticketResponse = await fetch('https://loudbox-backend.vercel.app/api/tickets', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(ticketData),
-      });
+  console.log('Sending ticket data to /api/tickets:', ticketData);
+  const ticketResponse = await fetch('https://loudbox-backend.vercel.app/api/tickets', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(ticketData),
+  });
 
-      if (!ticketResponse.ok) {
-        const errorText = await ticketResponse.text();
-        throw new Error(`Failed to create ticket: ${ticketResponse.status} - ${errorText}`);
-      }
+  if (!ticketResponse.ok) {
+    const errorText = await ticketResponse.text();
+    throw new Error(`Failed to create ticket: ${ticketResponse.status} - ${errorText}`);
+  }
 
-      const ticketResult = await ticketResponse.json();
-      console.log('Ticket created:', ticketResult);
+  const ticketResult = await ticketResponse.json();
+  console.log('Ticket created:', ticketResult);
 
-      localStorage.setItem('paymentSuccessful', 'true');
-      navigateToThankYou(id, {
-        state: {
-          ...ticketData,
-          transactionReference: ticketResult.transactionReference,
-          ticketId: ticketResult.ticketId,
-        },
-      });
-    } catch (err) {
-      console.error('Error creating ticket:', err);
-      setPaymentError(`Payment successful, but failed to create ticket: ${err.message}. Please contact support.`);
-    } finally {
-      setIsPaying(false);
-    }
-  };
+  localStorage.setItem('paymentSuccessful', 'true');
+  navigateToThankYou(id, {
+    state: {
+      ...ticketData,
+      transactionReference: ticketResult.transactionReference,
+      ticketId: ticketResult.ticketId,
+    },
+  });
+} catch (err) {
+  console.error('Error creating ticket:', err);
+  setPaymentError(`Payment successful, but failed to create ticket: ${err.message}. Please contact support.`);
+} finally {
+  setIsPaying(false);
+}
 
-  const handlePaymentCallback = async (response) => {
-    console.log('Paystack response:', response);
-    if (response.status === 'success') {
-      try {
-        const verifyResponse = await fetch('https://loudbox-backend.vercel.app/api/verify-payment', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ reference: response.reference, eventId: id }),
-        });
-
-        if (!verifyResponse.ok) {
-          throw new Error('Payment verification failed.');
-        }
-
-        const verifyResult = await verifyResponse.json();
-        if (verifyResult.status === 'success') {
-          await createTicket(response);
-        } else {
-          setPaymentError('Payment verification failed. Please contact support.');
-          setIsPaying(false);
-        }
-      } catch (err) {
-        console.error('Verification error:', err);
-        setPaymentError(`Payment successful, but verification failed: ${err.message}. Please contact support.`);
-        setIsPaying(false);
-      }
-    } else {
-      setPaymentError('Payment failed. Please try again.');
-      console.error('Payment failed:', response);
-      setIsPaying(false);
-    }
-  };
-
-  const handlePayment = async () => {
+  };  const handlePayment = () => {
     if (!isPaystackLoaded || !window.PaystackPop) {
       setPaymentError('Payment system not ready. Please try again.');
       console.error('PaystackPop not available');
       return;
     }
 
-    // Validate inputs
-    const paymentEmail = email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : 'guest@example.com';
-    const paymentAmount = Number(totalPrice) > 0 ? totalPrice : null;
-    if (!paymentAmount) {
-      setPaymentError('Invalid amount. Please check the ticket price.');
-      console.error('Invalid totalPrice:', totalPrice);
-      return;
-    }
+setPaymentError(null);
+setIsPaying(true); // Show blur effect
 
-    setPaymentError(null);
-    setIsPaying(true);
-
-    try {
-      // Initialize transaction via backend
-      const initResponse = await fetch('https://loudbox-backend.vercel.app/api/initialize-transaction', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: paymentEmail,
-          amount: paymentAmount,
-          eventId: id,
-          eventTitle: eventData?.title || 'Unknown Event',
-          ticketQuantity,
-          customerName: `${firstName} ${lastName}`.trim() || 'Guest',
-          isGift,
-          recipientName: isGift ? `${recipientFirstName} ${recipientLastName}`.trim() : null,
-          recipientEmail: isGift ? recipientEmail : null,
-          subaccountCode: eventData?.subaccount_code || null,
-        }),
-      });
-
-      if (!initResponse.ok) {
-        const errorData = await initResponse.json();
-        throw new Error(errorData.message || 'Failed to initialize transaction.');
-      }
-
-      const initResult = await initResponse.json();
-      if (initResult.status !== 'success') {
-        throw new Error(initResult.message || 'Transaction initialization failed.');
-      }
-
-      const { access_code, reference } = initResult;
-
-      // Debug configuration
-      console.log('Paystack resume config:', { access_code, reference });
-
-      // Resume transaction with PaystackPop
-      const handler = window.PaystackPop.resumeTransaction(access_code, {
-        callback: function (response) {
-          handlePaymentCallback(response);
+try {
+  const handler = window.PaystackPop.setup({
+    key: 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
+    email: email || 'guest@example.com',
+    amount: totalPrice * 100,
+    currency: 'NGN',
+    ref: `TICKET-${Math.floor(Math.random() * 1000000)}-${Date.now()}`,
+    metadata: {
+      custom_fields: [
+        {
+          display_name: 'Event Title',
+          variable_name: 'event_title',
+          value: eventData?.title || 'Unknown Event',
         },
-        onClose: function () {
-          setPaymentError('Payment cancelled.');
-          console.log('Paystack popup closed');
-          setIsPaying(false);
+        {
+          display_name: 'Ticket Quantity',
+          variable_name: 'ticket_quantity',
+          value: ticketQuantity,
         },
-      });
-
-      handler.openIframe();
-    } catch (err) {
-      console.error('Payment initialization error:', err);
-      setPaymentError(`Error initiating payment: ${err.message}. Please try again.`);
+        {
+          display_name: 'Customer Name',
+          variable_name: 'customer_name',
+          value: `${firstName} ${lastName}`,
+        },
+      ],
+    },
+    callback: (response) => {
+      console.log('Paystack response:', response);
+      if (response.status === 'success') {
+        createTicket(response);
+      } else {
+        setPaymentError('Payment failed. Please try again.');
+        console.error('Payment failed:', response);
+        setIsPaying(false);
+      }
+    },
+    onClose: () => {
+      setPaymentError('Payment cancelled.');
+      console.log('Paystack popup closed');
       setIsPaying(false);
-    }
-  };
+    },
+  });
 
-  if (loading) {
+  handler.openIframe();
+} catch (err) {
+  console.error('Payment setup error:', err);
+  setPaymentError(`Error initiating payment: ${err.message}. Please try again.`);
+  setIsPaying(false);
+}
+
+  };  if (loading) {
     return <div>Loading event data...</div>;
-  }
-
-  if (!eventData) {
+  }  if (!eventData) {
     return (
       <div>
         No event found for ID: {id}. Please check the event ID or go back.
@@ -414,10 +338,8 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
         </button>
       </div>
     );
-  }
-
-  return (
-    <div className={`order-summary-container ${isPaying ? 'blurred' : ''}`}>
+  }  return (
+    <div className={order-summary-container ${isPaying ? 'blurred' : ''}}>
       <div className="order-summary-card">
         <div className="order-header-container">
           <h2>Buy {eventData.title} Ticket</h2>
@@ -498,11 +420,11 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
         <div className="action-buttons">
           <button
             onClick={handlePayment}
-            aria-label={`Pay NGN ${totalPrice.toLocaleString()} for ${eventData.title}`}
+            aria-label={Pay NGN ${totalPrice.toLocaleString()} for ${eventData.title}}
             className="payment-button"
             disabled={isPaying || !isPaystackLoaded}
           >
-            {isPaying ? 'Processing...' : `Pay NGN ${totalPrice.toLocaleString()}`}
+            {isPaying ? 'Processing...' : Pay NGN ${totalPrice.toLocaleString()}}
           </button>
           <button
             onClick={() => navigateBack(eventData)}
@@ -516,10 +438,7 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
       </div>
     </div>
   );
-}
-
-OrderSummary.defaultProps = {
+}OrderSummary.defaultProps = {
   navigateBack: () => console.log('navigateBack not provided'),
-};
+};export default OrderSummary;
 
-export default OrderSummary;
