@@ -338,12 +338,12 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
           },
         ],
       },
-
-  callback: async (response) => {
+callback: async (response) => {
     if (response.status === 'success') {
       console.log(`Payment successful! Transaction reference: ${response.reference}`);
       try {
-        const verifyResponse = await axios.get(`${REACT_APP_API_URL}/api/verify-transaction/${response.reference}`);
+        const verifyResponse = await axios.get(`https://loudbox-backend.vercel.app/api/verify-transaction/${response.reference}`);
+         // const verifyResponse = await axios.get(`${REACT_APP_API_URL}/api/verify-transaction/${response.reference}`);
         console.log('Verification response:', verifyResponse.data);
         if (verifyResponse.data.data.status === 'success') {
           await createTicket(response);
