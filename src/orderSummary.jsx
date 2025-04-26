@@ -314,37 +314,25 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
 
       // Open Paystack popup
       const handler = window.PaystackPop.setup({
-        key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY || 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
-        email: email || 'guest@example.com',
-        amount: totalPrice * 100,
-        currency: 'NGN',
-        ref: reference,
-        callback: async (response) => {
-          if (response.status === 'success') {
-            console.log(`Payment successful! Transaction reference: ${response.reference}`);
-            try {
-              const verifyResponse = await axios.get(`/api/verify-transaction/${response.reference}`);
-              if (verifyResponse.data.data.status === 'success') {
-                await createTicket(response);
-              } else {
-                setPaymentError('Payment verification failed. Please contact support.');
-                setIsPaying(false);
-              }
-            } catch (error) {
-              console.error('Verification error:', error);
-              setPaymentError('Payment verification failed. Please contact support.');
-              setIsPaying(false);
-            }
-          } else {
-            setPaymentError('Payment failed. Please try again.');
-            setIsPaying(false);
-          }
-        },
-        onClose: () => {
-          setPaymentError('Payment cancelled.');
-          setIsPaying(false);
-        },
-      });
+  key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY || 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
+  email: email || 'guest@example.com',
+  amount: totalPrice * 100,
+  currency: 'NGN',
+  ref: reference,
+  callback: function(response) {
+    console.log('Paystack callback response:', response);
+    if (response.status === 'success') {
+      alert('Payment successful! Reference: ' + response.reference);
+    } else {
+      alert('Payment failed.');
+    }
+    setIsPaying(false);
+  },
+  onClose: function() {
+    setPaymentError('Payment cancelled.');
+    setIsPaying(false);
+  },
+});
 
       handler.openIframe();
     } catch (error) {
