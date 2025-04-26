@@ -318,12 +318,32 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
   email: email || 'guest@example.com',
   amount: totalPrice * 100,
   currency: 'NGN',
-  ref: reference,
+  ref: `TICKET-${Math.floor(Math.random() * 1000000)}-${Date.now()}`,
+      metadata: {
+        custom_fields: [
+          {
+            display_name: 'Event Title',
+            variable_name: 'event_title',
+            value: eventData.title,
+          },
+          {
+            display_name: 'Ticket Quantity',
+            variable_name: 'ticket_quantity',
+            value: ticketQuantity,
+          },
+          {
+            display_name: 'Customer Name',
+            variable_name: 'customer_name',
+            value: `${firstName} ${lastName}`,
+          },
+        ],
+      },
+
   callback: async (response) => {
     if (response.status === 'success') {
       console.log(`Payment successful! Transaction reference: ${response.reference}`);
       try {
-        const verifyResponse = await axios.get(`${backendUrl}/api/verify-transaction/${response.reference}`);
+        const verifyResponse = await axios.get(`${REACT_APP_API_URL}/api/verify-transaction/${response.reference}`);
         console.log('Verification response:', verifyResponse.data);
         if (verifyResponse.data.data.status === 'success') {
           await createTicket(response);
