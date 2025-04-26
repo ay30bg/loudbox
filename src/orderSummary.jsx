@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { FaEnvelope, FaPhone, FaFilePdf, FaFileImage, FaAngleDown, FaUser } from 'react-icons/fa';
+import axios from 'axios';
 import './orderSummary.css';
 
 // Mock events (unchanged)
@@ -20,7 +21,7 @@ const mockEvents = [
     year: '2025',
     time: '17:00',
     about: 'Streamed over 2 billon times...',
-    ticketFileName: 'Davido Live In Concert Ticket',
+    ticketFileName: ' Davido Live In Concert Ticket',
     ticketFileType: 'PNG',
     ticketFileSize: '1.2 MB',
     basePrice: 3000,
@@ -49,7 +50,7 @@ const mockEvents = [
     id: '3',
     eventOwner: 'Toyin Abraham',
     title: ' Alakada Bad and Boujee',
-    eventImage: 'https://whatkeptmeup.com/wp-content/uploads/2024/12/photo_5444956519515942501_y.jpg',
+    eventImage: 'https://whatkeptmeup.com/wp-content/uploads/2024/12/photo_544495651951594250 uncomfortable_y.jpg',
     description: 'Watch Alakada Bad & Boujee with Toyin Abraham',
     subaccount_code: 'null', // Subaccount for Toyin’s team
     venue: 'Genesis Cinema, Lagos',
@@ -106,81 +107,81 @@ const mockEvents = [
     basePrice: 2500,
   },
   {
-        id: '6',
-        title: 'Afrobeats Festival',
-        eventImage: 'https://dailypost.ng/wp-content/uploads/2024/11/tiwasavage-068.jpg',
-        description: 'Afrobeats Festival London',
-        subaccount_code: 'null', // Subaccount for Tiwa’s team
-        venue: 'o2 Arena',
-        city: 'London',
-        category: 'Concert',
-        month: 'MAY',
-        date: '15',
-        year: '2025',
-        time: '17:00',
-        about: '',
-        ticketFileName: 'Afrobeats Festival Ticket',
-        ticketFileType: 'PNG',
-        ticketFileSize: '100.9 KB',
-        basePrice: 3000,
-    },
-    {
-        id: '7',
-        title: 'Ravage Uprising',
-        eventImage: 'https://mmo.aiircdn.com/370/622f188e91a93.jpeg',
-        subaccount_code: 'null', // Subaccount for Rema’s team
-        description: 'Live at the o2',
-        venue: 'o2 Arena',
-        city: 'London',
-        category: 'Concert',
-        month: 'JUN',
-        date: '10',
-        year: '2025',
-        time: '21:00',
-        about: '',
-        ticketFileName: 'Ravage Uprising',
-        ticketFileType: 'PNG',
-        ticketFileSize: '130.9 KB',
-        basePrice: 3500,
-    },
-    {
-        id: '8',
-        title: 'Sabi Girl Concert',
-        eventImage: 'https://i0.wp.com/media.premiumtimesng.com/wp-content/files/2024/07/image5-8-e1721996216227.jpeg?resize=1140%2C570&ssl=1',
-        description: 'Ayra Starr Live in Auckland',
-        subaccount_code: 'null', // Subaccount for Ayra’s team
-        venue: 'Spark Arena',
-        city: 'Auckland',
-        category: 'Concert',
-        month: 'JUL',
-        date: '20',
-        year: '2025',
-        time: '17:00',
-        about: '',
-        ticketFileName: 'Sabi Girl Concert Ticket',
-        ticketFileType: 'PNG',
-        ticketFileSize: '90.9 KB',
-        basePrice: 2500,
-    },
-    {
-        id: '9',
-        title: 'Local Rappers',
-        eventImage: 'https://unorthodoxreviews.com/wp-content/uploads/2023/09/WhatsApp-Image-2023-09-21-at-9.00.32-AM-1.jpeg',
-        description: '',
-        subaccount_code: 'null', // Subaccount for Olamide’s team
-        venue: 'Eko Energy City',
-        city: 'Lagos',
-        category: 'Concert',
-        month: 'AUG',
-        date: '5',
-        year: '2025',
-        time: '20:00',
-        about: '',
-        ticketFileName: 'Local Raappers Concert Ticket',
-        ticketFileType: 'PNG',
-        ticketFileSize: '60.4 KB',
-        basePrice: 1000,
-    },
+    id: '6',
+    title: 'Afrobeats Festival',
+    eventImage: 'https://dailypost.ng/wp-content/uploads/2024/11/tiwasavage-068.jpg',
+    description: 'Afrobeats Festival London',
+    subaccount_code: 'null', // Subaccount for Tiwa’s team
+    venue: 'o2 Arena',
+    city: 'London',
+    category: 'Concert',
+    month: 'MAY',
+    date: '15',
+    year: '2025',
+    time: '17:00',
+    about: '',
+    ticketFileName: 'Afrobeats Festival Ticket',
+    ticketFileType: 'PNG',
+    ticketFileSize: '100.9 KB',
+    basePrice: 3000,
+  },
+  {
+    id: '7',
+    title: 'Ravage Uprising',
+    eventImage: 'https://mmo.aiircdn.com/370/622f188e91a93.jpeg',
+    subaccount_code: 'null', // Subaccount for Rema’s team
+    description: 'Live at the o2',
+    venue: 'o2 Arena',
+    city: 'London',
+    category: 'Concert',
+    month: 'JUN',
+    date: '10',
+    year: '2025',
+    time: '21:00',
+    about: '',
+    ticketFileName: 'Ravage Uprising',
+    ticketFileType: 'PNG',
+    ticketFileSize: '130.9 KB',
+    basePrice: 3500,
+  },
+  {
+    id: '8',
+    title: 'Sabi Girl Concert',
+    eventImage: 'https://i0.wp.com/media.premiumtimesng.com/wp-content/files/2024/07/image5-8-e1721996216227.jpeg?resize=1140%2C570&ssl=1',
+    description: 'Ayra Starr Live in Auckland',
+    subaccount_code: 'null', // Subaccount for Ayra’s team
+    venue: 'Spark Arena',
+    city: 'Auckland',
+    category: 'Concert',
+    month: 'JUL',
+    date: '20',
+    year: '2025',
+    time: '17:00',
+    about: '',
+    ticketFileName: 'Sabi Girl Concert Ticket',
+    ticketFileType: 'PNG',
+    ticketFileSize: '90.9 KB',
+    basePrice: 2500,
+  },
+  {
+    id: '9',
+    title: 'Local Rappers',
+    eventImage: 'https://unorthodoxreviews.com/wp-content/uploads/2023/09/WhatsApp-Image-2023-09-21-at-9.00.32-AM-1.jpeg',
+    description: '',
+    subaccount_code: 'null', // Subaccount for Olamide’s team
+    venue: 'Eko Energy City',
+    city: 'Lagos',
+    category: 'Concert',
+    month: 'AUG',
+    date: '5',
+    year: '2025',
+    time: '20:00',
+    about: '',
+    ticketFileName: 'Local Raappers Concert Ticket',
+    ticketFileType: 'PNG',
+    ticketFileSize: '60.4 KB',
+    basePrice: 1000,
+  },
 ];
 
 function OrderSummary({ navigateBack, navigateToThankYou }) {
@@ -191,7 +192,7 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
   const [showFileDetails, setShowFileDetails] = useState(false);
   const [paymentError, setPaymentError] = useState(null);
   const [isPaystackLoaded, setIsPaystackLoaded] = useState(false);
-  const [isPaying, setIsPaying] = useState(false); // New state for payment popup
+  const [isPaying, setIsPaying] = useState(false);
 
   useEffect(() => {
     const foundEvent = mockEvents.find((e) => e.id === id);
@@ -289,69 +290,70 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
     }
   };
 
-// Paystack payment handler
-   const handlePayment = () => {
-    if (!window.PaystackPop) {
+  const handlePayment = async () => {
+    if (!isPaystackLoaded || !window.PaystackPop) {
       setPaymentError('Paystack script not loaded. Please try again.');
       return;
     }
 
     setIsPaying(true);
-    const handler = window.PaystackPop.setup({
-      key: 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
-      email: email || 'guest@example.com',
-      amount: totalPrice * 100,
-      currency: 'NGN',
-      ref: `TICKET-${Math.floor(Math.random() * 1000000)}-${Date.now()}`,
-      metadata: {
-        custom_fields: [
-          {
-            display_name: 'Event Title',
-            variable_name: 'event_title',
-            value: eventData.title,
-          },
-          {
-            display_name: 'Ticket Quantity',
-            variable_name: 'ticket_quantity',
-            value: ticketQuantity,
-          },
-          {
-            display_name: 'Customer Name',
-            variable_name: 'customer_name',
-            value: `${firstName} ${lastName}`,
-          },
-        ],
-      },
-      callback: (response) => {
-        if (response.status === 'success') {
-          console.log(`Payment successful! Transaction reference: ${response.reference}`);
-          // Call createTicket asynchronously outside the callback
-          createTicket(response);
-        } else {
-          setPaymentError('Payment failed. Please try again.');
+    try {
+      // Initialize transaction via backend
+      const response = await axios.post('/api/initialize-transaction', {
+        email: email || 'guest@example.com',
+        amount: totalPrice,
+        subaccount_code: eventData.subaccount_code,
+        firstName,
+        lastName,
+        phoneNumber,
+        eventTitle: eventData.title,
+        ticketQuantity,
+      });
+
+      const { authorization_url, reference } = response.data.data;
+
+      // Open Paystack popup
+      const handler = window.PaystackPop.setup({
+        key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY || 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
+        email: email || 'guest@example.com',
+        amount: totalPrice * 100,
+        currency: 'NGN',
+        ref: reference,
+        callback: async (response) => {
+          if (response.status === 'success') {
+            console.log(`Payment successful! Transaction reference: ${response.reference}`);
+            try {
+              const verifyResponse = await axios.get(`/api/verify-transaction/${response.reference}`);
+              if (verifyResponse.data.data.status === 'success') {
+                await createTicket(response);
+              } else {
+                setPaymentError('Payment verification failed. Please contact support.');
+                setIsPaying(false);
+              }
+            } catch (error) {
+              console.error('Verification error:', error);
+              setPaymentError('Payment verification failed. Please contact support.');
+              setIsPaying(false);
+            }
+          } else {
+            setPaymentError('Payment failed. Please try again.');
+            setIsPaying(false);
+          }
+        },
+        onClose: () => {
+          setPaymentError('Payment cancelled.');
           setIsPaying(false);
-        }
-      },
-      onClose: () => {
-        setPaymentError('Payment cancelled.');
-        setIsPaying(false);
-      },
-    });
+        },
+      });
 
-    handler.openIframe();
+      handler.openIframe();
+    } catch (error) {
+      console.error('Payment initialization error:', error.response?.data || error.message);
+      setPaymentError(error.response?.data?.message || 'Failed to initialize payment. Please try again.');
+      setIsPaying(false);
+    }
   };
-    // Load Paystack script dynamically
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.src = 'https://js.paystack.co/v1/inline.js';
-        script.async = true;
-        document.body.appendChild(script);
 
-        return () => {
-            document.body.removeChild(script); // Cleanup on component unmount
-        };
-    }, []);
-  
   if (loading) {
     return <div>Loading event data...</div>;
   }
@@ -471,6 +473,7 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
 
 OrderSummary.defaultProps = {
   navigateBack: () => console.log('navigateBack not provided'),
+  navigateToThankYou: () => console.log('navigateToThankYou not provided'),
 };
 
 export default OrderSummary;
