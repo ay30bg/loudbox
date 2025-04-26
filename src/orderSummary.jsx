@@ -290,54 +290,61 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
     }
   };
 
-  const handlePayment = () => {
-    if (!window.PaystackPop) {
+  const handlePayment = async () => {
+    if (!isPaystackLoaded || !window.PaystackPop) {
       setPaymentError('Paystack script not loaded. Please try again.');
       return;
     }
 
     setIsPaying(true);
-    const handler = window.PaystackPop.setup({
-      key: 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
-      email: email || 'guest@example.com',
-      amount: totalPrice * 100,
-      currency: 'NGN',
-      ref: `TICKET-${Math.floor(Math.random() * 1000000)}-${Date.now()}`,
-      metadata: {
-        custom_fields: [
-          {
-            display_name: 'Event Title',
-            variable_name: 'event_title',
-            value: eventData.title,
-          },
-          {
-            display_name: 'Ticket Quantity',
-            variable_name: 'ticket_quantity',
-            value: ticketQuantity,
-          },
-          {
-            display_name: 'Customer Name',
-            variable_name: 'customer_name',
-            value: `${firstName} ${lastName}`,
-          },
-        ],
-      },
-      callback: (response) => {
-        if (response.status === 'success') {
-          console.log(`Payment successful! Transaction reference: ${response.reference}`);
-          // Call createTicket asynchronously outside the callback
-          createTicket(response);
-        } else {
-          setPaymentError('Payment failed. Please try again.');
-          setIsPaying(false);
-        }
-      },
-      onClose: () => {
-        setPaymentError('Payment cancelled.');
-        setIsPaying(false);
-      },
-    });
+    try {
+      // Initialize transaction via backend
+      const response = await axios.post('/api/initialize-transaction', {
+        email: email || 'guest@example.com',
+        amount: totalPrice,
+        subaccount_code: eventData.subaccount_code,
+        firstName,
+        lastName,
+        phoneNumber,
+        eventTitle: eventData.title,
+        ticketQuantity,
+      });
 
+      const { authorization_url, reference } = response.data.data;
+
+      // Open Paystack popup
+      const handler = window.PaystackPop.setup({
+        key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY || 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
+        email: email || 'guest@example.com',
+        amount: totalPrice * 100,
+        currency: 'NGN',
+        ref: reference,
+        callback: async (response) => {
+          if (response.status === 'success') {
+            console.log(`Payment successful! Transaction reference: ${response.reference}`);
+            try {
+              const verifyResponse = await axios.get(`/api/verify-transaction/${response.reference}`);
+              if (verifyResponse.data.data.status === 'success') {
+                await createTicket(response);
+              } else {
+                setPaymentError('Payment verification failed. Please contact support.');
+                setIsPaying(false);
+              }
+            } catch (error) {
+              console.error('Verification error:', error);
+              setPaymentError('Payment verification failed. Please contact support.');
+              setIsPaying(false);
+            }
+          } else {
+            setPaymentError('Payment failed. Please try again.');
+            setIsPaying(false);
+          }
+        },
+        onClose: () => {
+          setPaymentError('Payment cancelled.');
+          setIsPaying(false);
+        },
+      });
 
       handler.openIframe();
     } catch (error) {
@@ -470,4 +477,3 @@ OrderSummary.defaultProps = {
 };
 
 export default OrderSummary;
-
