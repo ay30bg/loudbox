@@ -518,6 +518,10 @@ html {
         transform: rotate(-90deg);
         font-family: 'Poppins', sans-serif; /* Changed to Poppins */
         font-weight: 600; /* Added for consistency */
+        background-color: #F3F5F7;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
     }
 
     .share-section{
