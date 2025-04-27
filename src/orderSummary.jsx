@@ -32,7 +32,7 @@ const mockEvents = [
     title: 'Lungu Boy Tour',
     eventImage: 'https://www.okayafrica.com/media-library/cover-artwork-for-lungu-boy-by-asake.png?id=53143626&width=1200&height=800&quality=85&coordinates=0%2C0%2C0%2C0',
     description: 'Asake quick stop at Ziggo Dome ',
-    subaccount_code: 'null', // Subaccount for Asake’s team
+    subaccount_code: 'ACCT_fgczgunwcj3ru5i', // Subaccount for Asake’s team
     venue: 'Ziggo Dome',
     city: 'Amsterdam',
     category: 'Concert',
