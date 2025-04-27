@@ -61,7 +61,7 @@ function Footer() {
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
                 <FaFacebook />
               </a>
-              <a href="https://twitter.com" target="https://x.com/loudboxtickets" rel="noopener noreferrer">
+              <a href="https://x.com/loudboxtickets?s=21&t=qEPU6VWSzF-JHZscWE36Ug" target="_blank" rel="noopener noreferrer">
                 <BsTwitterX />
               </a>
               <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
