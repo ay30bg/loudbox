@@ -38,9 +38,9 @@ function TicketDetailsPage() {
           }
         );
         if (emailResponse.ok) {
-          setMessage(`Ticket sent to ${data.ticketHolder.email}. Check your inbox!`);
+          setMessage(`Ticket sent to ${data.ticketHolder.email}, Check your inbox!`);
         } else {
-          setMessage('Failed to send ticket email. Please download manually.');
+          setMessage('Failed to send ticket email, Please download manually.');
         }
       } catch (err) {
         console.error('TicketDetailsPage - Error fetching ticket:', err);
@@ -66,7 +66,7 @@ function TicketDetailsPage() {
         setMessage('Ticket downloaded successfully.');
       } catch (error) {
         console.error('TicketDetailsPage - Error generating ticket image:', error);
-        setMessage('Failed to download ticket. Please try again.');
+        setMessage('Failed to download ticket, Please try again.');
       }
     }
   };
