@@ -9,23 +9,39 @@ function TicketDetailsPage() {
   const [ticketData, setTicketData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [message, setMessage] = useState('');
   const ticketRef = useRef(null);
 
   useEffect(() => {
-    console.log('TicketDetailsPage - Fetching ticket for:', transactionReference);
     const fetchTicket = async () => {
       try {
         const response = await fetch(
           `https://loudbox-backend.vercel.app/api/tickets/${transactionReference}`
         );
-        console.log('TicketDetailsPage - Fetch response status:', response.status);
         if (!response.ok) {
           throw new Error(`Failed to fetch ticket: ${response.statusText}`);
         }
         const data = await response.json();
-        console.log('TicketDetailsPage - Ticket data:', data);
         setTicketData(data);
         setLoading(false);
+
+        // Send ticket via email
+        const emailResponse = await fetch(
+          'https://loudbox-backend.vercel.app/api/email/send-ticket-email',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              ticketData: data,
+              email: data.ticketHolder.email,
+            }),
+          }
+        );
+        if (emailResponse.ok) {
+          setMessage(`Ticket sent to ${data.ticketHolder.email}. Check your inbox!`);
+        } else {
+          setMessage('Failed to send ticket email. Please download manually.');
+        }
       } catch (err) {
         console.error('TicketDetailsPage - Error fetching ticket:', err);
         setError(err.message);
@@ -38,7 +54,6 @@ function TicketDetailsPage() {
   const handleDownload = async () => {
     if (ticketRef.current) {
       try {
-        console.log('TicketDetailsPage - Generating ticket image');
         const canvas = await html2canvas(ticketRef.current, {
           scale: 2,
           useCORS: true,
@@ -48,13 +63,11 @@ function TicketDetailsPage() {
         link.href = canvas.toDataURL('image/png');
         link.download = `ticket-${ticketData?.ticketId || 'unknown'}.png`;
         link.click();
-        console.log('TicketDetailsPage - Ticket image downloaded');
+        setMessage('Ticket downloaded successfully.');
       } catch (error) {
         console.error('TicketDetailsPage - Error generating ticket image:', error);
-        alert('Failed to download ticket. Please try again.');
+        setMessage('Failed to download ticket. Please try again.');
       }
-    } else {
-      console.warn('TicketDetailsPage - ticketRef is not set');
     }
   };
 
@@ -98,7 +111,6 @@ function TicketDetailsPage() {
   const qrCodeValue = `https://loudbox-backend.vercel.app/api/verify?ticketId=${encodeURIComponent(
     ticketId
   )}&code=${encodeURIComponent(transRef || 'N/A')}`;
-  console.log('TicketDetailsPage - QRCode value:', qrCodeValue);
 
   return (
     <div className="ticket-details-container">
@@ -159,9 +171,17 @@ function TicketDetailsPage() {
           <QRCodeCanvas className="qr-code" value={qrCodeValue} size={200} />
         </div>
       </div>
+      {message && (
+        <p className={`message ${message.includes('Failed') ? 'error' : ''}`}>
+          {message}
+        </p>
+      )}
       <button className="download-button" onClick={handleDownload}>
         Download Ticket
       </button>
+      <p className="instruction">
+        Tip: Take a screenshot of this ticket for quick access at the event!
+      </p>
     </div>
   );
 }
