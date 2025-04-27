@@ -64,16 +64,19 @@ body, html {
   color: #28a745; /* Green for success */
   font-weight: bold;
   margin: 10px 0;
+  font-family: 'Inter', sans-serif; /* Apply Inter */
 }
 
 .message.error {
   color: #d32f2f; /* Red for error */
+  font-family: 'Inter', sans-serif; /* Inherit Inter */
 }
 
 .instruction {
   color: #555;
   font-style: italic;
   margin-top: 10px;
+  font-family: 'Inter', sans-serif; /* Apply Inter */
 }
 
 .download-button {
@@ -82,12 +85,14 @@ body, html {
   background-color: #E60278;
   color: white;
   padding: 15px 30px;
-  font-size: 13px;
+  font-size: 15px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   margin: 14px 0;
   text-align: center;
+  font-family: 'Poppins', sans-serif; /* Apply Poppins */
+  font-weight: 500; /* Medium weight for better appearance */
 }
 
 .download-button:hover {
