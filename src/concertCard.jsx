@@ -11,7 +11,7 @@ function ConcertCard({ image, title, description, date, event, navigateToEventDe
 
     return (
        <div className="card-container">
-        <div className="card">
+        <div className="cards">
             <img src={image} alt={title} />
             <div className="card-content">
                 <h3>{title}</h3>
