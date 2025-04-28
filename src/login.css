@@ -8,7 +8,6 @@ body, html {
     padding: 0;
     height: 100%;
     font-size: 16px;
-    overflow: hidden;
 }
 
 /* Login container */
@@ -21,7 +20,6 @@ body, html {
     font-family: 'Inter', sans-serif;
     padding: 10px;
     box-sizing: border-box;
-    overflow: hidden;
 }
 
 /* Login box */
@@ -32,6 +30,7 @@ body, html {
     width: 100%;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     font-family: 'Inter', sans-serif;
+    margin: auto; /* Reinforce centering */
 }
 
 /* Login logo */
@@ -108,22 +107,6 @@ body, html {
     color: #999;
 }
 
-/* Forgot password link */
-.forgot-password {
-    display: block;
-    text-align: left;
-    font-family: 'Inter', sans-serif;
-    font-weight: 400;
-    font-size: 0.875rem;
-    color: #0056d2;
-    text-decoration: none;
-    margin-top: 5px;
-}
-
-.forgot-password:hover {
-    text-decoration: underline;
-}
-
 /* Sign-in button */
 .sign-in-button {
     width: 100%;
@@ -166,27 +149,27 @@ body, html {
 @media (max-width: 576px) {
     body, html {
         font-size: 14px;
-        overflow: hidden;
     }
 
     .login-container {
         padding: 5px;
         min-height: 100vh;
-        align-items: center;
+        display: flex;
         justify-content: center;
-        overflow: hidden;
+        align-items: center;
     }
 
     .login-box {
         max-width: 90%;
-        box-shadow: none;
+        width: 100%;
         height: auto;
+        max-height: 90vh;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        border: 2px solid #f5f5f5;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        max-height: 90vh;
-        border: 2px solid #f5f5f5;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        margin: auto;
     }
 
     .form-container {
@@ -230,34 +213,32 @@ body, html {
 
 /* Medium screens (tablets, 577px - 768px) */
 @media (min-width: 577px) and (max-width: 768px) {
-    body, html {
-        overflow: hidden; /* Ensure no scroll on medium screens */
-    }
-
     .login-container {
         padding: 10px;
         min-height: 100vh;
-        align-items: center; /* Explicitly center vertically */
-        justify-content: center; /* Explicitly center horizontally */
-        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .login-box {
-        max-width: 90%; /* Slightly more flexible than fixed 450px */
+        max-width: 90%;
+        width: 100%;
         height: auto;
-        max-height: 90vh; /* Restrict height to fit viewport */
+        max-height: 90vh;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        border: 2px solid #f5f5f5;
         display: flex;
         flex-direction: column;
-        border: 2px solid #f5f5f5;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        margin: auto;
     }
 
     .form-container {
-        padding: 15px; /* Slightly reduced for compactness */
+        padding: 15px;
     }
 
     .form-container h2 {
-        font-size: 1.125rem; /* Slightly smaller for better fit */
+        font-size: 1.125rem;
         margin-bottom: 12px;
     }
 
@@ -283,7 +264,7 @@ body, html {
     }
 
     .login-logo img {
-        max-width: 80%; /* Slightly smaller to save space */
+        max-width: 80%;
     }
 
     .sign-up {
@@ -312,7 +293,7 @@ body, html {
         min-height: 44px;
     }
 
-    .forgot-password, .sign-up {
+    .sign-up {
         min-height: 44px;
         line-height: 44px;
     }
