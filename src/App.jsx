@@ -11,6 +11,7 @@ import OrderSummary from './orderSummary';
 import ThankYouPage from './thankYouPage';
 import TicketDetailsPage from './ticketDetailsPage';
 import ConcertCategory from './concertCategory';
+import HelpDesk from './helpDesk';
 
 function App() {
   console.log('App rendered');
@@ -78,14 +79,20 @@ function App() {
       }
     };
 
+    const navigateToHelpdesk = () => {
+      console.log('Navigating to helpdesk');
+      navigate('/helpdesk');
+    };
+
     const currentPath = window.location.pathname.split('/')[1] || 'landing';
 
     return (
       <div>
-        {['event-details', 'ticket-purchase', 'order-summary', 'thank-you', 'ticket', 'concerts'].includes(currentPath) && (
+        {['event-details', 'ticket-purchase', 'order-summary', 'thank-you', 'ticket', 'concerts', 'helpdesk'].includes(currentPath) && (
           <Header
             onLogout={handleLogout}
             navigateToLanding={navigateToLanding}
+            navigateToHelpdesk={navigateToHelpdesk}
           />
         )}
         <Routes>
@@ -105,6 +112,7 @@ function App() {
                 navigateToEventDetails={navigateToEventDetails}
                 navigateToLanding={navigateToLanding}
                 navigateToCategory={navigateToCategory}
+                navigateToHelpdesk={navigateToHelpdesk}
               />
             }
           />
@@ -154,6 +162,12 @@ function App() {
               navigateToEventDetails={navigateToEventDetails}
             />}
           />
+          <Route
+            path="/helpdesk"
+            element={<HelpDesk 
+              navigateToLanding={navigateToLanding} />}
+          />
+          
           {/* Catch-all route for debugging */}
           <Route
             path="*"
