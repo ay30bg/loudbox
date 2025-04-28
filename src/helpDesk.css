@@ -1,0 +1,576 @@
+/* Import Poppins and Inter from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px; /* Base font size */
+}
+
+/* General page styling */
+.helpdesk-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+}
+
+/* Header Section */
+.helpdesk-header {
+    text-align: center;
+    padding: clamp(2rem, 8vw, 4rem) clamp(1rem, 3vw, 1.5rem);
+    background: linear-gradient(180deg, #007bff 0%, #0056b3 100%);
+    color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    margin-bottom: clamp(2rem, 5vw, 3rem);
+    max-width: min(90%, 900px);
+    width: 100%;
+    position: relative;
+    animation: fadeInHeader 1s ease-in-out;
+}
+
+.helpdesk-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" opacity="0.1"%3E%3Cpath fill="%23ffffff" d="M0 0h80v80H0z"/%3E%3Cpath fill="%23000000" fill-opacity="0.1" d="M40 0c22.1 0 40 17.9 40 40S62.1 80 40 80 0 62.1 0 40 17.9 0 40 0zm0 8C22.4 8 8 22.4 8 40s14.4 32 32 32 32-14.4 32-32S57.6 8 40 8z"/%3E%3C/svg%3E');
+    opacity: 0.1;
+}
+
+.header-icon {
+    font-size: clamp(2.5rem, 6vw, 3.5rem);
+    color: #ffffff;
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+    animation: pulseIcon 2s infinite ease-in-out;
+}
+
+.helpdesk-header h1 {
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: clamp(0.5rem, 2vw, 1rem);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    font-family: 'Poppins', sans-serif;
+}
+
+.helpdesk-header p {
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    line-height: 1.7;
+    max-width: min(90%, 600px);
+    margin: 0 auto clamp(0.5rem, 2vw, 1rem);
+    opacity: 0.9;
+    font-family: 'Inter', sans-serif;
+}
+
+.header-divider {
+    height: 4px;
+    width: clamp(80px, 15vw, 100px);
+    background: linear-gradient(90deg, transparent, #ffffff, transparent);
+    margin: 0 auto;
+    border-radius: 2px;
+}
+
+/* Support Options Section */
+.support-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(1rem, 3vw, 1.5rem);
+    justify-content: center;
+    max-width: min(95%, 1200px);
+    width: 100%;
+    margin-bottom: clamp(2rem, 5vw, 3rem);
+}
+
+.support-card {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    padding: clamp(1.5rem, 4vw, 2rem);
+    text-align: center;
+    width: 100%;
+    max-width: min(100%, 350px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.support-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-icon {
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin-bottom: clamp(0.75rem, 2vw, 1rem);
+}
+
+.support-card:first-child .card-icon {
+    color: #6f42c1;
+}
+
+.support-card:nth-child(2) .card-icon {
+    color: #28a745;
+}
+
+.support-card h2 {
+    font-size: clamp(1.5rem, 4vw, 1.8rem);
+    color: #2c3e50;
+    margin-bottom: clamp(0.5rem, 2vw, 0.75rem);
+    font-family: 'Poppins', sans-serif;
+}
+
+.support-card p {
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    color: #6c757d;
+    margin-bottom: clamp(0.75rem, 2vw, 1rem);
+    line-height: 1.5;
+    font-family: 'Inter', sans-serif;
+}
+
+.card-button {
+    padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem);
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 100%;
+    max-width: min(100%, 200px);
+    font-family: 'Inter', sans-serif;
+    touch-action: manipulation; /* Improve touch responsiveness */
+}
+
+.card-button:focus {
+    outline: 2px solid #28a745;
+    outline-offset: 2px;
+}
+
+.chat-button {
+    background-color: #007bff;
+    color: white;
+}
+
+.chat-button:hover {
+    background-color: #0056b3;
+}
+
+.ticket-button {
+    background-color: #28a745;
+    color: white;
+}
+
+.ticket-button:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+/* FAQ Section */
+.faq-section {
+    max-width: min(95%, 800px);
+    width: 100%;
+    margin-bottom: clamp(2rem, 5vw, 3rem);
+}
+
+.faq-section h2 {
+    font-size: clamp(1.6rem, 4vw, 2rem);
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: clamp(1rem, 3vw, 1.5rem);
+    font-family: 'Poppins', sans-serif;
+}
+
+.faq-item {
+    background: #ffffff;
+    border-radius: 8px;
+    margin-bottom: clamp(0.5rem, 2vw, 0.75rem);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.faq-question {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem);
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: #2c3e50;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.3s;
+    font-family: 'Poppins', sans-serif;
+}
+
+.faq-question:hover {
+    background-color: #f8f9fa;
+}
+
+.faq-icon {
+    margin-right: clamp(0.5rem, 2vw, 0.75rem);
+    color: #007bff;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.faq-answer.open {
+    max-height: 200px; /* Adjust dynamically if needed */
+    padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem);
+}
+
+.faq-answer p {
+    margin: 0;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    color: #6c757d;
+    line-height: 1.5;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Modal Styling */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+    padding: clamp(1rem, 3vw, 1.5rem);
+}
+
+.modal-content {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: clamp(1.5rem, 4vw, 2rem);
+    max-width: min(95%, 600px);
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    animation: slideIn 0.3s ease;
+}
+
+.modal-close {
+    position: absolute;
+    top: clamp(0.75rem, 2vw, 1rem);
+    right: clamp(0.75rem, 2vw, 1rem);
+    background: none;
+    border: none;
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    color: #6c757d;
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    color: #dc3545;
+}
+
+.modal-content h2 {
+    font-size: clamp(1.5rem, 4vw, 1.8rem);
+    color: #2c3e50;
+    margin-bottom: clamp(0.75rem, 2vw, 1rem);
+    font-family: 'Poppins', sans-serif;
+}
+
+.ticket-form {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.75rem, 2vw, 1rem);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    color: #2c3e50;
+    margin-bottom: clamp(0.25rem, 1vw, 0.5rem);
+    font-family: 'Inter', sans-serif;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: clamp(0.5rem, 2vw, 0.75rem);
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: clamp(80px, 15vw, 100px);
+}
+
+.submit-button {
+    padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem);
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    font-family: 'Inter', sans-serif;
+}
+
+.submit-button:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+.submit-button:focus {
+    outline: 2px solid #28a745;
+    outline-offset: 2px;
+}
+
+/* Footer Section */
+.helpdesk-footer {
+    margin-top: clamp(2rem, 5vw, 3rem);
+    padding: clamp(1rem, 3vw, 1.5rem);
+    text-align: center;
+    width: 100%;
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem);
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    font-family: 'Inter', sans-serif;
+}
+
+.back-button:hover {
+    background-color: #545b62;
+    transform: scale(1.05);
+}
+
+.back-button:focus {
+    outline: 2px solid #6c757d;
+    outline-offset: 2px;
+}
+
+.button-icon {
+    margin-right: clamp(0.5rem, 2vw, 0.75rem);
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+}
+
+/* Animations */
+@keyframes fadeInHeader {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseIcon {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .support-options {
+        max-width: 95%;
+    }
+
+    .helpdesk-header {
+        max-width: 95%;
+    }
+}
+
+@media (max-width: 992px) {
+    .support-options {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .support-card {
+        max-width: 100%;
+    }
+
+    .helpdesk-header h1 {
+        font-size: clamp(1.6rem, 4vw, 2.5rem);
+    }
+
+    .helpdesk-header p {
+        font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+    }
+}
+
+@media (max-width: 768px) {
+    .helpdesk-header {
+        padding: clamp(1.5rem, 6vw, 3rem) clamp(0.75rem, 2vw, 1rem);
+    }
+
+    .header-icon {
+        font-size: clamp(2rem, 5vw, 3rem);
+    }
+
+    .support-card {
+        padding: clamp(1rem, 3vw, 1.5rem);
+    }
+
+    .faq-section h2 {
+        font-size: clamp(1.4rem, 3.5vw, 1.8rem);
+    }
+
+    .modal-content {
+        max-height: 85vh;
+        padding: clamp(1rem, 3vw, 1.5rem);
+    }
+}
+
+@media (max-width: 480px) {
+    html {
+        font-size: 14px; /* Reduce base font size for smaller screens */
+    }
+
+    .helpdesk-page {
+        padding: clamp(0.75rem, 2vw, 1rem);
+    }
+
+    .helpdesk-header {
+        padding: clamp(1rem, 5vw, 2rem) clamp(0.5rem, 2vw, 0.75rem);
+        border-radius: 10px;
+    }
+
+    .helpdesk-header h1 {
+        font-size: clamp(1.4rem, 4vw, 1.8rem);
+    }
+
+    .helpdesk-header p {
+        font-size: clamp(0.8rem, 2.5vw, 1rem);
+    }
+
+    .header-icon {
+        font-size: clamp(1.8rem, 5vw, 2.5rem);
+    }
+
+    .support-card h2 {
+        font-size: clamp(1.3rem, 3.5vw, 1.5rem);
+    }
+
+    .card-icon {
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+    }
+
+    .card-button {
+        padding: clamp(0.5rem, 2vw, 0.75rem) clamp(0.75rem, 2vw, 1rem);
+    }
+
+    .faq-question {
+        padding: clamp(0.5rem, 2vw, 0.75rem) clamp(0.75rem, 2vw, 1rem);
+    }
+
+    .faq-answer.open {
+        padding: clamp(0.5rem, 2vw, 0.75rem) clamp(0.75rem, 2vw, 1rem);
+    }
+
+    .modal-content {
+        padding: clamp(0.75rem, 2vw, 1rem);
+        max-height: 80vh;
+    }
+
+    .modal-content h2 {
+        font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: clamp(0.4rem, 1.5vw, 0.6rem);
+    }
+
+    .submit-button {
+        padding: clamp(0.5rem, 2vw, 0.75rem) clamp(0.75rem, 2vw, 1rem);
+    }
+}
+
+@media (max-width: 360px) {
+    html {
+        font-size: 12px; /* Further reduce for very small screens */
+    }
+
+    .helpdesk-header {
+        padding: clamp(0.75rem, 4vw, 1.5rem) clamp(0.4rem, 1.5vw, 0.6rem);
+    }
+
+    .modal-content {
+        max-height: 75vh;
+        padding: clamp(0.5rem, 1.5vw, 0.75rem);
+    }
+}
+
+@media (min-width: 1920px) {
+    .helpdesk-page {
+        padding: clamp(2rem, 3vw, 3rem);
+    }
+
+    .helpdesk-header {
+        max-width: 1000px;
+        padding: clamp(3rem, 5vw, 5rem) clamp(1.5rem, 3vw, 2rem);
+    }
+
+    .support-options {
+        max-width: 1400px;
+    }
+
+    .support-card {
+        max-width: 400px;
+    }
+
+    .faq-section {
+        max-width: 900px;
+    }
+}
