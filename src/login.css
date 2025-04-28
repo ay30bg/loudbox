@@ -166,7 +166,6 @@ body, html {
 @media (max-width: 576px) {
     body, html {
         font-size: 14px;
-        overflow: hidden;
     }
 
     .login-container {
@@ -231,9 +230,9 @@ body, html {
 
 /* Medium screens (tablets, 577px - 768px) */
 @media (min-width: 577px) and (max-width: 768px) {
-    body, html {
+/*     body, html {
         overflow: hidden; /* Ensure no scroll on medium screens */
-    }
+    } */
 
     .login-container {
         padding: 10px;
