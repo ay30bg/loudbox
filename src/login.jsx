@@ -3,7 +3,7 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import Logo from './logo.png';
 import './login.css';
 
-function Login({ onLogin, navigateToSignUp }) {
+function Login({ onLogin, navigateToSignUp, navigateToForgotPassword }) {
     console.log('Login is rendering');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -150,7 +150,22 @@ function Login({ onLogin, navigateToSignUp }) {
                                         {showPassword ? 'Hide' : 'Show'}
                                     </button>
                                 </div>
-                                <a className='' href="https://x.com/i/grok?conversation=1909339764446446086">Forgot your password</a>
+                                <button
+                                    type="button"
+                                    onClick={navigateToForgotPassword}
+                                    style={{
+                                        background: 'none',
+                                        border: 'none',
+                                        fontSize: '15px',
+                                        color: '#0056d2',
+                                        cursor: 'pointer',
+                                        textDecoration: 'underline',
+                                        textAlign: 'left',
+                                        padding: '5px 0',
+                                    }}
+                                >
+                                    Forgot your password
+                                </button>
                             </div>
 
                             <button
