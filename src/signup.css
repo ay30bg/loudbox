@@ -159,13 +159,13 @@ body,html{
         margin-bottom: 8px;
     }
 
-    .form-group {
+/*     .form-group {
         margin-bottom: 8px;
     }
 
     .password-group {
         margin-bottom: 12px;
-    }
+    } */
 
     .form-group input {
         padding: 6px;
@@ -219,13 +219,13 @@ body,html{
         margin-bottom: 12px;
     }
 
-    .form-group {
+/*     .form-group {
         margin-bottom: 10px;
     }
 
     .password-group {
         margin-bottom: 15px;
-    }
+    } */
 
     .form-group input {
         padding: 8px;
