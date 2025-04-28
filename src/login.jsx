@@ -109,7 +109,7 @@ function Login({ onLogin, navigateToSignUp }) {
   style={{  marginBottom: '20px' }}
 />
                         <p style={{ textAlign: 'center', margin: '10px 0' }}>or</p>
-                        <h3>Sign in with your email and password</h3>
+                        <h3 className="welcome-sign-in">Sign in with your email and password</h3>
                         <form onSubmit={handleSubmit}>
                             <div className="form-group">
                                 <label htmlFor="email">Email</label>
