@@ -172,19 +172,19 @@ body, html {
     .login-container {
         padding: 5px;
         min-height: 100vh;
-        align-items: center; /* Center vertically */
-        justify-content: center; /* Center horizontally */
+        align-items: center;
+        justify-content: center;
         overflow: hidden;
     }
 
     .login-box {
-        max-width: 95%;
+        max-width: 90%;
         box-shadow: none;
         height: auto;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        max-height: 90vh; /* Restrict height to fit viewport */
+        max-height: 90vh;
         border: 2px solid #f5f5f5;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     }
@@ -220,7 +220,7 @@ body, html {
     }
 
     .login-logo img {
-        max-width: 60%; /* Further reduced for compact fit */
+        max-width: 60%;
     }
 
     .sign-up {
@@ -230,20 +230,64 @@ body, html {
 
 /* Medium screens (tablets, 577px - 768px) */
 @media (min-width: 577px) and (max-width: 768px) {
+    body, html {
+        overflow: hidden; /* Ensure no scroll on medium screens */
+    }
+
+    .login-container {
+        padding: 10px;
+        min-height: 100vh;
+        align-items: center; /* Explicitly center vertically */
+        justify-content: center; /* Explicitly center horizontally */
+        overflow: hidden;
+    }
+
     .login-box {
-        max-width: 450px;
+        max-width: 90%; /* Slightly more flexible than fixed 450px */
+        height: auto;
+        max-height: 90vh; /* Restrict height to fit viewport */
+        display: flex;
+        flex-direction: column;
+        border: 2px solid #f5f5f5;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     }
 
     .form-container {
-        padding: 20px;
+        padding: 15px; /* Slightly reduced for compactness */
     }
 
     .form-container h2 {
-        font-size: 1.25rem;
+        font-size: 1.125rem; /* Slightly smaller for better fit */
+        margin-bottom: 12px;
+    }
+
+    .form-group {
+        margin-bottom: 10px;
+    }
+
+    .password-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group input {
+        padding: 8px;
+    }
+
+    .sign-in-button {
+        padding: 10px;
+        font-size: 0.875rem;
+    }
+
+    .login-logo {
+        padding: 12px;
     }
 
     .login-logo img {
-        max-width: 90%;
+        max-width: 80%; /* Slightly smaller to save space */
+    }
+
+    .sign-up {
+        margin-bottom: 8px;
     }
 }
 
