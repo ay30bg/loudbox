@@ -9,7 +9,11 @@ body, html {
     height: 100%;
     font-size: 16px;
     overflow: hidden;
+    display: flex; /* Add Flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
 }
+
 
 /* Login container */
 /* .login-container {
@@ -148,11 +152,29 @@ body, html {
 
 /* Small screens (mobile, <= 576px) */
 @media (max-width: 576px) {
-    body, html {
+        body, html {
         font-size: 14px;
+        display: flex; /* Ensure Flexbox is applied */
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        overflow: auto; /* Allow scrolling if needed */
     }
 
-    .login-container {
+    .login-box {
+        max-width: 90%;
+        width: 100%;
+        height: auto;
+        max-height: 90vh;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        border: 2px solid #f5f5f5;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: auto; /* Keep for additional centering */
+    }
+
+
+/*     .login-container {
         padding: 5px;
         min-height: 100vh;
         display: flex;
@@ -171,7 +193,7 @@ body, html {
         flex-direction: column;
         justify-content: center;
         margin: auto;
-    }
+    } */
 
     .form-container {
         padding: 10px;
@@ -214,7 +236,26 @@ body, html {
 
 /* Medium screens (tablets, 577px - 768px) */
 @media (min-width: 577px) and (max-width: 768px) {
-    .login-container {
+ body, html {
+        display: flex; /* Ensure Flexbox is applied */
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        overflow: auto; /* Allow scrolling if needed */
+    }
+
+    .login-box {
+        max-width: 90%;
+        width: 100%;
+        height: auto;
+        max-height: 90vh;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        border: 2px solid #f5f5f5;
+        display: flex;
+        flex-direction: column;
+        margin: auto; /* Keep for additional centering */
+    }
+    
+/*     .login-container {
         padding: 10px;
         min-height: 100vh;
         display: flex;
@@ -232,7 +273,7 @@ body, html {
         display: flex;
         flex-direction: column;
         margin: auto;
-    }
+    } */
 
     .form-container {
         padding: 15px;
