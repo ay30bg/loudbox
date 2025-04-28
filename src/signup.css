@@ -28,6 +28,10 @@ body,html{
 
 .signup-logo {
     background-color: #17153a;
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+    border-radius: 6px 6px 0 0;
 }
 
 .signup-logo img {
@@ -96,7 +100,7 @@ body,html{
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-bottom: -4px;
+    margin-bottom: 4px;
 }
 
 .sign-up-button:hover {
