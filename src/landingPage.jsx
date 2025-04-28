@@ -12,7 +12,8 @@ function LandingPage({
     navigateToEventDetails,
     navigateToLanding,
     navigateToCategory,
-    navigateToHelpdesk
+    navigateToHelpdesk,
+    navigateToAboutUs
 }) {
     console.log('LandingPage rendered, navigateToEventDetails:', navigateToEventDetails); // Log 6
 
@@ -20,7 +21,8 @@ function LandingPage({
         <div className="landing-page-container">
             <Header onLogout={onLogout} 
             navigateToLanding={navigateToLanding} 
-            navigateToHelpdesk={navigateToHelpdesk}  
+            navigateToHelpdesk={navigateToHelpdesk} 
+            navigateToAboutUs={navigateToAboutUs}
             />
             <Hero />
             <UpcomingEvent 
