@@ -3,7 +3,7 @@ import logo from './logo.png';
 import { FaBars, FaTimes, FaShoppingCart } from "react-icons/fa";
 import './header.css';
 
-function Header({ onLogout, navigateToLanding }) {
+function Header({ onLogout, navigateToLanding, navigateToHelpdesk }) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [email, setEmail] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -12,10 +12,18 @@ function Header({ onLogout, navigateToLanding }) {
         console.log('Cart icon clicked');
     };
 
-    const handleMenuClick = () => {
-        console.log('Menu icon clicked');
-        setIsSidebarOpen((prev) => !prev);
-    };
+    const handleNavLinkClick = (link) => {
+        console.log(`${link} link clicked`);
+        setIsSidebarOpen(false);
+        if (link === 'Helpdesk') {
+          if (navigateToHelpdesk) {
+            console.log('Calling navigateToHelpdesk');
+            navigateToHelpdesk();
+          } else {
+            console.error('navigateToHelpdesk is undefined');
+          }
+        }
+      };
 
     const handleNavLinkClick = (link) => {
         console.log(`${link} link clicked`);
@@ -88,12 +96,6 @@ function Header({ onLogout, navigateToLanding }) {
             <div className="nav-links-container">
                 <button
                     className="nav-link"
-                    onClick={() => handleNavLinkClick('Menu')}
-                >
-                    Menu
-                </button>
-                <button
-                    className="nav-link"
                     onClick={() => handleNavLinkClick('Events')}
                 >
                     Events
@@ -103,6 +105,12 @@ function Header({ onLogout, navigateToLanding }) {
                     onClick={() => handleNavLinkClick('About Us')}
                 >
                     About Us
+                </button>
+                <button
+                    className="nav-link"
+                    onClick={() => handleNavLinkClick('Helpdesk')}
+                >
+                    Helpdesk
                 </button>
                 {onLogout && (
                     <button
