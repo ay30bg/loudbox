@@ -3,7 +3,7 @@ import logo from './logo.png';
 import { FaBars, FaTimes, FaShoppingCart } from "react-icons/fa";
 import './header.css';
 
-function Header({ onLogout, navigateToLanding, navigateToHelpdesk }) {
+function Header({ onLogout, navigateToLanding, navigateToHelpdesk, navigateToAboutUs }) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [email, setEmail] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,15 +20,29 @@ function Header({ onLogout, navigateToLanding, navigateToHelpdesk }) {
     const handleNavLinkClick = (link) => {
         console.log(`${link} link clicked`);
         setIsSidebarOpen(false);
+
         if (link === 'Helpdesk') {
-          if (navigateToHelpdesk) {
-            console.log('Calling navigateToHelpdesk');
-            navigateToHelpdesk();
-          } else {
-            console.error('navigateToHelpdesk is undefined');
-          }
-        }
-      };
+            if (navigateToHelpdesk) {
+                console.log('Calling navigateToHelpdesk');
+                navigateToHelpdesk();
+            } else {
+                console.error('navigateToHelpdesk is undefined');
+            }
+        } else if (link === 'About Us') {
+            if (navigateToAboutUs) {
+                console.log('Calling navigateToAboutUs');
+                navigateToAboutUs();
+            } else {
+                console.error('navigateToAboutUs is undefined');
+            }
+        } 
+        
+        // else if (link === 'Events') {
+        //     navigate('/concerts'); // Example: Navigate to concerts category
+        // } else if (link === 'Contact Us') {
+        //     navigate('/helpdesk'); // Example: Navigate to helpdesk for contact
+        // }
+    };
 
     const handleLogoClick = () => {
         console.log('Logo clicked');
