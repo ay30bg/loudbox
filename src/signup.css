@@ -249,3 +249,33 @@ body,html{
     }
 }
 
+@media (min-width: 769px) {
+    .signup-box {
+        max-width: 400px;
+    }
+
+    .form-container h2 {
+        font-size: 1.5rem;
+    }
+
+    .sign-up-button {
+        font-size: 1rem;
+    }
+
+    .signup-logo {
+    border-radius: 6px 6px 0 0;
+}
+}
+
+/* Ensure touch-friendly sizes for buttons and inputs */
+@media (pointer: coarse) {
+    .sign-up-button, .form-group input {
+        min-height: 44px;
+    }
+
+    .forgot-password, .sign-in {
+        min-height: 44px;
+        line-height: 44px;
+    }
+}
+
