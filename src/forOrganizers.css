@@ -1,0 +1,624 @@
+/* General Container */
+.organizers-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+  }
+  
+  /* Animation for Sections */
+  .animate-section {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+  
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Hero Section */
+  .organizers-hero {
+    text-align: center;
+    padding: 80px 20px;
+    background: #17153a;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .organizers-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/circles.png');
+    opacity: 0.1;
+  }
+  
+  .organizers-logo {
+    width: 180px;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  }
+  
+  .organizers-hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .organizers-hero p {
+    font-size: 1.4rem;
+    font-weight: 300;
+    max-width: 600px;
+    margin: 0 auto 30px;
+    opacity: 0.9;
+  }
+  
+  .hero-cta {
+    background: #e60278;
+    color: #fff;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    box-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .hero-cta:hover {
+    background: #f5f5f5;
+    transform: scale(1.05);
+  }
+  
+  /* Why Loudbox Section */
+  .why-loudbox {
+    padding: 60px 20px;
+    max-width: 1200px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .why-loudbox h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .why-loudbox h2::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 4px;
+    background: #e60278;
+    margin: 10px auto;
+    border-radius: 2px;
+  }
+  
+  .why-loudbox p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #555;
+    max-width: 800px;
+    margin: 0 auto 30px;
+    text-align: center;
+  }
+  
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+  }
+  
+  .benefit-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid #eee;
+  }
+  
+  /* .benefit-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  } */
+  
+  .benefit-icon {
+    font-size: 2.5rem;
+    color: #e60278;
+    margin-bottom: 15px;
+  }
+  
+  .benefit-card h3 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+  }
+  
+  .benefit-card p {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.6;
+  }
+  
+  /* How It Works Section */
+  .how-it-works {
+    padding: 60px 20px;
+    max-width: 1200px;
+    margin: 40px auto;
+    background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+    border-radius: 12px;
+  }
+  
+  .how-it-works h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .how-it-works h2::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 4px;
+    background: #e60278;
+    margin: 10px auto;
+    border-radius: 2px;
+  }
+  
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+  }
+  
+  .step-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    transition: transform 0.3s;
+  }
+  
+  .step-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .step-number {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #e60278;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 50%;
+    font-weight: 600;
+  }
+  
+  .step-card h3 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 20px 0 10px;
+  }
+  
+  .step-card p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+  }
+  
+  /* Testimonials Section */
+  .testimonials {
+    padding: 60px 20px;
+    max-width: 1200px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .testimonials h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .testimonials h2::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 4px;
+    background: #ff4500;
+    margin: 10px auto;
+    border-radius: 2px;
+  }
+  
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+  }
+  
+  .testimonial-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    transition: transform 0.3s;
+  }
+  
+  .testimonial-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .testimonial-card p {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    font-style: italic;
+  }
+  
+  .testimonial-card h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+  
+  /* Sign-Up Form Section */
+  .signup-section {
+    padding: 60px 20px;
+    max-width: 800px;
+    margin: 40px auto;
+    background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+    border-radius: 12px;
+  }
+  
+  .signup-section h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .signup-section h2::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 4px;
+    background: #e60278;
+    margin: 10px auto;
+    border-radius: 2px;
+  }
+  
+  .signup-section p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #555;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .organizers-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .organizers-form input,
+  .organizers-form textarea {
+    padding: 15px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+    transition: border-color 0.3s;
+  }
+  
+  .organizers-form input:focus,
+  .organizers-form textarea:focus {
+    border-color: #ff4500;
+    outline: none;
+  }
+  
+  .organizers-form textarea {
+    min-height: 150px;
+    resize: vertical;
+  }
+  
+  .organizers-form button {
+    background: #17153a;
+    color: #fff;
+    border: none;
+    padding: 15px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+  }
+  
+  .organizers-form button:hover {
+    background: #e03e00;
+    transform: scale(1.02);
+  }
+  
+  .organizers-form button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+  
+  /* Resources Section */
+  .resources {
+    padding: 60px 20px;
+    max-width: 1200px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .resources h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .resources h2::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 4px;
+    background: #e60278;
+    margin: 10px auto;
+    border-radius: 2px;
+  }
+  
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+  }
+  
+  .resource-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    transition: transform 0.3s;
+  }
+  
+  /* .resource-card:hover {
+    transform: translateY(-5px);
+  } */
+  
+  .resource-icon {
+    font-size: 2.5rem;
+    color: #e60278;
+    margin-bottom: 15px;
+  }
+  
+  .resource-card h3 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+  }
+  
+  .resource-card p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 15px;
+  }
+  
+  .resource-card a {
+    color: #17153a;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .resource-card a:hover {
+    color: #e60278;
+  }
+  
+  /* Call to Action Section */
+  .cta-section {
+    text-align: center;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+    color: #fff;
+    padding: 80px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/stardust.png');
+    opacity: 0.1;
+  }
+  
+  .cta-section h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  
+  .cta-section p {
+    font-size: 1.3rem;
+    color: #ccc;
+    max-width: 600px;
+    margin: 0 auto 30px;
+  }
+  
+  .cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .cta-buttons button {
+    background: #E60278;
+    color: #fff;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition:  0.3s, transform 0.3s;
+  }
+  
+  .cta-buttons button:hover {
+    background: #e03e00;
+    transform: scale(1.05);
+  }
+  
+  /* Screen Reader Only */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .organizers-hero h1 {
+      font-size: 2.5rem;
+    }
+  
+    .organizers-hero p {
+      font-size: 1.2rem;
+    }
+  
+    .why-loudbox h2,
+    .how-it-works h2,
+    .testimonials h2,
+    .signup-section h2,
+    .resources h2,
+    .cta-section h2 {
+      font-size: 2.2rem;
+    }
+  
+    .benefits-grid,
+    .steps-grid,
+    .testimonials-grid,
+    .resources-grid {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .organizers-hero {
+      padding: 60px 20px;
+    }
+  
+    .organizers-logo {
+      width: 140px;
+    }
+  
+    .organizers-hero h1 {
+      font-size: 2rem;
+    }
+  
+    .organizers-hero p {
+      font-size: 1rem;
+    }
+  
+    .why-loudbox,
+    .how-it-works,
+    .testimonials,
+    .signup-section,
+    .resources,
+    .cta-section {
+      padding: 40px 20px;
+    }
+  
+    .why-loudbox h2,
+    .how-it-works h2,
+    .testimonials h2,
+    .signup-section h2,
+    .resources h2,
+    .cta-section h2 {
+      font-size: 1.8rem;
+    }
+  
+    .benefits-grid,
+    .steps-grid,
+    .testimonials-grid,
+    .resources-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .cta-buttons {
+      flex-direction: column;
+      gap: 15px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .organizers-hero {
+      padding: 40px 15px;
+    }
+  
+    .organizers-logo {
+      width: 120px;
+    }
+  
+    .why-loudbox p,
+    .signup-section p,
+    .cta-section p {
+      font-size: 1rem;
+    }
+  
+    .benefit-card,
+    .step-card,
+    .testimonial-card,
+    .resource-card {
+      padding: 20px;
+    }
+  }
