@@ -13,6 +13,7 @@ import TicketDetailsPage from './ticketDetailsPage';
 import ConcertCategory from './concertCategory';
 import HelpDesk from './helpDesk';
 import AboutUs from './aboutUs';
+import ForOrganizers from './forOrganizers';
 
 function App() {
   console.log('App rendered');
@@ -90,16 +91,22 @@ function App() {
       navigate('/about-us');
     };
 
+    const navigateToForOrganizers = () => {
+      console.log('Navigating to organizers');
+      navigate('/organizers');
+    };
+
     const currentPath = window.location.pathname.split('/')[1] || 'landing';
 
     return (
       <div>
-        {['event-details', 'ticket-purchase', 'order-summary', 'thank-you', 'ticket', 'concerts', 'helpdesk', 'about-us'].includes(currentPath) && (
+        {['event-details', 'ticket-purchase', 'order-summary', 'thank-you', 'ticket', 'concerts', 'helpdesk', 'about-us', 'organizers'].includes(currentPath) && (
           <Header
             onLogout={handleLogout}
             navigateToLanding={navigateToLanding}
             navigateToHelpdesk={navigateToHelpdesk}
             navigateToAboutUs={navigateToAboutUs}
+            navigateToForOrganizers={navigateToForOrganizers}
           />
         )}
         <Routes>
@@ -121,6 +128,7 @@ function App() {
                 navigateToCategory={navigateToCategory}
                 navigateToHelpdesk={navigateToHelpdesk}
                 navigateToAboutUs={navigateToAboutUs}
+                navigateToForOrganizers={navigateToForOrganizers}
               />
             }
           />
@@ -178,6 +186,12 @@ function App() {
           <Route
             path="/about-us"
             element={<AboutUs
+              navigateToLanding={navigateToLanding} />
+            }
+          />
+          <Route
+            path="/organizers"
+            element={<ForOrganizers
               navigateToLanding={navigateToLanding} />
             }
           />
