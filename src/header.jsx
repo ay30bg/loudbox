@@ -41,12 +41,12 @@ function Header({ onLogout,
                 console.error('navigateToAboutUs is undefined');
             }
         } else if (link === 'Organizers') {
-            navigate('/organizers') 
+            if (navigateToForOrganizers){
             console.log('Calling navigateToForOrganizers');
             navigateToForOrganizers();
         } else {
-
             console.error('navigateToForOrganizers is undefined');
+        }
         }
          };
 
