@@ -12,6 +12,11 @@ function Header({ onLogout, navigateToLanding, navigateToHelpdesk }) {
         console.log('Cart icon clicked');
     };
 
+    const handleMenuClick = () => {
+        console.log('Menu icon clicked');
+        setIsSidebarOpen((prev) => !prev);
+    };
+    
     const handleNavLinkClick = (link) => {
         console.log(`${link} link clicked`);
         setIsSidebarOpen(false);
