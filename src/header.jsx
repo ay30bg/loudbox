@@ -25,11 +25,6 @@ function Header({ onLogout, navigateToLanding, navigateToHelpdesk }) {
         }
       };
 
-    const handleNavLinkClick = (link) => {
-        console.log(`${link} link clicked`);
-        setIsSidebarOpen(false);
-    };
-
     const handleLogoClick = () => {
         console.log('Logo clicked');
         navigateToLanding();
