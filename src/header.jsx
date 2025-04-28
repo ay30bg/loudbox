@@ -3,7 +3,12 @@ import logo from './logo.png';
 import { FaBars, FaTimes, FaShoppingCart } from "react-icons/fa";
 import './header.css';
 
-function Header({ onLogout, navigateToLanding, navigateToHelpdesk, navigateToAboutUs }) {
+function Header({ onLogout, 
+                 navigateToLanding, 
+                 navigateToHelpdesk, 
+                 navigateToAboutUs,
+                 navigateToForOrganizers
+                }) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [email, setEmail] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,14 +40,16 @@ function Header({ onLogout, navigateToLanding, navigateToHelpdesk, navigateToAbo
             } else {
                 console.error('navigateToAboutUs is undefined');
             }
-        } 
-        
-        // else if (link === 'Events') {
-        //     navigate('/concerts'); // Example: Navigate to concerts category
-        // } else if (link === 'Contact Us') {
-        //     navigate('/helpdesk'); // Example: Navigate to helpdesk for contact
-        // }
-    };
+        } else if (link === 'Organizers') {
+            navigate('/organizers') 
+            console.log('Calling navigateToForOrganizers');
+            navigateToForOrganizers();
+        } else {
+
+            console.error('navigateToForOrganizers is undefined');
+        }
+         };
+
 
     const handleLogoClick = () => {
         console.log('Logo clicked');
@@ -164,9 +171,9 @@ function Header({ onLogout, navigateToLanding, navigateToHelpdesk, navigateToAbo
                     </button>
                     <button
                         className="sidebar-link"
-                        onClick={() => handleNavLinkClick('Contact Us')}
+                        onClick={() => handleNavLinkClick('Organizers')}
                     >
-                        Contact Us
+                        For Organizers
                     </button>
                     <button
                         className="sidebar-link"
