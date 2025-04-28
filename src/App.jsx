@@ -14,6 +14,7 @@ import ConcertCategory from './concertCategory';
 import HelpDesk from './helpDesk';
 import AboutUs from './aboutUs';
 import ForOrganizers from './forOrganizers';
+import ForgotPassword from './forgotPassword';
 
 function App() {
   console.log('App rendered');
@@ -39,6 +40,11 @@ function App() {
     const navigateToSignIn = () => {
       console.log('Navigating to login');
       navigate('/login');
+    };
+
+     const navigateToForgotPassword = () => {
+      console.log('Navigating to forgot password');
+      navigate('/forgot-password');
     };
 
     const navigateToEventDetails = (event) => {
@@ -112,11 +118,21 @@ function App() {
         <Routes>
           <Route
             path="/login"
-            element={<Login onLogin={handleLogin} navigateToSignUp={navigateToSignUp} />}
+            element={<Login onLogin={handleLogin} 
+                      navigateToSignUp={navigateToSignUp} 
+                      navigateToForgotPassword={navigateToForgotPassword}
+                       />
+            }
           />
           <Route
             path="/signup"
             element={<SignUp navigateToSignIn={navigateToSignIn} />}
+          />
+          <Route
+            path="/forgot-password"
+            element={<ForgotPassword
+              navigateToSignIn={navigateToSignIn} />
+            }
           />
           <Route
             path="/"
