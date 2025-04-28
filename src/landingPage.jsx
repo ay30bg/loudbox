@@ -13,7 +13,8 @@ function LandingPage({
     navigateToLanding,
     navigateToCategory,
     navigateToHelpdesk,
-    navigateToAboutUs
+    navigateToAboutUs,
+    navigateToForOrganizers
 }) {
     console.log('LandingPage rendered, navigateToEventDetails:', navigateToEventDetails); // Log 6
 
@@ -23,6 +24,7 @@ function LandingPage({
             navigateToLanding={navigateToLanding} 
             navigateToHelpdesk={navigateToHelpdesk} 
             navigateToAboutUs={navigateToAboutUs}
+            navigateToForOrganizers={navigateToForOrganizers}
             />
             <Hero />
             <UpcomingEvent 
