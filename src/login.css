@@ -63,6 +63,10 @@ body, html {
     text-align: center;
 }
 
+.welcome-sign-in{
+    margin: 0 0 10px 0;
+}
+
 /* Form group */
 .form-group {
     display: block;
