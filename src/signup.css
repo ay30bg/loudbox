@@ -123,7 +123,7 @@ body,html{
 }
 
 /* Small Mobile (0px to 575px) */
-@media (max-width: 576px) {
+
 @media (max-width: 576px) {
     body, html {
         font-size: 14px;
