@@ -181,8 +181,26 @@
   }
 }
 
+@media (min-width: 769px) and (max-width:911px){
+ 
+  .footer-logo img {
+    width: 150px;
+    margin-top: 8px;
+  }
+ 
+  .footer-links-list,
+  .footer-contact-content {
+    max-height: none !important;
+    opacity: 1 !important;
+  }
+  .toggle-icon {
+    display: none;
+  }
+}
+
+
 /* Desktop: Always show content */
-@media (min-width: 769px) {
+@media (min-width: 912px) {
   .footer-links-list,
   .footer-contact-content {
     max-height: none !important;
