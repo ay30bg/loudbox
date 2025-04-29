@@ -15,6 +15,7 @@ import HelpDesk from './helpDesk';
 import AboutUs from './aboutUs';
 import ForOrganizers from './forOrganizers';
 import ForgotPassword from './forgotPassword';
+import ResetPassword from './ResetPassword';
 
 function App() {
   console.log('App rendered');
@@ -126,14 +127,19 @@ function App() {
           />
           <Route
             path="/signup"
-            element={<SignUp navigateToSignIn={navigateToSignIn} />}
+            element={<SignUp 
+              navigateToSignIn={navigateToSignIn} />}
           />
           <Route
             path="/forgot-password"
             element={<ForgotPassword
-              navigateToSignIn={navigateToSignIn} />
+            navigateToSignIn={navigateToSignIn} />
             }
           />
+          <Route
+               path="/reset-password/:token"
+                element={<ResetPassword />}
+                    />
           <Route
             path="/"
             element={
