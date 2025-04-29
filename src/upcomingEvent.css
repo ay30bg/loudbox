@@ -1,24 +1,8 @@
-.upcoming-event-text {
-    font-family: "Poppins", "Inter", "Montserrat", sans-serif;
-    padding: 0 0 2rem 0;
-    font-size: clamp(1.125rem, 2.5vw, 1.5rem); /* Increased: 18px to 24px */
-    margin: 3rem 2rem -1rem 1.875rem;
-    line-height: 1.5;
-}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-/* Media query for smaller viewports (e.g., mobile) */
-@media (max-width: 768px) {
-    .upcoming-event-text {
-        font-size: clamp(1rem, 2.8vw, 1.25rem); /* Increased: 16px to 20px */
-        margin: 2rem 1.5rem -0.75rem 1.5rem;
-        padding: 0 0 1.5rem 0;
-    }
-}
-
-/* Media query for larger viewports (e.g., desktop) */
-@media (min-width: 1200px) {
-    .upcoming-event-text {
-        font-size: clamp(1.25rem, 1.8vw, 1.625rem); /* Increased: 20px to 26px */
-        margin: 3.5rem 2.5rem -1.25rem 2rem;
-    }
+.upcoming-event-text{
+    font-family: 'Inter', sans-serif;
+    padding: 0 0 20px 0;
+    font-size: 20px;
+    margin: 50px 35px -17px 30px;
 }
