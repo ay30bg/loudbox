@@ -1,8 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
+
 .upcoming-event-text{
     font-family: 'Inter', sans-serif;
     padding: 0 0 20px 0;
     font-size: 20px;
     margin: 50px 35px -6px 20px;
+}
+
+@media (min-width:1025px){
+    .upcoming-event-text{
+        margin: 50px 35px -6px 60px;
+    }
 }
