@@ -221,24 +221,23 @@ body, html {
 } */
 
 .sidebar-link.logout-btn {
-    background: transparent; /* Keep background transparent to match other links */
-    border: none; /* No border for a clean look */
-    color: #dc3545; /* Use a red color to indicate a destructive action like logout */
-    text-align: left; /* Align text with other sidebar links */
-    width: 100%; /* Full width for consistency */
-/*     padding: 12px 10px; */
-    font-size: 16px; /* Maintain font size */
-    font-weight: 500; /* Medium weight for emphasis */
-    cursor: pointer; /* Pointer cursor for interactivity */
-    transition: all 0.3s ease; /* Smooth transition for hover/active effects */
-    border-radius: 4px; /* Subtle rounded corners for modern look */
+    background: transparent; 
+    border: none; 
+    color: #e03e00; 
+    text-align: left; 
+    width: 100%; 
+    font-size: 18px; 
+    font-weight: 500; 
+    cursor: pointer; 
+    transition: all 0.3s ease; 
+    border-radius: 4px;
     padding: 10px 20px;
 }
 
 /* Hover effect */
 .sidebar-link.logout-btn:hover {
-    background: rgba(220, 53, 69, 0.1); /* Light red background on hover */
-    color: #c82333; /* Slightly darker red for contrast */
+    background: rgba(220, 53, 69, 0.1); 
+    color: #c82333; 
 }
 
 /* Active/Pressed state */
