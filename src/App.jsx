@@ -15,7 +15,7 @@ import HelpDesk from './helpDesk';
 import AboutUs from './aboutUs';
 import ForOrganizers from './forOrganizers';
 import ForgotPassword from './forgotPassword';
-import ResetPassword from './ResetPassword';
+import ResetPassword from './resetPassword';
 
 function App() {
   console.log('App rendered');
