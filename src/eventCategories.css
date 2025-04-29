@@ -8,12 +8,19 @@
   padding: 20px;
 }
 
-.events-categories h2 {
+/* .events-categories h2 {
   font-family: 'Poppins', sans-serif; /* Changed to Poppins */
   font-weight: 600; /* Bold, matches TicketPurchase.jsx */
-  font-size: 20px;
-  color: #000;
-  margin-bottom: 20px;
+/*   font-size: 20px; */
+/*   color: #000; */
+/*   margin-bottom: 20px; */
+} */
+
+.events-categories h2 {
+  font-family: 'Poppins', sans-serif; /* Changed to Poppins */
+  padding: 0 0 2rem 0;
+  font-size: clamp(1.125rem, 2.5vw, 1.5rem); /* Increased: 18px to 24px */
+  margin: 3rem 2rem -1rem 1.875rem;    line-height: 1.5;
 }
 
 .categories-grid {
