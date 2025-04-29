@@ -226,7 +226,7 @@ body, html {
     color: #dc3545; /* Use a red color to indicate a destructive action like logout */
     text-align: left; /* Align text with other sidebar links */
     width: 100%; /* Full width for consistency */
-    padding: 12px 10px; /* Slightly more padding for better touch target */
+/*     padding: 12px 10px; */
     font-size: 16px; /* Maintain font size */
     font-weight: 500; /* Medium weight for emphasis */
     cursor: pointer; /* Pointer cursor for interactivity */
