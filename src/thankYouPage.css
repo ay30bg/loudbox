@@ -1,26 +1,25 @@
-/* ThankYouPage.css */
-
 /* Import Poppins and Inter from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
 
+/* Base styles */
 .thank-you-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     background-color: #f5f5f5;
-    padding: 20px;
+    padding: 2rem;
     font-family: 'Inter', sans-serif;
-    /* Default font for body text */
+    box-sizing: border-box;
 }
 
 .thank-you-card {
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    max-width: 90%;
     width: 100%;
-    padding: 30px;
+    padding: 2rem;
     text-align: center;
 }
 
@@ -28,18 +27,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 1.5rem;
 }
 
 .success-icon {
     color: #28a745;
     font-size: 3rem;
-    margin-bottom: 10px;
+    margin-bottom: 0.75rem;
 }
 
 .thank-you-header h2 {
     font-family: 'Poppins', sans-serif;
-    /* Poppins for headings */
     font-weight: 600;
     font-size: 2rem;
     color: #333;
@@ -48,11 +46,10 @@
 
 .confirmation-message {
     font-family: 'Inter', sans-serif;
-    /* Inter for body text */
     font-weight: 400;
     font-size: 1.1rem;
     color: #555;
-    margin-bottom: 20px;
+    margin-bottom: 1.5rem;
 }
 
 .confirmation-message strong {
@@ -63,78 +60,72 @@
 .summary-divider {
     border: none;
     border-top: 1px solid #ddd;
-    margin: 20px 0;
+    margin: 1.5rem 0;
 }
 
 .order-details {
     text-align: left;
-    margin: 20px 0;
+    margin: 1.5rem 0;
 }
 
 .order-details h3 {
     font-family: 'Poppins', sans-serif;
-    /* Poppins for headings */
     font-weight: 600;
     font-size: 1.5rem;
     color: #333;
-    margin-bottom: 30px;
+    margin-bottom: 1.5rem;
 }
 
 .detail-item {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 25px;
+    margin-bottom: 1.25rem;
     font-family: 'Inter', sans-serif;
-    /* Inter as fallback for consistency */
     font-size: 1rem;
     color: #555;
 }
 
 .detail-label {
     font-family: 'Poppins', sans-serif;
-    /* Poppins for labels */
     font-weight: 600;
     color: #333;
 }
 
 .detail-value {
     font-family: 'Inter', sans-serif;
-    /* Inter for values */
     font-weight: 400;
     color: #555;
 }
 
 .customer-contact {
     align-items: center;
-    gap: 10px;
+    gap: 0.625rem;
     font-family: 'Inter', sans-serif;
-    /* Inter for customer details */
 }
 
 .contact-icon {
-    color: #666;
+    color: #007bff;
     font-size: 1.2rem;
 }
 
 .gift-details {
-    margin: 20px 0 30px;
-    padding-top: 15px;
+    margin: 1.5rem 0 2rem;
+    padding-top: 1rem;
     border-top: 1px dashed #ddd;
 }
 
 .gift-details h4 {
     font-family: 'Poppins', sans-serif;
-    /* Poppins for headings */
     font-weight: 500;
     font-size: 1.2rem;
     color: #333;
-    margin-bottom: 10px;
+    margin-bottom: 0.75rem;
 }
 
 .summary-dot-divider {
     border: none;
     border-top: 1px dashed #ddd;
-    margin: 20px 0;
+    margin: 1.5rem 0;
 }
 
 .action-buttons {
@@ -143,8 +134,8 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    margin-top: 20px;
-    padding: 0 10px; /* Ensure buttons don’t touch edges */
+    margin-top: 1.5rem;
+    padding: 0 0.625rem;
     box-sizing: border-box;
 }
 
@@ -152,11 +143,10 @@
 .return-home-button {
     width: 100%;
     max-width: 500px;
-    height: 35px;
-    margin: 10px 0;
+    height: 2.5rem;
+    margin: 0.625rem 0;
     border-radius: 4px;
     font-family: 'Inter', sans-serif;
-    /* Inter for button text */
     font-weight: 500;
     font-size: 0.875rem;
     cursor: pointer;
@@ -173,25 +163,71 @@
     transform: translateY(-1px);
 }
 
-.return-home-button{
-    font-family: 'Inter', sans-serif;
-    font-weight: 500; /* Mimics Graphik */
+.return-home-button {
     background-color: #fff;
     color: #000;
 }
 
-.return-home-button:hover{
+.return-home-button:hover {
     background-color: #f8f8f8;
     transform: translateY(-1px);
 }
 
-@media (max-width: 600px) {
+/* Extra small screens (<400px) */
+@media (max-width: 400px) {
+    .thank-you-container {
+        padding: 1rem;
+    }
+
     .thank-you-card {
-        padding: 20px;
+        padding: 1rem;
+    }
+
+    .thank-you-header h2 {
+        font-size: 1.25rem;
+    }
+
+    .success-icon {
+        font-size: 2rem;
+    }
+
+    .confirmation-message {
+        font-size: 0.9rem;
+    }
+
+    .order-details h3 {
+        font-size: 1.1rem;
+    }
+
+    .detail-item {
+        flex-direction: column;
+        gap: 0.25rem;
+        font-size: 0.875rem;
+    }
+
+    .view-ticket-button,
+    .return-home-button {
+        height: 2.25rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* Small screens (400px–600px) */
+@media (min-width: 400px) and (max-width: 600px) {
+    .thank-you-container {
+        padding: 0.5rem;
+    }
+
+    .thank-you-card {
+        padding: 1.5rem;
     }
 
     .thank-you-header h2 {
         font-size: 1.5rem;
+    }
+
+    .success-icon {
+        font-size: 2.5rem;
     }
 
     .confirmation-message {
@@ -204,21 +240,154 @@
 
     .detail-item {
         flex-direction: column;
-        gap: 5px;
+        gap: 0.5rem;
+        font-size: 0.9rem;
     }
 
-    .view-ticket-button{
-        max-width: 90%;
-        height: 45px;
-        font-size: 0.875rem;
-        margin: 8px -15px;
-   }
-
-
+    .view-ticket-button,
     .return-home-button {
-        max-width: 90%;
-        height: 45px;
+        max-width: 100%;
+        height: 2.5rem;
         font-size: 0.875rem;
-        margin: 8px -15px;
+    }
+}
+
+/* Tablet screens (600px–768px) */
+@media (min-width: 600px) and (max-width: 768px) {
+    .thank-you-container {
+        padding: 2rem;
+    }
+
+    .thank-you-card {
+        max-width: 80%;
+        padding: 2rem;
+    }
+
+    .thank-you-header h2 {
+        font-size: 1.75rem;
+    }
+
+    .confirmation-message {
+        font-size: 1.05rem;
+    }
+
+    .order-details h3 {
+        font-size: 1.3rem;
+    }
+
+    .detail-item {
+        font-size: 0.95rem;
+    }
+
+    .view-ticket-button,
+    .return-home-button {
+        max-width: 80%;
+        height: 2.75rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Small desktop screens (768px–1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .thank-you-container {
+        padding: 2.5rem;
+    }
+
+    .thank-you-card {
+        max-width: 700px;
+        padding: 2.5rem;
+    }
+
+    .thank-you-header h2 {
+        font-size: 2rem;
+    }
+
+    .confirmation-message {
+        font-size: 1.1rem;
+    }
+
+    .order-details h3 {
+        font-size: 1.4rem;
+    }
+
+    .detail-item {
+        font-size: 1rem;
+    }
+
+    .view-ticket-button,
+    .return-home-button {
+        max-width: 70%;
+        height: 3rem;
+        font-size: 1rem;
+    }
+}
+
+/* Large screens (>1024px) */
+@media (min-width: 1024px) {
+    .thank-you-container {
+        padding: 3rem;
+    }
+
+    .thank-you-card {
+        max-width: 600px;
+        padding: 3rem;
+    }
+
+    .thank-you-header h2 {
+        font-size: 2.25rem;
+    }
+
+    .confirmation-message {
+        font-size: 1.15rem;
+    }
+
+    .order-details h3 {
+        font-size: 1.5rem;
+    }
+
+    .detail-item {
+        font-size: 1.05rem;
+    }
+
+    .view-ticket-button,
+    .return-home-button {
+        max-width: 60%;
+        height: 3rem;
+        font-size: 1rem;
+    }
+}
+
+/* Extra large screens (>1440px) */
+@media (min-width: 1440px) {
+    .thank-you-container {
+        padding: 4rem;
+    }
+
+    .thank-you-card {
+        max-width: 650px;
+        padding: 3.5rem;
+    }
+
+    .thank-you-header h2 {
+        font-size: 2.5rem;
+    }
+
+    .confirmation-message {
+        font-size: 1.2rem;
+    }
+
+    .order-details h3 {
+        font-size: 1.6rem;
+    }
+
+    .detail-item {
+        font-size: 1.1rem;
+    }
+
+    .view-ticket-button,
+    .return-home-button {
+        max-width: 50%;
+        height: 3.25rem;
+        font-size: 1.05rem;
     }
 }
