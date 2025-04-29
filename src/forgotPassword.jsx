@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Logo from './logo.png';
 import './login.css';
 
-function ForgotPassword({ navigateToLogin }) {
+function ForgotPassword({ navigateToSignIn }) {
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -80,9 +80,9 @@ function ForgotPassword({ navigateToLogin }) {
                         </button>
                     </form>
                     <p className="sign-up">
-                        Back to
+                        Back to {''}
                         <button
-                            onClick={navigateToLogin}
+                            onClick={navigateToSignIn}
                             style={{
                                 background: 'none',
                                 border: 'none',
