@@ -1,8 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+.upcoming-event-text {
+    font-family: "Poppins", "Inter", "Montserrat", sans-serif;
+    padding: 0 0 2rem 0;
+    font-size: clamp(1rem, 2.5vw, 1.25rem); /* Scales between 16px and 20px */
+    margin: 3rem 2rem -1rem 1.875rem;
+    line-height: 1.5; /* Improves readability */
+}
 
-.upcoming-event-text{
-    font-family: "Montserrat", sans-serif;
-    padding: 0 0 20px 0;
-    font-size: 20px;
-    margin: 50px 35px -17px 30px;
+/* Media query for smaller viewports (e.g., mobile) */
+@media (max-width: 768px) {
+    .upcoming-event-text {
+        font-size: clamp(0.875rem, 2.8vw, 1rem); /* Scales between 14px and 16px */
+        margin: 2rem 1.5rem -0.75rem 1.5rem;
+        padding: 0 0 1.5rem 0;
+    }
+}
+
+/* Media query for larger viewports (e.g., desktop) */
+@media (min-width: 1200px) {
+    .upcoming-event-text {
+        font-size: clamp(1.125rem, 1.8vw, 1.375rem); /* Scales between 18px and 22px */
+        margin: 3.5rem 2.5rem -1.25rem 2rem;
+    }
 }
