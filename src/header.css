@@ -223,7 +223,9 @@ body, html {
 .sidebar-link.logout-btn {
     background: transparent; 
     border: none; 
-    color: #e03e00; 
+    color: #B3025E
+
+; 
     text-align: left; 
     width: 100%; 
     font-size: 18px; 
