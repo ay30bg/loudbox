@@ -205,7 +205,7 @@ body, html {
     transform: scale(0.98);
 } */
 
-.sidebar-link.logout-btn {
+/* .sidebar-link.logout-btn {
     background: transparent;
     border: none;
     color: #007bff;
@@ -218,6 +218,38 @@ body, html {
 
 .sidebar-link.logout-btn:hover {
     color: #0056b3;
+} */
+
+.sidebar-link.logout-btn {
+    background: transparent; /* Keep background transparent to match other links */
+    border: none; /* No border for a clean look */
+    color: #dc3545; /* Use a red color to indicate a destructive action like logout */
+    text-align: left; /* Align text with other sidebar links */
+    width: 100%; /* Full width for consistency */
+    padding: 12px 10px; /* Slightly more padding for better touch target */
+    font-size: 16px; /* Maintain font size */
+    font-weight: 500; /* Medium weight for emphasis */
+    cursor: pointer; /* Pointer cursor for interactivity */
+    transition: all 0.3s ease; /* Smooth transition for hover/active effects */
+    border-radius: 4px; /* Subtle rounded corners for modern look */
+}
+
+/* Hover effect */
+.sidebar-link.logout-btn:hover {
+    background: rgba(220, 53, 69, 0.1); /* Light red background on hover */
+    color: #c82333; /* Slightly darker red for contrast */
+}
+
+/* Active/Pressed state */
+.sidebar-link.logout-btn:active {
+    background: rgba(220, 53, 69, 0.2); /* Slightly darker background when clicked */
+    color: #bd2130; /* Even darker red for pressed state */
+}
+
+/* Focus state for accessibility */
+.sidebar-link.logout-btn:focus {
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.3); /* Custom focus ring */
 }
 
 .sidebar-newsletter {
