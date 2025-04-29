@@ -182,7 +182,7 @@ body, html {
     transform: scale(0.98); /* Click feedback */
 }
 
-.sidebar-logout-btn {
+/* .sidebar-logout-btn {
     background-color: #E60278;
     color: white;
     border: none;
@@ -203,8 +203,22 @@ body, html {
 
 .sidebar-logout-btn:active {
     transform: scale(0.98);
+} */
+
+.sidebar-link.login-btn {
+    background: transparent;
+    border: none;
+    color: #007bff;
+    text-align: left;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
 }
 
+.sidebar-link.login-btn:hover {
+    color: #0056b3;
+}
 
 .sidebar-newsletter {
     margin-top: 20px; /* Push to bottom */
