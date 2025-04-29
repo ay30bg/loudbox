@@ -19,7 +19,7 @@
 }
 
 .hero-text {
-  margin-top: 25px;
+  margin-top: 80px;
 }
 
 .hero-text h2 {
@@ -80,6 +80,7 @@
   color: #f5f5f5;
   cursor: pointer;
   padding: 10px;
+  text-align: center;
   font-size: 18px;
   border-radius: 4px;
 }
@@ -100,6 +101,28 @@
 }
 
 /* Responsive adjustments */
+@media (max-width: 375px) {
+  .event-field {
+    width: 320px;
+  }
+
+  .location-field {
+    width: 320px;
+    border-radius: 3px;
+  }
+
+  .hero-form select {
+    width: 320px;
+    border-radius: 3px;
+  }
+
+  .hero-form input[type="button"] {
+    width: 320px;
+    border-radius: 4px;
+    text-align: center;
+  }
+}
+
 @media (min-width: 768px) {
   .hero-container {
     height: 240px;
@@ -133,7 +156,7 @@
   .hero-form input[type="button"] {
     width: 100px;
     height: 45px;
-    border-radius: 4px;
+    border-radius: 3px;
   }
 }
 
