@@ -8,14 +8,6 @@
   padding: 20px;
 }
 
-/* .events-categories h2 {
-  font-family: 'Poppins', sans-serif; /* Changed to Poppins */
-  font-weight: 600; /* Bold, matches TicketPurchase.jsx */
-/*   font-size: 20px; */
-/*   color: #000; */
-/*   margin-bottom: 20px; */
-} */
-
 .events-categories h2 {
   font-family: 'Poppins', sans-serif; /* Changed to Poppins */
   padding: 0 0 2rem 0;
