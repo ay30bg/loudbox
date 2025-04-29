@@ -7,7 +7,8 @@ function Header({ onLogout,
                  navigateToLanding, 
                  navigateToHelpdesk, 
                  navigateToAboutUs,
-                 navigateToForOrganizers
+                 navigateToForOrganizers,
+                 onLogin
                 }) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [email, setEmail] = useState("");
@@ -54,6 +55,18 @@ function Header({ onLogout,
     const handleLogoClick = () => {
         console.log('Logo clicked');
         navigateToLanding();
+    };
+
+  const handleLoginClick = () => {
+        console.log('Login clicked');
+        setIsSidebarOpen(false);
+        if (onLogin) {
+            onLogin();
+        } else {
+            console.error('onLogin is undefined');
+            // Optionally, redirect to a login page
+            // Example: window.location.href = '/login';
+        }
     };
 
     // const handleLogoutClick = () => {
@@ -259,6 +272,21 @@ function Header({ onLogout,
                     >
                         Helpdesk
                     </button>
+                  {onLogout ? (
+                        <button
+                            className="sidebar-link logout-btn"
+                            onClick={onLogout}
+                        >
+                            Log Out
+                        </button>
+                    ) : (
+                        <button
+                            className="sidebar-link login-btn"
+                            onClick={handleLoginClick}
+                        >
+                            Log In
+                        </button>
+                    )}
                 </nav>
 
                 <div className="sidebar-newsletter">
