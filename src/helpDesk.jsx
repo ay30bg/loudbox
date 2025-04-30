@@ -1,35 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { FaTicketAlt, FaQuestionCircle, FaTimes, FaHeadset, FaCommentDots } from 'react-icons/fa';
+import axios from 'axios';
 import Footer from './footer';
 import './helpDesk.css';
 
 function HelpDesk({ navigateToLanding }) {
-    // State for ticket form modal
     const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
     const [ticketForm, setTicketForm] = useState({
         subject: '',
         description: '',
         category: 'General',
         eventId: '',
+        email: '',
     });
-
-    // State for FAQ collapse
     const [openFaqIndex, setOpenFaqIndex] = useState(null);
+    const [submissionStatus, setSubmissionStatus] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [events, setEvents] = useState([]);
 
-    // Mock events (replace with API call to your backend)
-    const events = [
-        { id: '1', name: 'Davido Live In Concert' },
-        { id: '2', name: 'Lungu Boy Tour' },
-        { id: '3', name: 'Alakada Bad and Boujee' },
-        { id: '4', name: 'Hellfest' },
-        { id: '5', name: 'Burna & Friends Concert' },
-        { id: '6', name: 'Afrobeats Festival' },
-        { id: '7', name: 'Ravage Uprising' },
-        { id: '8', name: 'Sabi Girl Concert' },
-        { id: '9', name: 'Local Rappers' },
-    ];
-
-    // FAQs
     const faqs = [
         {
             question: 'How do I purchase tickets?',
@@ -45,58 +33,101 @@ function HelpDesk({ navigateToLanding }) {
         },
     ];
 
-    // Handle ticket form submission
-    const handleTicketSubmit = (e) => {
+    // Fetch events
+    useEffect(() => {
+        const fetchEvents = async () => {
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/support-tickets/events`);
+                setEvents(response.data);
+            } catch (error) {
+                console.error('Error fetching events:', error);
+                setSubmissionStatus({ type: 'error', message: 'Failed to load events.' });
+            }
+        };
+        fetchEvents();
+    }, []);
+
+    const handleTicketSubmit = async (e) => {
         e.preventDefault();
-        console.log('Submitting ticket:', ticketForm);
-        // Replace with backend API call
-        alert('Ticket submitted! Our team will follow up soon.');
-        setIsTicketModalOpen(false);
-        setTicketForm({ subject: '', description: '', category: 'General', eventId: '' });
+        setIsSubmitting(true);
+        setSubmissionStatus(null);
+
+        // Client-side validation
+        if (ticketForm.subject.length < 5) {
+            setSubmissionStatus({ type: 'error', message: 'Subject must be at least 5 characters.' });
+            setIsSubmitting(false);
+            return;
+        }
+        if (ticketForm.description.length < 10) {
+            setSubmissionStatus({ type: 'error', message: 'Description must be at least 10 characters.' });
+            setIsSubmitting(false);
+            return;
+        }
+        if (!ticketForm.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ticketForm.email)) {
+            setSubmissionStatus({ type: 'error', message: 'Please enter a valid email address.' });
+            setIsSubmitting(false);
+            return;
+        }
+
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/support-tickets`, {
+                ...ticketForm,
+                userId: 'guest', // Replace with authenticated user ID
+            });
+            setSubmissionStatus({ type: 'success', message: 'Ticket submitted successfully!' });
+            setIsTicketModalOpen(false);
+            setTicketForm({ subject: '', description: '', category: 'General', eventId: '', email: '' });
+        } catch (error) {
+            console.error('Error submitting ticket:', error);
+            setSubmissionStatus({
+                type: 'error',
+                message: error.response?.data?.message || 'Failed to submit ticket. Please try again.',
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
-    // Toggle FAQ collapse
     const toggleFaq = (index) => {
         setOpenFaqIndex(openFaqIndex === index ? null : index);
     };
 
-    // Handle AI Live Chat button click (mock implementation)
     const handleLiveChat = () => {
-    if (window.Tawk_API) {
-        window.Tawk_API.maximize(); // Opens the chat widget
-    } else {
-        alert('Chat service is loading, please try again in a moment.');
-    }
-};
-
-useEffect(() => {
-    const showWidget = () => {
-        if (window.Tawk_API && window.Tawk_API.showWidget) {
-            window.Tawk_API.showWidget();
+        if (window.Tawk_API && window.Tawk_API.maximize) {
+            window.Tawk_API.maximize();
+        } else {
+            setTimeout(() => {
+                if (window.Tawk_API && window.Tawk_API.maximize) {
+                    window.Tawk_API.maximize();
+                } else {
+                    alert('Chat service failed to load. Please refresh the page.');
+                }
+            }, 1000);
         }
     };
 
-    // Check if Tawk_API is already loaded
-    if (window.Tawk_API && window.Tawk_API.loaded) {
-        showWidget();
-    } else {
-        // Wait for Tawk.to to load
-        window.Tawk_API = window.Tawk_API || {};
-        window.Tawk_API.onLoad = showWidget;
-    }
-
-    // Hide widget when component unmounts
-    return () => {
-        if (window.Tawk_API && window.Tawk_API.hideWidget) {
-            window.Tawk_API.hideWidget();
+    useEffect(() => {
+        const showWidget = () => {
+            if (window.Tawk_API && window.Tawk_API.showWidget) {
+                window.Tawk_API.showWidget();
+            }
+        };
+        if (window.Tawk_API && window.Tawk_API.loaded) {
+            showWidget();
+        } else {
+            window.Tawk_API = window.Tawk_API || {};
+            window.Tawk_API.onLoad = showWidget;
         }
-    };
-}, []);
+        return () => {
+            if (window.Tawk_API && window.Tawk_API.hideWidget) {
+                window.Tawk_API.hideWidget();
+            }
+        };
+    }, []);
 
     return (
         <div>
             <div className="helpdesk-page">
-                {/* Header Section */}
                 <header className="helpdesk-header">
                     <div className="header-icon">
                         <FaHeadset />
@@ -106,7 +137,6 @@ useEffect(() => {
                     <div className="header-divider"></div>
                 </header>
 
-                {/* Support Options Section */}
                 <section className="support-options">
                     <div className="support-card">
                         <FaCommentDots className="card-icon" />
@@ -134,7 +164,6 @@ useEffect(() => {
                     </div>
                 </section>
 
-                {/* FAQ Section */}
                 <section className="faq-section">
                     <h2>Frequently Asked Questions</h2>
                     {faqs.map((faq, index) => (
@@ -158,7 +187,6 @@ useEffect(() => {
                     ))}
                 </section>
 
-                {/* Ticket Creation Modal */}
                 {isTicketModalOpen && (
                     <div className="modal-overlay">
                         <div className="modal-content">
@@ -169,8 +197,29 @@ useEffect(() => {
                             >
                                 <FaTimes />
                             </button>
-                            <h2>Create a Support Ticket</h2>
-                            <form onSubmit={handleTicketSubmit} className="ticket-form">
+                            <h2 id="ticket-form-title">Create a Support Ticket</h2>
+                            {submissionStatus && (
+                                <div
+                                    id="submission-status"
+                                    className={`status-message ${submissionStatus.type}`}
+                                    role="alert"
+                                >
+                                    {submissionStatus.message}
+                                </div>
+                            )}
+                            <form onSubmit={handleTicketSubmit} className="ticket-form" aria-labelledby="ticket-form-title">
+                                <div className="form-group">
+                                    <label htmlFor="email">Email</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        value={ticketForm.email}
+                                        onChange={(e) => setTicketForm({ ...ticketForm, email: e.target.value })}
+                                        required
+                                        aria-required="true"
+                                        aria-describedby={submissionStatus ? 'submission-status' : undefined}
+                                    />
+                                </div>
                                 <div className="form-group">
                                     <label htmlFor="subject">Subject</label>
                                     <input
@@ -180,6 +229,7 @@ useEffect(() => {
                                         onChange={(e) => setTicketForm({ ...ticketForm, subject: e.target.value })}
                                         required
                                         aria-required="true"
+                                        aria-describedby={submissionStatus ? 'submission-status' : undefined}
                                     />
                                 </div>
                                 <div className="form-group">
@@ -218,11 +268,17 @@ useEffect(() => {
                                         onChange={(e) => setTicketForm({ ...ticketForm, description: e.target.value })}
                                         required
                                         aria-required="true"
+                                        aria-describedby={submissionStatus ? 'submission-status' : undefined}
                                         rows="5"
                                     />
                                 </div>
-                                <button type="submit" className="submit-button">
-                                    Submit Ticket
+                                <button
+                                    type="submit"
+                                    className="submit-button"
+                                    disabled={isSubmitting}
+                                    aria-busy={isSubmitting ? 'true' : 'false'}
+                                >
+                                    {isSubmitting ? 'Submitting...' : 'Submit Ticket'}
                                 </button>
                             </form>
                         </div>
