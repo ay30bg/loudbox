@@ -20,7 +20,7 @@ function LandingPage({
 
     return (
         <div className="landing-page-container">
-            <Header onLogin={navigateToSignIn} 
+            <Header onLogin={onLogin} 
             navigateToLanding={navigateToLanding} 
             navigateToHelpdesk={navigateToHelpdesk} 
             navigateToAboutUs={navigateToAboutUs}
