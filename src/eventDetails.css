@@ -146,6 +146,10 @@ html {
     font-weight: 400;
 }
 
+.event-venue-time{
+    margin-top: 5px;
+}
+
 .event-detail-btn {
     padding: 0.75rem 1.5rem;
     background-color: #17153a;
