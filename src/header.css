@@ -411,9 +411,8 @@ html {
 
     .nav-links-container {
         display: flex;
-        align-items: center;
         justify-content: space-between;
-        gap: 30px; /* Consistent gap for all larger screens */
+        gap: -30px; /* Consistent gap for all larger screens */
         margin: 0 auto 0 350px; /* Left margin to balance logo, auto for centering */
         flex-grow: 1; /* Allows nav-links to take available space */
     }
@@ -428,25 +427,5 @@ html {
     .nav-link {
         font-size: 16px; /* Slightly larger for readability */
     }
-
-    .nav-links-container {
-        margin: 0 auto 0 200px; /* Increased left margin for larger screens */
-        gap: 40px; /* Larger gap for better spacing */
-    }
-
-    .header-container {
-        padding: 0 30px; /* More padding for larger screens */
-    }
 }
 
-/* Adjustments for extra-large screens (1280px and above) */
-@media (min-width: 1280px) {
-    .nav-links-container {
-        margin: 0 auto 0 150px; /* Further adjust margin for wide screens */
-        gap: 30px; /* Wider gap for spacious layout */
-    }
-
-    .header-container {
-        padding: 0 40px; /* Maximum padding for very wide screens */
-    }
-} 
