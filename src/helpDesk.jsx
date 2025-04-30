@@ -18,8 +18,15 @@ function HelpDesk({ navigateToLanding }) {
 
     // Mock events (replace with API call to your backend)
     const events = [
-        { id: '1', name: 'Concert A' },
-        { id: '2', name: 'Festival B' },
+        { id: '1', name: 'Davido Live In Concert' },
+        { id: '2', name: 'Lungu Boy Tour' },
+        { id: '3', name: 'Alakada Bad and Boujee' },
+        { id: '4', name: 'Hellfest' },
+        { id: '5', name: 'Burna & Friends Concert' },
+        { id: '6', name: 'Afrobeats Festival' },
+        { id: '7', name: 'Ravage Uprising' },
+        { id: '8', name: 'Sabi Girl Concert' },
+        { id: '9', name: 'Local Rappers' },
     ];
 
     // FAQs
