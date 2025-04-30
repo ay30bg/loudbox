@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaTicketAlt, FaQuestionCircle, FaTimes, FaHeadset, FaCommentDots } from 'react-icons/fa';
 import Footer from './footer';
 import './helpDesk.css';
@@ -55,9 +55,36 @@ function HelpDesk({ navigateToLanding }) {
 
     // Handle AI Live Chat button click (mock implementation)
     const handleLiveChat = () => {
-        alert('Starting AI Live Chat...'); // Replace with actual chat integration
-        // Example: Open a chat widget or redirect to a chat service
+    if (window.Tawk_API) {
+        window.Tawk_API.maximize(); // Opens the chat widget
+    } else {
+        alert('Chat service is loading, please try again in a moment.');
+    }
+};
+
+useEffect(() => {
+    const showWidget = () => {
+        if (window.Tawk_API && window.Tawk_API.showWidget) {
+            window.Tawk_API.showWidget();
+        }
     };
+
+    // Check if Tawk_API is already loaded
+    if (window.Tawk_API && window.Tawk_API.loaded) {
+        showWidget();
+    } else {
+        // Wait for Tawk.to to load
+        window.Tawk_API = window.Tawk_API || {};
+        window.Tawk_API.onLoad = showWidget;
+    }
+
+    // Hide widget when component unmounts
+    return () => {
+        if (window.Tawk_API && window.Tawk_API.hideWidget) {
+            window.Tawk_API.hideWidget();
+        }
+    };
+}, []);
 
     return (
         <div>
