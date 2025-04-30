@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import UpcomingEvent from './upcomingEvent';
 import EventsCategories from './eventCategories';
 import EventHighlight from './eventHighlight';
@@ -16,7 +17,8 @@ function LandingPage({
     navigateToAboutUs,
     navigateToForOrganizers
 }) {
-
+const navigate = useNavigate();
+    
   const navigateToSignIn = () => {
   console.log('Navigating to login');
   navigate('/login');
