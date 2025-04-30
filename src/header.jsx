@@ -319,23 +319,26 @@
 // export default Header;
 
 
-import React, { useState, useContext } from "react";
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import logo from './logo.png';
-import { FaBars, FaTimes, FaShoppingCart } from "react-icons/fa";
+import { FaBars, FaTimes, FaShoppingCart } from 'react-icons/fa';
 import './header.css';
-import { AuthContext } from './AuthContext'; // Import AuthContext
+import { AuthContext } from './AuthContext';
 
 function Header({
   navigateToLanding,
   navigateToHelpdesk,
   navigateToAboutUs,
   navigateToForOrganizers,
-  onLogin
 }) {
-  const { user, logout } = useContext(AuthContext); // Access user and logout from AuthContext
+  const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoginLoading, setIsLoginLoading] = useState(false); // Loading state for Log In
+  const [isLogoutLoading, setIsLogoutLoading] = useState(false); // Loading state for Log Out
 
   const handleCartClick = () => {
     console.log('Cart icon clicked');
@@ -379,20 +382,31 @@ function Header({
     navigateToLanding();
   };
 
-  const handleLoginClick = () => {
+  const handleLoginClick = async () => {
     console.log('Login clicked');
-    setIsSidebarOpen(false);
-    if (onLogin) {
-      onLogin();
-    } else {
-      console.error('onLogin is undefined');
+    setIsLoginLoading(true); // Set loading state
+    try {
+      setIsSidebarOpen(false);
+      navigate('/login'); // Navigate to login page
+    } catch (error) {
+      console.error('Login navigation failed:', error);
+    } finally {
+      setIsLoginLoading(false); // Reset loading state
     }
   };
 
-  const handleLogoutClick = () => {
+  const handleLogoutClick = async () => {
     console.log('Log Out clicked');
-    setIsSidebarOpen(false);
-    logout(); // Call logout from AuthContext
+    setIsLogoutLoading(true); // Set loading state
+    try {
+      setIsSidebarOpen(false);
+      await logout(); // Call logout from AuthContext
+      navigate('/login'); // Navigate to login page
+    } catch (error) {
+      console.error('Logout failed:', error);
+    } finally {
+      setIsLogoutLoading(false); // Reset loading state
+    }
   };
 
   const checkSubscriptionStatus = async (email) => {
@@ -423,12 +437,12 @@ function Header({
   const handleSubscribe = async (e) => {
     e.preventDefault();
     if (!email) {
-      alert("Please enter an email address.");
+      alert('Please enter an email address.');
       return;
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      alert("Please enter a valid email address.");
+      alert('Please enter a valid email address.');
       return;
     }
 
@@ -436,8 +450,8 @@ function Header({
     try {
       const isSubscribed = await checkSubscriptionStatus(email);
       if (isSubscribed) {
-        alert("This email is already subscribed to the newsletter.");
-        setEmail("");
+        alert('This email is already subscribed to the newsletter.');
+        setEmail('');
         return;
       }
 
@@ -456,18 +470,18 @@ function Header({
 
       if (!response.ok) {
         const errorData = await response.json();
-        if (response.status === 422 && errorData.message.includes("already been subscribed")) {
-          alert("This email is already subscribed to the newsletter.");
-          setEmail("");
+        if (response.status === 422 && errorData.message.includes('already been subscribed')) {
+          alert('This email is already subscribed to the newsletter.');
+          setEmail('');
           return;
         }
         throw new Error(errorData.message || 'Subscription failed');
       }
 
-      alert("Subscribed successfully!");
-      setEmail("");
+      alert('Subscribed successfully!');
+      setEmail('');
     } catch (err) {
-      alert("Failed to subscribe: " + err.message);
+      alert('Failed to subscribe: ' + err.message);
     } finally {
       setIsSubmitting(false);
     }
@@ -481,42 +495,46 @@ function Header({
         <FaBars className="icons" onClick={handleMenuClick} aria-label="Open menu" />
       </div>
       <div className="nav-links-container">
-        <button
-          className="nav-link"
-          onClick={() => handleNavLinkClick('Events')}
-        >
+        <button className="nav-link" onClick={() => handleNavLinkClick('Events')}>
           Events
         </button>
-        <button
-          className="nav-link"
-          onClick={() => handleNavLinkClick('About Us')}
-        >
+        <button className="nav-link" onClick={() => handleNavLinkClick('About Us')}>
           About Us
         </button>
-        <button
-          className="nav-link"
-          onClick={() => handleNavLinkClick('Helpdesk')}
-        >
+        <button className="nav-link" onClick={() => handleNavLinkClick('Helpdesk')}>
           Helpdesk
         </button>
         {user ? (
           <button
             className="logout-btn"
             onClick={handleLogoutClick}
+            disabled={isLogoutLoading}
+            aria-busy={isLogoutLoading}
+            aria-label={isLogoutLoading ? 'Logging out' : 'Log out'}
           >
-            Log Out
+            {isLogoutLoading ? (
+              <span className="loading-spinner">Loading...</span>
+            ) : (
+              'Log Out'
+            )}
           </button>
         ) : (
           <button
             className="login-btn"
             onClick={handleLoginClick}
+            disabled={isLoginLoading}
+            aria-busy={isLoginLoading}
+            aria-label={isLoginLoading ? 'Navigating to login' : 'Log in'}
           >
-            Log In
+            {isLoginLoading ? (
+              <span className="loading-spinner">Loading...</span>
+            ) : (
+              'Log In'
+            )}
           </button>
         )}
       </div>
 
-      {/* Sidebar */}
       <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
           <img src={logo} alt="Loudbox logo" className="sidebar-logo" />
@@ -530,43 +548,45 @@ function Header({
         </div>
 
         <nav className="sidebar-nav">
-          <button
-            className="sidebar-link"
-            onClick={() => handleNavLinkClick('Events')}
-          >
+          <button className="sidebar-link" onClick={() => handleNavLinkClick('Events')}>
             Events
           </button>
-          <button
-            className="sidebar-link"
-            onClick={() => handleNavLinkClick('About Us')}
-          >
+          <button className="sidebar-link" onClick={() => handleNavLinkClick('About Us')}>
             About Us
           </button>
-          <button
-            className="sidebar-link"
-            onClick={() => handleNavLinkClick('Organizers')}
-          >
+          <button className="sidebar-link" onClick={() => handleNavLinkClick('Organizers')}>
             For Organizers
           </button>
-          <button
-            className="sidebar-link"
-            onClick={() => handleNavLinkClick('Helpdesk')}
-          >
+          <button className="sidebar-link" onClick={() => handleNavLinkClick('Helpdesk')}>
             Helpdesk
           </button>
           {user ? (
             <button
               className="sidebar-link logout-btn"
               onClick={handleLogoutClick}
+              disabled={isLogoutLoading}
+              aria-busy={isLogoutLoading}
+              aria-label={isLogoutLoading ? 'Logging out' : 'Log out'}
             >
-              Log Out
+              {isLogoutLoading ? (
+                <span className="loading-spinner">Loading...</span>
+              ) : (
+                'Log Out'
+              )}
             </button>
           ) : (
             <button
               className="sidebar-link login-btn"
               onClick={handleLoginClick}
+              disabled={isLoginLoading}
+              aria-busy={isLoginLoading}
+              aria-label={isLoginLoading ? 'Navigating to login' : 'Log in'}
             >
-              Log In
+              {isLoginLoading ? (
+                <span className="loading-spinner">Loading...</span>
+              ) : (
+                'Log In'
+              )}
             </button>
           )}
         </nav>
@@ -589,7 +609,7 @@ function Header({
               className="newsletter-btn"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Subscribing..." : "Subscribe"}
+              {isSubmitting ? 'Subscribing...' : 'Subscribe'}
             </button>
           </form>
         </div>
