@@ -8,7 +8,7 @@ import './landingPage.css'
 import Footer from "./footer";
 
 function LandingPage({
-    onLogout,
+    onLogin,
     navigateToEventDetails,
     navigateToLanding,
     navigateToCategory,
@@ -20,7 +20,7 @@ function LandingPage({
 
     return (
         <div className="landing-page-container">
-            <Header onLogout={onLogout} 
+            <Header onLogin={navigateToSignIn} 
             navigateToLanding={navigateToLanding} 
             navigateToHelpdesk={navigateToHelpdesk} 
             navigateToAboutUs={navigateToAboutUs}
