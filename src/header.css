@@ -219,6 +219,42 @@ html {
     transform: scale(0.98);
 } */
 
+.loading-spinner {
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px; /* Smaller font for loading text */
+}
+
+/* Optional: Add a spinning animation */
+.loading-spinner::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #fff; /* White spinner for contrast */
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 8px; /* Space between spinner and text */
+}
+
+/* Spinner animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Disabled state for buttons */
+.login-btn:disabled,
+.logout-btn:disabled,
+.sidebar-link.login-btn:disabled,
+.sidebar-link.logout-btn:disabled {
+  opacity: 0.6; /* Reduce opacity to indicate disabled state */
+  cursor: not-allowed; /* Change cursor to indicate button is disabled */
+  pointer-events: none; /* Prevent interactions */
+}
+
 .sidebar-link.login-btn {
   background-color: #007bff; /* Primary blue background */
   color: #fff; /* White text */
