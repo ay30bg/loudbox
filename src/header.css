@@ -225,7 +225,7 @@ html {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  background-color: #e60278;
+  background-color: #007bff;
   color: #fff;
   border-radius: 5px;
   margin: 10px 20px;
@@ -233,11 +233,11 @@ html {
 }
 
 .sidebar-link.login-btn:hover:not(:disabled) {
-  background-color: #c70166;
+  background-color: #0056b3;
 }
 
 .sidebar-link.login-btn:active:not(:disabled) {
-  background-color: #b0005a;
+  background-color: #004085;
 }
 
 .sidebar-link.logout-btn {
@@ -245,7 +245,7 @@ html {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  background-color: #e60278;
+  background-color: #dc3545;
   color: #fff;
   border-radius: 5px;
   margin: 10px 20px;
@@ -253,11 +253,11 @@ html {
 }
 
 .sidebar-link.logout-btn:hover:not(:disabled) {
-  background-color: #c70166;
+  background-color: #c82333;
 }
 
 .sidebar-link.logout-btn:active:not(:disabled) {
-  background-color: #b0005a;
+  background-color: #bd2130;
 }
 
 .sidebar-newsletter {
