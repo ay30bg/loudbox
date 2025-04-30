@@ -239,7 +239,7 @@ html {
 
 /* Specific styles for the Log Out button */
 .sidebar-link.logout-btn {
-  display: block;
+ width: 100%;
   background-color: #dc3545; /* Red background for emphasis */
   color: #fff; /* White text */
   border-radius: 5px; /* Rounded corners */
