@@ -295,8 +295,8 @@ html {
 .sidebar-link.logout-btn {
   width: 90%;
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
   background-color: #dc3545; /* Red background for emphasis */
   color: #fff; /* White text */
   border-radius: 5px; /* Rounded corners */
