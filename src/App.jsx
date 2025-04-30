@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { AuthProvider, AuthContext } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 import Login from './login';
 import LandingPage from './landingPage';
@@ -22,14 +24,18 @@ function App() {
 
   function NavigationHandlers() {
     const navigate = useNavigate();
+    const { login, logout } = React.useContext(AuthContext); // Access AuthContext
 
-    const handleLogin = () => {
-      console.log('Handling login');
-      navigate('/');
+    const handleLogin = (userData) => {
+      console.log('Handling login', userData);
+      login(userData); // Update AuthContext
+      const { from = '/', orderState = null } = userData.state || {};
+      navigate(from, { state: orderState }); // Redirect to the original page
     };
 
     const handleLogout = () => {
       console.log('Handling logout');
+      logout(); // Clear AuthContext
       navigate('/login');
     };
 
@@ -43,7 +49,7 @@ function App() {
       navigate('/login');
     };
 
-     const navigateToForgotPassword = () => {
+    const navigateToForgotPassword = () => {
       console.log('Navigating to forgot password');
       navigate('/forgot-password');
     };
@@ -119,27 +125,23 @@ function App() {
         <Routes>
           <Route
             path="/login"
-            element={<Login onLogin={handleLogin} 
-                      navigateToSignUp={navigateToSignUp} 
-                      navigateToForgotPassword={navigateToForgotPassword}
-                       />
+            element={
+              <Login
+                onLogin={handleLogin}
+                navigateToSignUp={navigateToSignUp}
+                navigateToForgotPassword={navigateToForgotPassword}
+              />
             }
           />
           <Route
             path="/signup"
-            element={<SignUp 
-              navigateToSignIn={navigateToSignIn} />}
+            element={<SignUp navigateToSignIn={navigateToSignIn} />}
           />
           <Route
             path="/forgot-password"
-            element={<ForgotPassword
-            navigateToSignIn={navigateToSignIn} />
-            }
+            element={<ForgotPassword navigateToSignIn={navigateToSignIn} />}
           />
-          <Route
-               path="/reset-password/:token"
-                element={<ResetPassword />}
-                    />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route
             path="/"
             element={
@@ -175,10 +177,12 @@ function App() {
           <Route
             path="/order-summary/:id"
             element={
-              <OrderSummary
-                navigateBack={navigateToTicketPurchase}
-                navigateToThankYou={navigateToThankYou}
-              />
+              <ProtectedRoute>
+                <OrderSummary
+                  navigateBack={navigateToTicketPurchase}
+                  navigateToThankYou={navigateToThankYou}
+                />
+              </ProtectedRoute>
             }
           />
           <Route
@@ -196,29 +200,22 @@ function App() {
           />
           <Route
             path="/concerts"
-            element={<ConcertCategory
-              navigateToEventDetails={navigateToEventDetails}
-            />}
+            element={
+              <ConcertCategory navigateToEventDetails={navigateToEventDetails} />
+            }
           />
           <Route
             path="/helpdesk"
-            element={<HelpDesk 
-              navigateToLanding={navigateToLanding} />}
+            element={<HelpDesk navigateToLanding={navigateToLanding} />}
           />
           <Route
             path="/about-us"
-            element={<AboutUs
-              navigateToLanding={navigateToLanding} />
-            }
+            element={<AboutUs navigateToLanding={navigateToLanding} />}
           />
           <Route
             path="/organizers"
-            element={<ForOrganizers
-              navigateToLanding={navigateToLanding} />
-            }
+            element={<ForOrganizers navigateToLanding={navigateToLanding} />}
           />
-          
-          {/* Catch-all route for debugging */}
           <Route
             path="*"
             element={<div>404: No route matched. URL: {window.location.pathname}</div>}
@@ -229,13 +226,15 @@ function App() {
   }
 
   return (
-    <Router>
-      <div className="App">
-        <div className="content">
-          <NavigationHandlers />
+    <AuthProvider>
+      <Router>
+        <div className="App">
+          <div className="content">
+            <NavigationHandlers />
+          </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </AuthProvider>
   );
 }
 
