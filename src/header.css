@@ -296,6 +296,7 @@ html {
   width: 90%;
   background-color: #dc3545; /* Red background for emphasis */
   color: #fff; /* White text */
+  text-align: center;
   border-radius: 5px; /* Rounded corners */
   margin: 10px 20px; /* Margin to stand out from other links */
   padding: 10px 15px; /* Slightly different padding for button-like feel */
