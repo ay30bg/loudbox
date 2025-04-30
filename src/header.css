@@ -196,7 +196,7 @@ html {
     /* Click feedback */
 }
 
-.sidebar-logout-btn {
+/* .sidebar-logout-btn {
     background-color: #E60278;
     color: white;
     border: none;
@@ -217,8 +217,45 @@ html {
 
 .sidebar-logout-btn:active {
     transform: scale(0.98);
+} */
+
+.sidebar-link.login-btn {
+  background-color: #007bff; /* Primary blue background */
+  color: #fff; /* White text */
+  border-radius: 5px; /* Rounded corners */
+  margin: 10px 20px; /* Margin to stand out from other links */
+  padding: 10px 15px; /* Slightly different padding for button-like feel */
 }
 
+.sidebar-link.login-btn:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  color: #fff; /* Keep white text */
+}
+
+/* Active state for Log In button */
+.sidebar-link.login-btn:active {
+  background-color: #004085; /* Even darker blue when clicked */
+}
+
+/* Specific styles for the Log Out button */
+.sidebar-link.logout-btn {
+  background-color: #dc3545; /* Red background for emphasis */
+  color: #fff; /* White text */
+  border-radius: 5px; /* Rounded corners */
+  margin: 10px 20px; /* Margin to stand out from other links */
+  padding: 10px 15px; /* Slightly different padding for button-like feel */
+}
+
+/* Hover effect for Log Out button */
+.sidebar-link.logout-btn:hover {
+  background-color: #c82333; /* Darker red on hover */
+  color: #fff; /* Keep white text */
+}
+
+/* Active state for Log Out button */
+.sidebar-link.logout-btn:active {
+  background-color: #bd2130; /* Even darker red when clicked */
+}
 
 .sidebar-newsletter {
     margin-top: 20px;
