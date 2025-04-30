@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+// src/orderSummary.js
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { FaEnvelope, FaPhone, FaFilePdf, FaFileImage, FaAngleDown, FaUser } from 'react-icons/fa';
 import axios from 'axios';
+import { AuthContext } from './AuthContext';
 import './orderSummary.css';
 
-// Mock events (unchanged)
 const mockEvents = [
   {
     id: '1',
@@ -187,6 +188,7 @@ const mockEvents = [
 function OrderSummary({ navigateBack, navigateToThankYou }) {
   const { id } = useParams();
   const { state } = useLocation();
+  const { user } = useContext(AuthContext);
   const [eventData, setEventData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showFileDetails, setShowFileDetails] = useState(false);
@@ -291,94 +293,101 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
   };
 
   const handlePayment = async () => {
-  if (!isPaystackLoaded || !window.PaystackPop) {
-    setPaymentError('Paystack script not loaded. Please try again.');
-    return;
-  }
+    // Check if user is logged in
+    if (!user) {
+      setPaymentError('Please sign in to complete your payment.');
+      navigateBack({ id }); // Navigate back to ticket purchase
+      return;
+    }
 
-  setIsPaying(true);
-  try {
-    const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://loudbox-backend.vercel.app';
-    const requestData = {
-      email: email || 'guest@example.com',
-      amount: totalPrice,
-      subaccount_code: eventData.subaccount_code,
-      firstName,
-      lastName,
-      phoneNumber,
-      eventTitle: eventData.title,
-      ticketQuantity,
-    };
-    console.log('Sending to /api/initialize-transaction:', requestData);
-    const response = await axios.post(`${backendUrl}/api/initialize-transaction`, requestData);
-    console.log('Response from /api/initialize-transaction:', response.data);
+    if (!isPaystackLoaded || !window.PaystackPop) {
+      setPaymentError('Paystack script not loaded. Please try again.');
+      return;
+    }
 
-    const { authorization_url, reference } = response.data.data;
+    setIsPaying(true);
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://loudbox-backend.vercel.app';
+      const requestData = {
+        email: email || 'guest@example.com',
+        amount: totalPrice,
+        subaccount_code: eventData.subaccount_code,
+        firstName,
+        lastName,
+        phoneNumber,
+        eventTitle: eventData.title,
+        ticketQuantity,
+      };
+      console.log('Sending to /api/initialize-transaction:', requestData);
+      const response = await axios.post(`${backendUrl}/api/initialize-transaction`, requestData);
+      console.log('Response from /api/initialize-transaction:', response.data);
 
-    const handlePaymentResponse = async (response) => {
-      if (response.status === 'success') {
-        console.log(`Payment successful! Transaction reference: ${response.reference}`);
-        try {
-          const verifyResponse = await axios.get(`${backendUrl}/api/verify-transaction/${response.reference}`);
-          console.log('Verification response:', verifyResponse.data);
-          if (verifyResponse.data.data.status === 'success') {
-            await createTicket(response);
-          } else {
+      const { authorization_url, reference } = response.data.data;
+
+      const handlePaymentResponse = async (response) => {
+        if (response.status === 'success') {
+          console.log(`Payment successful! Transaction reference: ${response.reference}`);
+          try {
+            const verifyResponse = await axios.get(`${backendUrl}/api/verify-transaction/${response.reference}`);
+            console.log('Verification response:', verifyResponse.data);
+            if (verifyResponse.data.data.status === 'success') {
+              await createTicket(response);
+            } else {
+              setPaymentError('Payment verification failed. Please contact support.');
+              setIsPaying(false);
+            }
+          } catch (error) {
+            console.error('Verification error:', error);
             setPaymentError('Payment verification failed. Please contact support.');
             setIsPaying(false);
           }
-        } catch (error) {
-          console.error('Verification error:', error);
-          setPaymentError('Payment verification failed. Please contact support.');
+        } else {
+          setPaymentError('Payment failed. Please try again.');
           setIsPaying(false);
         }
-      } else {
-        setPaymentError('Payment failed. Please try again.');
-        setIsPaying(false);
-      }
-    };
+      };
 
-    const handler = window.PaystackPop.setup({
-      key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY || 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
-      email: email || 'guest@example.com',
-      amount: totalPrice * 100,
-      currency: 'NGN',
-      ref: reference, // Use backend-provided reference
-      metadata: {
-        custom_fields: [
-          {
-            display_name: 'Event Title',
-            variable_name: 'event_title',
-            value: eventData.title,
-          },
-          {
-            display_name: 'Ticket Quantity',
-            variable_name: 'ticket_quantity',
-            value: ticketQuantity,
-          },
-          {
-            display_name: 'Customer Name',
-            variable_name: 'customer_name',
-            value: `${firstName} ${lastName}`,
-          },
-        ],
-      },
-      callback: (response) => {
-        handlePaymentResponse(response);
-      },
-      onClose: () => {
-        setPaymentError('Payment cancelled.');
-        setIsPaying(false);
-      },
-    });
+      const handler = window.PaystackPop.setup({
+        key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY || 'pk_test_f5af6c1a30d2bcfed0192f0e8006566fe27441df',
+        email: email || 'guest@example.com',
+        amount: totalPrice * 100,
+        currency: 'NGN',
+        ref: reference,
+        metadata: {
+          custom_fields: [
+            {
+              display_name: 'Event Title',
+              variable_name: 'event_title',
+              value: eventData.title,
+            },
+            {
+              display_name: 'Ticket Quantity',
+              variable_name: 'ticket_quantity',
+              value: ticketQuantity,
+            },
+            {
+              display_name: 'Customer Name',
+              variable_name: 'customer_name',
+              value: `${firstName} ${lastName}`,
+            },
+          ],
+        },
+        callback: (response) => {
+          handlePaymentResponse(response);
+        },
+        onClose: () => {
+          setPaymentError('Payment cancelled.');
+          setIsPaying(false);
+        },
+      });
 
-    handler.openIframe();
-  } catch (error) {
-    console.error('Payment initialization error:', error.response?.data || error.message);
-    setPaymentError(error.response?.data?.message || 'Failed to initialize payment. Please try again.');
-    setIsPaying(false);
-  }
-};
+      handler.openIframe();
+    } catch (error) {
+      console.error('Payment initialization error:', error.response?.data || error.message);
+      setPaymentError(error.response?.data?.message || 'Failed to initialize payment. Please try again.');
+      setIsPaying(false);
+    }
+  };
 
   if (loading) {
     return <div>Loading event data...</div>;
@@ -484,7 +493,7 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
             {isPaying ? 'Processing...' : `Pay NGN ${totalPrice.toLocaleString()}`}
           </button>
           <button
-            onClick={() => navigateBack(eventData)}
+            onClick={() => navigateBack({ id })}
             aria-label="Back to ticket purchase"
             className="back-ticket-purchase-btn"
             disabled={isPaying}
