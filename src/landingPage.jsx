@@ -8,11 +8,6 @@ import './landingPage.css'
 import Footer from "./footer";
 
 function LandingPage({
-const navigateToSignIn = () => {
-  console.log('Navigating to login');
-  navigate('/login');
-};
-    
     onLogin,
     navigateToEventDetails,
     navigateToLanding,
@@ -21,6 +16,11 @@ const navigateToSignIn = () => {
     navigateToAboutUs,
     navigateToForOrganizers
 }) {
+
+  const navigateToSignIn = () => {
+  console.log('Navigating to login');
+  navigate('/login');
+};
     console.log('LandingPage rendered, navigateToEventDetails:', navigateToEventDetails); // Log 6
 
     return (
