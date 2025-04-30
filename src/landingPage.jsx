@@ -8,6 +8,11 @@ import './landingPage.css'
 import Footer from "./footer";
 
 function LandingPage({
+const navigateToSignIn = () => {
+  console.log('Navigating to login');
+  navigate('/login');
+};
+    
     onLogin,
     navigateToEventDetails,
     navigateToLanding,
@@ -20,7 +25,7 @@ function LandingPage({
 
     return (
         <div className="landing-page-container">
-            <Header onLogin={onLogin} 
+            <Header onLogin={navigateToSignIn} 
             navigateToLanding={navigateToLanding} 
             navigateToHelpdesk={navigateToHelpdesk} 
             navigateToAboutUs={navigateToAboutUs}
