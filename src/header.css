@@ -1,297 +1,223 @@
 /* Reset and base styles */
 body,
 html {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    font-family: 'Inter', sans-serif;
-    /* Match EventDetails */
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
 }
 
 /* Header container */
 .header-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    background-color: #17153a;
-    color: white;
-    max-width: 1500px;
-    width: 100%;
-    height: 70px;
-    gap: 35px;
-    margin: 0 auto;
-    z-index: 1000;
-    box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  background-color: #17153a;
+  color: white;
+  max-width: 1500px;
+  width: 100%;
+  height: 70px;
+  gap: 35px;
+  margin: 0 auto;
+  z-index: 1000;
+  box-sizing: border-box;
 }
 
 .header-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100vw;
-    height: 100%;
-    background-color: #17153a;
-    z-index: -1;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 100%;
+  background-color: #17153a;
+  z-index: -1;
 }
 
 .icons-container {
-    display: flex;
-    gap: 15px;
-    margin-left: auto;
-    margin-right: 25px;
+  display: flex;
+  gap: 15px;
+  margin-left: auto;
+  margin-right: 25px;
 }
 
 .logo-img {
-    width: 200px;
-    height: 50px;
-    margin-top: 12px;
-    cursor: pointer;
+  width: 200px;
+  height: 50px;
+  margin-top: 12px;
+  cursor: pointer;
 }
 
 .icons {
-    margin-top: 30px;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    transition: color 0.3s;
+  margin-top: 30px;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.3s;
 }
 
 .icons:hover {
-    color: #e0e0e0;
-    /* Add hover for consistency */
+  color: #e0e0e0;
 }
 
 .nav-links-container {
-    display: none;
-    gap: 40px;
-    margin: 0 600px;
+  display: none;
+  gap: 40px;
+  margin: 0 600px;
 }
 
 .nav-link {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 15px;
-    font-weight: 500;
-    font-family: 'Poppins', sans-serif;
-    /* Match EventDetails */
-    cursor: pointer;
-    white-space: nowrap;
-    transition: color 0.3s;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.3s;
 }
 
 .nav-link:hover {
-    color: #e0e0e0;
+  color: #e0e0e0;
 }
 
 .logout-btn {
-    width: 80px;
-    height: 40px;
-    background-color: #E60278;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    margin-top: 15px;
-    cursor: pointer;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
+  width: 80px;
+  height: 40px;
+  background-color: #e60278;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  margin-top: 15px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
 }
 
-.logout-btn:hover {
-    background-color: #c70166;
+.logout-btn:hover:not(:disabled) {
+  background-color: #c70166;
 }
 
 .login-btn {
-    width: 80px;
-    height: 40px;
-    background-color: #E60278;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    margin-top: 15px;
-    cursor: pointer;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
+  width: 80px;
+  height: 40px;
+  background-color: #e60278;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  margin-top: 15px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
 }
 
-.login-btn:hover {
-    background-color: #c70166;
+.login-btn:hover:not(:disabled) {
+  background-color: #c70166;
 }
 
-
-/* Revamped Sidebar */
-.sidebar {
-    position: fixed;
-    top: 0;
-    right: 0;
-    min-height: 100vh;
-    /* Allow expansion */
-    height: auto;
-    /* Fit content */
-    width: 80%;
-    max-width: 350px;
-    background-color: #17153a;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.3);
-    transform: translateX(100%);
-    transition: transform 0.3s ease-in-out;
-    z-index: 999;
-    font-family: 'Inter', sans-serif;
-    overflow-y: auto;
-    /* Enable scrolling */
-    -webkit-overflow-scrolling: touch;
-    z-index: 999;
-}
-
+/* Sidebar overlay */
 .sidebar-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  background-color: rgba(0, 0, 0, 0.5);
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-  z-index: 998; /* Below sidebar but above content */
-  cursor: pointer; /* Indicate clickable area */
+  z-index: 998;
+  cursor: pointer;
 }
 
-.sidebar.open ~ .sidebar-overlay,
-.sidebar-overlay.sidebar-active {
+.sidebar-overlay.active {
   opacity: 1;
   visibility: visible;
 }
 
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  min-height: 100vh;
+  height: auto;
+  width: 80%;
+  max-width: 350px;
+  background-color: #17153a;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.3);
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 999;
+  font-family: 'Inter', sans-serif;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .sidebar.open {
-    transform: translateX(0);
+  transform: translateX(0);
 }
 
 .sidebar-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .sidebar-logo {
-    width: 180px;
-    /* Smaller logo */
-    height: auto;
+  width: 180px;
+  height: auto;
 }
 
 .sidebar-close {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 28px;
-    cursor: pointer;
-    padding: 10px;
-    transition: color 0.3s;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 10px;
+  transition: color 0.3s;
 }
 
 .sidebar-close:hover {
-    color: #E60278;
-    /* Match logout button */
+  color: #e60278;
 }
 
 .sidebar-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
 }
 
 .sidebar-link {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 18px;
-    /* Slightly smaller */
-    font-weight: 500;
-    font-family: 'Poppins', sans-serif;
-    /* Match EventDetails */
-    padding: 10px 20px;
-    text-align: left;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: background-color 0.3s, transform 0.2s;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  padding: 10px 20px;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
-.sidebar-link:hover {
-    background-color: #2a2756;
-    /* Lighter shade of #17153a */
-    transform: translateX(5px);
-    /* Subtle shift */
+.sidebar-link:hover:not(:disabled) {
+  background-color: #2a2756;
+  transform: translateX(5px);
 }
 
-.sidebar-link:active {
-    transform: scale(0.98);
-    /* Click feedback */
-}
-
-/* .sidebar-logout-btn {
-    background-color: #E60278;
-    color: white;
-    border: none;
-    font-size: 18px;
-    font-weight: 500;
-    font-family: 'Poppins', sans-serif;
-    padding: 10px 20px;
-    text-align: left;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-.sidebar-logout-btn:hover {
-    background-color: #c70166;
-    transform: translateX(5px);
-}
-
-.sidebar-logout-btn:active {
-    transform: scale(0.98);
-} */
-
-.loading-spinner {
-  display: inline-flex;
-  align-items: center;
-  font-size: 14px; /* Smaller font for loading text */
-}
-
-/* Optional: Add a spinning animation */
-.loading-spinner::before {
-  content: '';
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  border: 2px solid #fff; /* White spinner for contrast */
-  border-top-color: transparent;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-right: 8px; /* Space between spinner and text */
-}
-
-/* Spinner animation */
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Disabled state for buttons */
-.login-btn:disabled,
-.logout-btn:disabled,
-.sidebar-link.login-btn:disabled,
-.sidebar-link.logout-btn:disabled {
-  opacity: 0.6; /* Reduce opacity to indicate disabled state */
-  cursor: not-allowed; /* Change cursor to indicate button is disabled */
-  pointer-events: none; /* Prevent interactions */
+.sidebar-link:active:not(:disabled) {
+  transform: scale(0.98);
 }
 
 .sidebar-link.login-btn {
@@ -299,161 +225,181 @@ html {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  background-color: #007bff; /* Primary blue background */
-  color: #fff; /* White text */
-  border-radius: 5px; /* Rounded corners */
-  margin: 10px 20px; /* Margin to stand out from other links */
-  padding: 10px 15px; /* Slightly different padding for button-like feel */
+  background-color: #e60278;
+  color: #fff;
+  border-radius: 5px;
+  margin: 10px 20px;
+  padding: 10px 15px;
 }
 
-.sidebar-link.login-btn:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-  color: #fff; /* Keep white text */
+.sidebar-link.login-btn:hover:not(:disabled) {
+  background-color: #c70166;
 }
 
-/* Active state for Log In button */
-.sidebar-link.login-btn:active {
-  background-color: #004085; /* Even darker blue when clicked */
+.sidebar-link.login-btn:active:not(:disabled) {
+  background-color: #b0005a;
 }
 
-/* Specific styles for the Log Out button */
 .sidebar-link.logout-btn {
   width: 90%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  background-color: #dc3545; /* Red background for emphasis */
-  color: #fff; /* White text */
-  border-radius: 5px; /* Rounded corners */
-  margin: 10px 20px; /* Margin to stand out from other links */
-  padding: 10px 15px; /* Slightly different padding for button-like feel */
+  background-color: #e60278;
+  color: #fff;
+  border-radius: 5px;
+  margin: 10px 20px;
+  padding: 10px 15px;
 }
 
-/* Hover effect for Log Out button */
-.sidebar-link.logout-btn:hover {
-  background-color: #c82333; /* Darker red on hover */
-  color: #fff; /* Keep white text */
+.sidebar-link.logout-btn:hover:not(:disabled) {
+  background-color: #c70166;
 }
 
-/* Active state for Log Out button */
-.sidebar-link.logout-btn:active {
-  background-color: #bd2130; /* Even darker red when clicked */
+.sidebar-link.logout-btn:active:not(:disabled) {
+  background-color: #b0005a;
 }
 
 .sidebar-newsletter {
-    margin-top: 20px;
-    /* Push to bottom */
-    padding: 20px 0;
+  margin-top: 20px;
+  padding: 20px 0;
 }
 
 .sidebar-divider {
-    border: 1px solid #4a4676;
-    /* Softer gray */
-    margin: 15px 0;
+  border: 1px solid #4a4676;
+  margin: 15px 0;
 }
 
 .sidebar-newsletter h4 {
-    font-size: 16px;
-    font-weight: 500;
-    font-family: 'Poppins', sans-serif;
-    color: white;
-    text-align: left;
-    margin-bottom: 15px;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  text-align: left;
+  margin-bottom: 15px;
 }
 
 .newsletter-form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .newsletter-input {
-    height: 40px;
-    padding: 0 15px;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    font-family: 'Inter', sans-serif;
-    background-color: #2a2756;
-    color: white;
+  height: 40px;
+  padding: 0 15px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+  background-color: #2a2756;
+  color: white;
 }
 
 .newsletter-input::placeholder {
-    color: #b0adcc;
-    font-size: 16px;
+  color: #b0adcc;
+  font-size: 16px;
 }
 
 .newsletter-input:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px #E60278;
+  outline: none;
+  box-shadow: 0 0 0 2px #e60278;
 }
 
 .newsletter-btn {
-    height: 40px;
-    background-color: #E60278;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  height: 40px;
+  background-color: #e60278;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.newsletter-btn:hover {
-    background-color: #c70166;
+.newsletter-btn:hover:not(:disabled) {
+  background-color: #c70166;
+}
+
+.loading-spinner {
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.loading-spinner::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #fff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.login-btn:disabled,
+.logout-btn:disabled,
+.sidebar-link.login-btn:disabled,
+.sidebar-link.logout-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .toast-container .Toastify__toast--success {
-    background-color: #17153a;
-    color: white;
-    font-family: 'Poppins', sans-serif;
-    border: 1px solid #E60278;
+  background-color: #17153a;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  border: 1px solid #e60278;
 }
 
 .toast-container .Toastify__toast--error {
-    background-color: #17153a;
-    color: white;
-    font-family: 'Poppins', sans-serif;
-    border: 1px solid #ff4d4f;
+  background-color: #17153a;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  border: 1px solid #ff4d4f;
 }
 
 .toast-container .Toastify__progress-bar--success {
-    background-color: #E60278;
+  background-color: #e60278;
 }
 
 .toast-container .Toastify__progress-bar--error {
-    background-color: #ff4d4f;
+  background-color: #ff4d4f;
 }
-
-/* Responsive behavior for viewports >768px */
-
 
 /* Adjustments for larger screens (1024px and above) */
 @media (min-width: 1024px) {
+  .icons-container {
+    display: none;
+  }
 
-    .icons-container {
-        display: none;
-    }
+  .nav-links-container {
+    display: flex;
+    justify-content: space-between;
+    gap: -30px;
+    margin: 0 auto 0 350px;
+    flex-grow: 1;
+  }
 
-    .nav-links-container {
-        display: flex;
-        justify-content: space-between;
-        gap: -30px; /* Consistent gap for all larger screens */
-        margin: 0 auto 0 350px; /* Left margin to balance logo, auto for centering */
-        flex-grow: 1; /* Allows nav-links to take available space */
-    }
+  .header-container {
+    width: 100%;
+    max-width: 1500px;
+    padding: 0 20px;
+    overflow: visible;
+  }
 
-    .header-container {
-        width: 100%;
-        max-width: 1500px; /* Maintain max-width for consistency */
-        padding: 0 20px; /* Add padding for smaller screens */
-        overflow: visible; /* Remove overflow hidden to prevent clipping */
-    }
-
-    .nav-link {
-        font-size: 16px; /* Slightly larger for readability */
-    }
+  .nav-link {
+    font-size: 16px;
+  }
 }
-
