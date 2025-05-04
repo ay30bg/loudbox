@@ -271,7 +271,9 @@ function TicketDetailsPage() {
     return (
       <div className="ticket-details-container">
         <h2>Error</h2>
-        <p>{error}. Contact <a href="mailto:support@loudbox.com">support@loudbox.com</a>.</p>
+        <p>
+          {error}. Contact <a href="mailto:support@loudbox.com">support@loudbox.com</a>.
+        </p>
       </div>
     );
   }
@@ -304,15 +306,18 @@ function TicketDetailsPage() {
     recipient,
     eventDate,
     status,
+    verificationToken,
   } = ticketData;
 
   const qrCodeValue = `https://loudbox-backend.vercel.app/api/verify?ticketId=${encodeURIComponent(
     ticketId
   )}&code=${encodeURIComponent(transRef)}&eventTitle=${encodeURIComponent(
     eventTitle
-  )}&firstName=${encodeURIComponent(ticketHolder.firstName)}&eventDate=${encodeURIComponent(
+  )}&firstName=${encodeURIComponent(
+    ticketHolder.firstName
+  )}&eventDate=${encodeURIComponent(
     eventDate ? new Date(eventDate).toISOString() : 'N/A'
-  )}`;
+  )}&token=${encodeURIComponent(verificationToken || '')}`;
 
   return (
     <div className="ticket-details-container">
@@ -325,7 +330,9 @@ function TicketDetailsPage() {
         </div>
         <div className="detail-item">
           <span className="detail-label">Event Date:</span>
-          <span className="detail-value">{eventDate ? new Date(eventDate).toLocaleString() : 'N/A'}</span>
+          <span className="detail-value">
+            {eventDate ? new Date(eventDate).toLocaleString() : 'Not specified'}
+          </span>
         </div>
         <div className="detail-item">
           <span className="detail-label">Ticket ID:</span>
@@ -378,15 +385,32 @@ function TicketDetailsPage() {
           </>
         )}
         <div className="qr-code-container">
-          <QRCodeCanvas className="qr-code" value={qrCodeValue}...................................................................................... size={200} />
+          <QRCodeCanvas
+            className="qr-code"
+            value={qrCodeValue}
+            size={200}
+            level="H"
+          />
         </div>
       </div>
       {message && (
-        <p className={`message ${message.includes('Failed') || message.includes('used') || message.includes('expired') ? 'error' : ''}`}>
+        <p
+          className={`message ${
+            message.includes('Failed') ||
+            message.includes('used') ||
+            message.includes('expired')
+              ? 'error'
+              : ''
+          }`}
+        >
           {message}
         </p>
       )}
-      <button className="download-button" onClick={handleDownload} disabled={status !== 'unused'}>
+      <button
+        className="download-button"
+        onClick={handleDownload}
+        disabled={status !== 'unused'}
+      >
         Download Ticket
       </button>
       <p className="instruction">
