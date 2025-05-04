@@ -379,6 +379,8 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
         lastName,
         phoneNumber,
         eventTitle: eventData.title,
+        eventDate, 
+        status: 'unused',
         ticketQuantity,
       };
       console.log('Sending to /api/initialize-transaction:', requestData);
