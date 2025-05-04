@@ -243,54 +243,117 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
     recipientEmail = '',
   } = state || {};
 
+  // const createTicket = async (response) => {
+  //   try {
+  //     const ticketData = {
+  //       ticketId: `TICKET-${Date.now()}`,
+  //       transactionReference: response.reference,
+  //       eventId: id,
+  //       eventTitle: eventData?.title || 'Unknown Event',
+  //       firstName,
+  //       lastName,
+  //       email,
+  //       isGift,
+  //       recipientFirstName: isGift ? recipientFirstName : undefined,
+  //       recipientLastName: isGift ? recipientLastName : undefined,
+  //       recipientEmail: isGift ? recipientEmail : undefined,
+  //       ticketQuantity,
+  //       totalPrice,
+  //     };
+
+  //     console.log('Sending ticket data to /api/tickets:', ticketData);
+  //     const ticketResponse = await fetch('https://loudbox-backend.vercel.app/api/tickets', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify(ticketData),
+  //     });
+
+  //     if (!ticketResponse.ok) {
+  //       const errorText = await ticketResponse.text();
+  //       throw new Error(`Failed to create ticket: ${ticketResponse.status} - ${errorText}`);
+  //     }
+
+  //     const ticketResult = await ticketResponse.json();
+  //     console.log('Ticket created:', ticketResult);
+
+  //     localStorage.setItem('paymentSuccessful', 'true');
+  //     navigateToThankYou(id, {
+  //       state: {
+  //         ...ticketData,
+  //         transactionReference: ticketResult.transactionReference,
+  //         ticketId: ticketResult.ticketId,
+  //       },
+  //     });
+  //   } catch (err) {
+  //     console.error('Error creating ticket:', err);
+  //     setPaymentError(`Payment successful, but failed to create ticket: ${err.message}. Please contact support.`);
+  //   } finally {
+  //     setIsPaying(false);
+  //   }
+  // };
+
   const createTicket = async (response) => {
-    try {
-      const ticketData = {
-        ticketId: `TICKET-${Date.now()}`,
-        transactionReference: response.reference,
-        eventId: id,
-        eventTitle: eventData?.title || 'Unknown Event',
+  try {
+    const eventDate = new Date(
+      `${eventData.month} ${eventData.date}, ${eventData.year} ${eventData.time}`
+    ).toISOString();
+
+    const ticketData = {
+      ticketId: `TICKET-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`, // Improved ID generation
+      transactionReference: response.reference,
+      eventId: id,
+      eventTitle: eventData?.title || 'Unknown Event',
+      eventDate, // Add eventDate
+      ticketHolder: {
         firstName,
         lastName,
         email,
-        isGift,
-        recipientFirstName: isGift ? recipientFirstName : undefined,
-        recipientLastName: isGift ? recipientLastName : undefined,
-        recipientEmail: isGift ? recipientEmail : undefined,
-        ticketQuantity,
-        totalPrice,
-      };
+      },
+      isGift,
+      recipient: isGift
+        ? {
+            firstName: recipientFirstName || undefined,
+            lastName: recipientLastName || undefined,
+            email: recipientEmail || undefined,
+          }
+        : undefined,
+      ticketQuantity,
+      totalPrice,
+      status: 'unused', // Add status
+    };
 
-      console.log('Sending ticket data to /api/tickets:', ticketData);
-      const ticketResponse = await fetch('https://loudbox-backend.vercel.app/api/tickets', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(ticketData),
-      });
+    console.log('Sending ticket data to /api/tickets:', ticketData);
+    const ticketResponse = await fetch('https://loudbox-backend.vercel.app/api/tickets', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(ticketData),
+    });
 
-      if (!ticketResponse.ok) {
-        const errorText = await ticketResponse.text();
-        throw new Error(`Failed to create ticket: ${ticketResponse.status} - ${errorText}`);
-      }
-
-      const ticketResult = await ticketResponse.json();
-      console.log('Ticket created:', ticketResult);
-
-      localStorage.setItem('paymentSuccessful', 'true');
-      navigateToThankYou(id, {
-        state: {
-          ...ticketData,
-          transactionReference: ticketResult.transactionReference,
-          ticketId: ticketResult.ticketId,
-        },
-      });
-    } catch (err) {
-      console.error('Error creating ticket:', err);
-      setPaymentError(`Payment successful, but failed to create ticket: ${err.message}. Please contact support.`);
-    } finally {
-      setIsPaying(false);
+    if (!ticketResponse.ok) {
+      const errorText = await ticketResponse.text();
+      throw new Error(`Failed to create ticket: ${ticketResponse.status} - ${errorText}`);
     }
-  };
+
+    const ticketResult = await ticketResponse.json();
+    console.log('Ticket created:', ticketResult);
+
+    localStorage.setItem('paymentSuccessful', 'true');
+    navigateToThankYou(id, {
+      state: {
+        ...ticketData,
+        transactionReference: ticketResult.transactionReference,
+        ticketId: ticketResult.ticketId,
+      },
+    });
+  } catch (err) {
+    console.error('Error creating ticket:', err);
+    setPaymentError(
+      `Payment successful, but failed to create ticket: ${err.message}. Please contact support at support@loudbox.com.`
+    );
+  } finally {
+    setIsPaying(false);
+  }
+};
 
   const handlePayment = async () => {
     // Check if user is logged in
