@@ -36,39 +36,25 @@ function Header({
   };
 
   const handleNavLinkClick = (link) => {
-    console.log(`${link} link clicked`);
-    setIsSidebarOpen(false);
+        console.log(`${link} link clicked`);
+        setIsSidebarOpen(false);
 
-    if (link === 'Helpdesk') {
-      if (navigateToHelpdesk) {
-        console.log('Calling navigateToHelpdesk');
-        navigateToHelpdesk();
-      } else {
-        console.error('navigateToHelpdesk is undefined');
-      }
-    } else if (link === 'About Us') {
-      if (navigateToAboutUs) {
-        console.log('Calling navigateToAboutUs');
-        navigateToAboutUs();
-      } else {
-        console.error('navigateToAboutUs is undefined');
-      }
-    } else if (link === 'My Tickets') {
-      if (navigateToMyTickets) {
-        console.log('Calling navigateToMyTickets');
-        navigateToMyTickets();
-      } else {
-        console.error('navigateToMyTickets is undefined');
-      }
-    }else if (link === 'Organizers') {
-      if (navigateToForOrganizers) {
-        console.log('Calling navigateToForOrganizers');
-        navigateToForOrganizers();
-      } else {
-        console.error('navigateToForOrganizers is undefined');
-      }
-    }
-  };
+        if (link === 'Helpdesk' && navigateToHelpdesk) {
+            console.log('Calling navigateToHelpdesk');
+            navigateToHelpdesk();
+        } else if (link === 'About Us' && navigateToAboutUs) {
+            console.log('Calling navigateToAboutUs');
+            navigateToAboutUs();
+        } else if (link === 'My Tickets' && navigateToMyTickets) {
+            console.log('Calling navigateToMyTickets');
+            navigateToMyTickets();
+        } else if (link === 'Organizers' && navigateToForOrganizers) {
+            console.log('Calling navigateToForOrganizers');
+            navigateToForOrganizers();
+        } else {
+            console.error(`Navigation function for ${link} is undefined`);
+        }
+    };
 
   const handleLogoClick = () => {
     console.log('Logo clicked');
@@ -196,6 +182,9 @@ function Header({
         </button>
         <button className="nav-link" onClick={() => handleNavLinkClick('My Tickets')}>
           My Tickets
+        </button>
+        <button className="nav-link" onClick={() => handleNavLinkClick('Organizers')}>
+            For Organizers
         </button>
         {user ? (
           <button
