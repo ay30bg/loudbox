@@ -5,7 +5,7 @@ import logo from './logo.png';
 import { FaRocket, FaUsers, FaDollarSign, FaChartLine, FaHeadset, FaClipboardList } from 'react-icons/fa';
 import './forOrganizers.css';
 
-function ForOrganizers({ navigateToLanding, navigateToHelpdesk, navigateToAboutUs, onLogout, isLoggedIn }) {
+function ForOrganizers({ navigateToLanding, navigateToHelpdesk }) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -36,13 +36,6 @@ function ForOrganizers({ navigateToLanding, navigateToHelpdesk, navigateToAboutU
 
   return (
     <div className="organizers-container">
-      <Header
-        navigateToLanding={navigateToLanding}
-        navigateToHelpdesk={navigateToHelpdesk}
-        navigateToAboutUs={navigateToAboutUs}
-        onLogout={onLogout}
-        isLoggedIn={isLoggedIn}
-      />
 
       {/* Hero Section */}
       <section className="organizers-hero animate-section">
