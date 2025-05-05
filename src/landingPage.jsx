@@ -15,7 +15,8 @@ function LandingPage({
     navigateToCategory,
     navigateToHelpdesk,
     navigateToAboutUs,
-    navigateToForOrganizers
+    navigateToForOrganizers,
+    navigateToMyTickets
 }) {
 const navigate = useNavigate();
     
@@ -32,6 +33,7 @@ const navigate = useNavigate();
             navigateToHelpdesk={navigateToHelpdesk} 
             navigateToAboutUs={navigateToAboutUs}
             navigateToForOrganizers={navigateToForOrganizers}
+            navigateToMyTickets={navigateToMyTickets}
             />
             <Hero />
             <UpcomingEvent 
