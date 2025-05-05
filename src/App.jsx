@@ -19,6 +19,7 @@ import ForOrganizers from './forOrganizers';
 import ForgotPassword from './forgotPassword';
 import ResetPassword from './resetPassword';
 import Notifications from './notifications';
+import MyTickets from './myTickets';
 
 function App() {
   console.log('App rendered');
@@ -105,6 +106,11 @@ function App() {
       navigate('/about-us');
     };
 
+    const navigateToMyTickets = () => {
+      console.log('Navigating to my-tickets');
+      navigate('/my-tickets');
+    };
+
     const navigateToForOrganizers = () => {
       console.log('Navigating to organizers');
       navigate('/organizers');
@@ -114,12 +120,13 @@ function App() {
 
     return (
       <div>
-        {['event-details', 'ticket-purchase', 'order-summary', 'thank-you', 'ticket', 'concerts', 'helpdesk', 'notifications', 'about-us', 'organizers'].includes(currentPath) && (
+        {['event-details', 'ticket-purchase', 'order-summary', 'thank-you', 'ticket', 'concerts', 'helpdesk', 'notifications', 'about-us', 'my-tickets', 'organizers'].includes(currentPath) && (
           <Header
             navigateToLanding={navigateToLanding}
             navigateToHelpdesk={navigateToHelpdesk}
             navigateToAboutUs={navigateToAboutUs}
             navigateToForOrganizers={navigateToForOrganizers}
+            navigateToMyTickets={navigateToMyTickets}
             onLogin={navigateToSignIn} // Add onLogin prop to navigate to login page
           />
         )}
@@ -154,6 +161,7 @@ function App() {
                 navigateToHelpdesk={navigateToHelpdesk}
                 navigateToAboutUs={navigateToAboutUs}
                 navigateToForOrganizers={navigateToForOrganizers}
+                navigateToMyTickets={navigateToMyTickets}
               />
             }
           />
@@ -220,6 +228,12 @@ function App() {
           <Route
             path="/about-us"
             element={<AboutUs navigateToLanding={navigateToLanding} />}
+          />
+          <Route
+            path="/my-tickets"
+            element={<MyTickets
+              navigateToLanding={navigateToLanding} />
+            }
           />
           <Route
             path="/organizers"
