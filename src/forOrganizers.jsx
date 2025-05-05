@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Header from './header';
 import Footer from './footer';
 import logo from './logo.png';
 import { FaRocket, FaUsers, FaDollarSign, FaChartLine, FaHeadset, FaClipboardList } from 'react-icons/fa';
@@ -42,7 +41,7 @@ function ForOrganizers({ navigateToLanding, navigateToHelpdesk }) {
         <img src={logo} alt="Loudbox logo" className="organizers-logo" />
         <h1>Grow Your Events with Loudbox</h1>
         <p>Reach millions of fans with our seamless ticketing platform.</p>
-        <button className="hero-cta" onClick={() => document.getElementById('signup-form').scrollIntoView()}>
+        <button className="my-hero-cta" onClick={() => document.getElementById('signup-form').scrollIntoView()}>
           Get Started
         </button>
       </section>
@@ -220,15 +219,15 @@ function ForOrganizers({ navigateToLanding, navigateToHelpdesk }) {
       </section>
 
       {/* Call to Action Section */}
-      <section className="cta-section animate-section">
+      <section className="cta-sections animate-section">
         <h2>Ready to Amplify Your Events?</h2>
         <p>Join Loudbox today or contact our team for personalized support.</p>
-        <div className="cta-buttons">
-          <button onClick={() => document.getElementById('signup-form').scrollIntoView()}>
+        <div className="cta-buttonss">
+          <button className='organizers-cta-button' onClick={() => document.getElementById('signup-form').scrollIntoView()}>
             Get Started
           </button>
-          <button onClick={navigateToHelpdesk}>Visit Helpdesk</button>
-          <button onClick={navigateToLanding}>Explore Events</button>
+          <button className='organizers-cta-button' onClick={navigateToHelpdesk}>Visit Helpdesk</button>
+          <button className='organizers-cta-button' onClick={navigateToLanding}>Explore Events</button>
         </div>
       </section>
 
