@@ -188,9 +188,6 @@ function Header({
         <FaBars className="icons" onClick={handleMenuClick} aria-label="Open menu" />
       </div>
       <div className="nav-links-container">
-        <button className="nav-link" onClick={() => handleNavLinkClick('Events')}>
-          Events
-        </button>
         <button className="nav-link" onClick={() => handleNavLinkClick('About Us')}>
           About Us
         </button>
