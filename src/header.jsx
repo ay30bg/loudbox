@@ -10,6 +10,7 @@ function Header({
   navigateToHelpdesk,
   navigateToAboutUs,
   navigateToForOrganizers,
+  navigateToMyTickets
 }) {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -52,7 +53,14 @@ function Header({
       } else {
         console.error('navigateToAboutUs is undefined');
       }
-    } else if (link === 'Organizers') {
+    } else if (link === 'My Tickets') {
+      if (navigateToMyTickets) {
+        console.log('Calling navigateToMyTickets');
+        navigateToMyTickets();
+      } else {
+        console.error('navigateToMyTickets is undefined');
+      }
+    }else if (link === 'Organizers') {
       if (navigateToForOrganizers) {
         console.log('Calling navigateToForOrganizers');
         navigateToForOrganizers();
@@ -189,6 +197,9 @@ function Header({
         <button className="nav-link" onClick={() => handleNavLinkClick('Helpdesk')}>
           Helpdesk
         </button>
+        <button className="nav-link" onClick={() => handleNavLinkClick('My Tickets')}>
+          My Tickets
+        </button>
         {user ? (
           <button
             className="logout-btn"
@@ -234,17 +245,17 @@ function Header({
         </div>
 
         <nav className="sidebar-nav">
-          <button className="sidebar-link" onClick={() => handleNavLinkClick('Events')}>
-            Events
-          </button>
           <button className="sidebar-link" onClick={() => handleNavLinkClick('About Us')}>
             About Us
           </button>
-          <button className="sidebar-link" onClick={() => handleNavLinkClick('Organizers')}>
-            For Organizers
-          </button>
           <button className="sidebar-link" onClick={() => handleNavLinkClick('Helpdesk')}>
             Helpdesk
+          </button>
+          <button className="sidebar-link" onClick={() => handleNavLinkClick('My Tickets')}>
+            My Tickets
+          </button>
+          <button className="sidebar-link" onClick={() => handleNavLinkClick('Organizers')}>
+            For Organizers
           </button>
           {user ? (
             <button
