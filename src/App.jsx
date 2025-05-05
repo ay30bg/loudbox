@@ -114,7 +114,7 @@ function App() {
 
     return (
       <div>
-        {['event-details', 'ticket-purchase', 'order-summary', 'thank-you', 'ticket', 'concerts', 'helpdesk', 'about-us', 'organizers'].includes(currentPath) && (
+        {['event-details', 'ticket-purchase', 'order-summary', 'thank-you', 'ticket', 'concerts', 'helpdesk', 'notifications', 'about-us', 'organizers'].includes(currentPath) && (
           <Header
             navigateToLanding={navigateToLanding}
             navigateToHelpdesk={navigateToHelpdesk}
