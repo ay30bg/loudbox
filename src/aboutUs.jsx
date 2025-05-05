@@ -4,7 +4,7 @@ import logo from './logo.png';
 import { FaMusic, FaTicketAlt, FaUsers, FaHeart } from 'react-icons/fa'; // Icons for values
 import './aboutUs.css';
 
-function AboutUs({ navigateToLanding, navigateToHelpdesk, navigateToAboutUs, onLogout, isLoggedIn }) {
+function AboutUs({ navigateToLanding }) {
   const handleExploreEvents = () => {
     console.log('Explore Events clicked');
     navigateToLanding();
@@ -71,13 +71,13 @@ function AboutUs({ navigateToLanding, navigateToHelpdesk, navigateToAboutUs, onL
       </section>
 
       {/* Call to Action Section */}
-      <section className="cta-section animate-section">
+      <section className="about-cta-section animate-section">
         <h2>Join the Loudbox Experience</h2>
         <p>
           Ready to discover your next unforgettable event? Explore our lineup of concerts, festivals,
           and more!
         </p>
-        <button className="cta-button" onClick={handleExploreEvents}>
+        <button className="about-cta-buttons" onClick={handleExploreEvents}>
           Explore Events
         </button>
       </section>
