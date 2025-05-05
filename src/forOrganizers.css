@@ -67,7 +67,7 @@
     opacity: 0.9;
   }
   
-  .hero-cta {
+  .my-hero-cta{
     background: #e60278;
     color: #fff;
     border: none;
@@ -76,14 +76,15 @@
     font-weight: 600;
     border-radius: 50px;
     cursor: pointer;
-    transition: background 0.3s, transform 0.3s;
+    transform: scale(1.02);
     box-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.1);
   }
-  
-  .hero-cta:hover {
-    background: #f5f5f5;
+
+  .my-hero-cta:hover {
+    background: #b0025e;
     transform: scale(1.05);
   }
+
   
   /* Why Loudbox Section */
   .why-loudbox {
@@ -203,9 +204,9 @@
     transition: transform 0.3s;
   }
   
-  .step-card:hover {
+  /* .step-card:hover {
     transform: translateY(-5px);
-  }
+  } */
   
   .step-number {
     position: absolute;
@@ -365,12 +366,12 @@
     font-weight: 600;
     border-radius: 8px;
     cursor: pointer;
-    transition: background 0.3s, transform 0.3s;
+    /* transform: scale(1.00); */
   }
   
   .organizers-form button:hover {
-    background: #e03e00;
-    transform: scale(1.02);
+    background: #0f0e2a;
+    /* transform: scale(1.01); */
   }
   
   .organizers-form button:disabled {
@@ -456,7 +457,7 @@
   }
   
   /* Call to Action Section */
-  .cta-section {
+  .cta-sections {
     text-align: center;
     background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
     color: #fff;
@@ -465,7 +466,7 @@
     overflow: hidden;
   }
   
-  .cta-section::before {
+  .cta-sections::before {
     content: '';
     position: absolute;
     top: 0;
@@ -476,27 +477,27 @@
     opacity: 0.1;
   }
   
-  .cta-section h2 {
+  .cta-sections h2 {
     font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 20px;
     text-transform: uppercase;
   }
   
-  .cta-section p {
+  .cta-sections p {
     font-size: 1.3rem;
     color: #ccc;
     max-width: 600px;
     margin: 0 auto 30px;
   }
   
-  .cta-buttons {
+  .cta-buttonss {
     display: flex;
     justify-content: center;
     gap: 20px;
   }
   
-  .cta-buttons button {
+  .organizers-cta-button {
     background: #E60278;
     color: #fff;
     border: none;
@@ -505,12 +506,13 @@
     font-weight: 600;
     border-radius: 8px;
     cursor: pointer;
-    transition:  0.3s, transform 0.3s;
-  }
-  
-  .cta-buttons button:hover {
-    background: #e03e00;
     transform: scale(1.05);
+  }
+
+  .organizers-cta-button:hover {
+    background: #b0025e;
+    color: #fff;
+    transform: scale(1.07);
   }
   
   /* Screen Reader Only */
@@ -594,7 +596,7 @@
       grid-template-columns: 1fr;
     }
   
-    .cta-buttons {
+    .cta-buttonss {
       flex-direction: column;
       gap: 15px;
     }
