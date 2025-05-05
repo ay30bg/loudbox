@@ -164,12 +164,7 @@ html {
 }
 
 .event-cart-btn {
-    padding: 0.5rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
+    display: none;
 }
 
 /* About Section */
