@@ -23,7 +23,6 @@ function MyTickets() {
                     Explore Events
                 </button>
             </div>
-            <Footer />
         </div>
     );
 }
