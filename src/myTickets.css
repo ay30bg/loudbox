@@ -1,20 +1,38 @@
-.my-tickets-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f4f7fa;
-    padding: 20px;
+/* Reset and Base Styles */
+body,
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+    font-family: "Inter", sans-serif;
+    -webkit-font-smoothing: antialiased;
 }
 
-.construction-message {
-    text-align: center;
-    background: white;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    max-width: 500px;
+/* Main Container */
+.my-tickets-container {
     width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-family: "Inter", sans-serif;
+}
+
+/* Construction Card */
+.construction-card {
+    width: 95%;
+    max-width: 1200px;
+    background-color: #fff;
+    box-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    padding: 30px;
+    text-align: center;
+    margin: 1.5rem auto;
     animation: fadeIn 1s ease-in-out;
 }
 
@@ -24,32 +42,38 @@
     margin-bottom: 20px;
 }
 
-h1 {
-    font-size: 28px;
-    color: #333;
-    margin-bottom: 10px;
+.card-title {
+    font-size: clamp(18px, 3.5vw, 22px);
+    color: #100c08;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    margin: 0 0 10px;
 }
 
-p {
-    font-size: 16px;
+.construction-text {
+    font-size: clamp(13px, 2.2vw, 15px);
     color: #666;
-    margin-bottom: 20px;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    line-height: 26px;
+    margin: 0 0 20px;
 }
 
 .explore-button {
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    background-color: #17153a;
     color: white;
-    background-color: #007bff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: clamp(12px, 1.8vw, 13px);
     transition: background-color 0.3s, transform 0.2s;
 }
 
 .explore-button:hover {
-    background-color: #0056b3;
+    background-color: #0f0e29;
     transform: translateY(-2px);
 }
 
@@ -57,6 +81,7 @@ p {
     transform: translateY(0);
 }
 
+/* Animation */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -68,22 +93,98 @@ p {
     }
 }
 
-/* Responsive design */
-@media (max-width: 600px) {
-    .construction-message {
+/* Responsive Design */
+
+/* Extra Small Devices (Phones, <576px) */
+@media (max-width: 576px) {
+    .construction-card {
+        width: 98%;
         padding: 20px;
+        margin: 1rem auto;
     }
 
-    h1 {
-        font-size: 24px;
+    .ticket-icon {
+        font-size: 36px;
     }
 
-    p {
+    .card-title {
+        font-size: 16px;
+    }
+
+    .construction-text {
+        font-size: 13px;
+        line-height: 22px;
+    }
+
+    .explore-button {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 11px;
+    }
+}
+
+/* Small to Medium Devices (576px–768px) */
+@media (min-width: 576px) and (max-width: 768px) {
+    .construction-card {
+        width: 95%;
+        padding: 25px;
+    }
+
+    .ticket-icon {
+        font-size: 40px;
+    }
+
+    .card-title {
+        font-size: 18px;
+    }
+
+    .construction-text {
         font-size: 14px;
     }
 
     .explore-button {
-        padding: 10px 20px;
-        font-size: 14px;
+        padding: 0.75rem 1.25rem;
+        font-size: 12px;
+    }
+}
+
+/* Large Devices (769px–1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .construction-card {
+        width: 95%;
+        padding: 30px;
+    }
+
+    .ticket-icon {
+        font-size: 44px;
+    }
+
+    .card-title {
+        font-size: 20px;
+    }
+
+    .explore-button {
+        padding: 0.75rem 1.5rem;
+    }
+}
+
+/* Extra Large Devices (>1024px) */
+@media (min-width: 1025px) {
+    .construction-card {
+        width: 90%;
+        max-width: 800px;
+    }
+
+    .ticket-icon {
+        font-size: 48px;
+    }
+
+    .card-title {
+        font-size: 22px;
+    }
+
+    .explore-button {
+        padding: 0.85rem 2rem;
+        font-size: 13px;
     }
 }
