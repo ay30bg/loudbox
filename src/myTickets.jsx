@@ -17,7 +17,7 @@ function MyTickets() {
                 </p>
                 <button
                     className="explore-button"
-                    onClick={() => navigate("/events")}
+                    onClick={() => navigate("/")}
                     aria-label="Explore available events"
                 >
                     Explore Events
