@@ -1,9 +1,8 @@
 import React from "react";
-import { FaTicketAlt } from "react-icons/fa"; // For ticket icon (install react-icons)
-import { useNavigate } from "react-router-dom"; // For navigation
-import Footer from "./footer"; // Reusing the same Footer component
-import "./myTickets.css"; // External CSS file for styles
-
+import { FaTicketAlt } from "react-icons/fa"; 
+import { useNavigate } from "react-router-dom"; 
+//import Footer from "./footer"; Reusing the same Footer component
+import "./myTickets.css";
 function MyTickets() {
     const navigate = useNavigate();
 
