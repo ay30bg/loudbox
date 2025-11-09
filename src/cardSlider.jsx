@@ -13,7 +13,7 @@ const CardSlider = ({ onCardClick }) => {
             id: 1,
             artistName: 'DND',
             eventImage: 'https://i.postimg.cc/ZK2dmGrb/DND-FLIER.jpg',
-            title: 'DND Block Party ',
+            title: 'DND Block Party 2.0',
             city: 'Osogbo',
             month: 'DEC',
             time: '20:00',
@@ -148,4 +148,5 @@ const CardSlider = ({ onCardClick }) => {
 };
 
 export default CardSlider;
+
 
