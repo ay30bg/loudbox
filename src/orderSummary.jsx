@@ -1637,98 +1637,7 @@ function OrderSummary({ navigateBack, navigateToThankYou }) {
     }
   };
 
-  const handlePayment = async () => {
-    if (!user) {
-      setPaymentError('Please sign in to complete your payment.');
-      navigateBack({ id });
-      return;
-    }
-
-    if (!isPaystackLoaded || !window.PaystackPop) {
-      setPaymentError('Payment system not ready. Please wait or refresh.');
-      return;
-    }
-
-    setIsPaying(true);
-    setPaymentError(null);
-
-    try {
-      const monthIndex = [
-        'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
-        'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'
-      ].indexOf(eventData.month.toUpperCase());
-
-      if (monthIndex === -1) throw new Error('Invalid month');
-
-      const monthStr = String(monthIndex + 1).padStart(2, '0');
-      const dateStr = eventData.date.padStart(2, '0');
-      const eventDateStr = `${eventData.year}-${monthStr}-${dateStr}T${eventData.time}:00Z`;
-      const eventDate = new Date(eventDateStr);
-
-      if (isNaN(eventDate.getTime())) throw new Error('Invalid event date');
-
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://loudbox-backend.vercel.app';
-
-      const initializeResponse = await axios.post(`${backendUrl}/api/initialize-transaction`, {
-        email: email || 'guest@loudbox.com',
-        amount: totalPrice,
-        subaccount_code: eventData.subaccount_code || undefined,
-        firstName,
-        lastName,
-        phoneNumber,
-        eventTitle: eventData.title,
-        eventDate: eventDate.toISOString(),
-        ticketQuantity,
-      });
-
-      const { reference } = initializeResponse.data.data;
-
-      window.PaystackPop.setup({
-        key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY || 'pk_live_a8e81a28a5055c73966d7046d9f4469837d9fee7',
-        email: email || 'guest@loudbox.com',
-        amount: totalPrice * 100,
-        currency: 'NGN',
-        ref: reference,
-        metadata: {
-          custom_fields: [
-            { display_name: 'Event', variable_name: 'event_title', value: eventData.title },
-            { display_name: 'Quantity', variable_name: 'ticket_quantity', value: ticketQuantity },
-            { display_name: 'Name', variable_name: 'customer_name', value: `${firstName} ${lastName}` },
-          ],
-        },
-        callback: async function (response) {
-          if (response.status === 'success') {
-            try {
-              const verifyResponse = await axios.get(`${backendUrl}/api/verify-transaction/${response.reference}`);
-              if (verifyResponse.data.data.status === 'success') {
-                await createTicket(response);
-              } else {
-                setPaymentError('Payment was successful but verification failed. Contact support.');
-                setIsPaying(false);
-              }
-            } catch (err) {
-              console.error('Verification failed:', err);
-              setPaymentError('Payment successful, but verification failed. Contact support with reference: ' + response.reference);
-              setIsPaying(false);
-            }
-          } else {
-            setPaymentError('Payment failed. Please try again.');
-            setIsPaying(false);
-          }
-        },
-        onClose: () => {
-          setPaymentError('Payment was cancelled.');
-          setIsPaying(false);
-        },
-      }).openIframe();
-
-    } catch (error) {
-      console.error('Payment initialization error:', error);
-      const msg = error.response?.data?.message || error.message || 'Unknown error';
-      setPaymentError(`Payment failed: ${msg}`);
-      setIsPaying(false);
-    }
-  };
+  // 
 
   if (loading) return <div className="loading">Loading event details...</div>;
   if (!eventData) {
@@ -1843,3 +1752,4 @@ OrderSummary.defaultProps = {
 };
 
 export default OrderSummary;
+
