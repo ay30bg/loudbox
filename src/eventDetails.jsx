@@ -14,7 +14,7 @@ const mockEvents = [
         eventImage: 'https://i.postimg.cc/ZK2dmGrb/DND-FLIER.jpg',
         description: 'A One in a Million Party',
         subaccount_code: 'ACCT_567462xff65gop0',
-        venue: 'Lennit Arena',
+        venue: 'Lennit Bites',
         city: 'Osogbo',
         category: 'Hangout',
         month: 'DEC',
@@ -303,4 +303,5 @@ EventDetails.defaultProps = {
 };
 
 export default EventDetails;
+
 
