@@ -12,7 +12,7 @@ const mockEvents = [
     title: 'Davido Live In Concert',
     eventImage: 'https://wallpapercat.com/w/middle-retina/4/0/2/2250759-2560x1631-desktop-hd-davido-background-image.jpg',
     description: 'Davido 5ive Album Tour',
-    subaccount_code: 'ACCT_iz1zd0rhteyublq',
+    subaccount_code: 'ACCT_rmjeq5j8it8mva9',
     venue: 'State Farm Arena',
     city: 'Atlanta',
     category: 'Concert',
@@ -553,4 +553,5 @@ OrderSummary.defaultProps = {
 };
 
 export default OrderSummary;
+
 
