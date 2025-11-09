@@ -148,3 +148,24 @@
 .nav-button:hover {
   background: rgba(0, 0, 0, 0.7);
 }
+
+/* Make cards full-width on mobile */
+@media (max-width: 768px) {
+  .card {
+    flex: 0 0 100%;
+  }
+
+  .cards-wrapper {
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .card-image-container {
+    height: 180px; /* slightly smaller for mobile */
+  }
+
+  .card-content h3 {
+    font-size: 16px;
+  }
+}
+
