@@ -484,6 +484,7 @@ function TicketPurchase({ navigateBack, navigateToOrderSummary }) {
                 </button>
               </div>
             </div>
+            
             {/* <div className="price-group">
               <span className="price-value">
                 NGN {totalPriceWithDiscount.toLocaleString()}{' '}
@@ -497,6 +498,7 @@ function TicketPurchase({ navigateBack, navigateToOrderSummary }) {
     NGN {totalPriceWithDiscount.toLocaleString()}
   </span>
 </div>
+          </div>
 
 {discount > 0 && (
   <p className="discount-note">
@@ -523,5 +525,6 @@ TicketPurchase.defaultProps = {
 };
 
 export default TicketPurchase;
+
 
 
