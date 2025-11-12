@@ -989,7 +989,7 @@ function TicketPurchase({ navigateBack, navigateToOrderSummary }) {
 
   // Calculate price and discount
   const baseTotal = eventData.basePrice * ticketQuantity;
-  const discount = eventData.title === 'DND Block Party 2.0' && ticketQuantity >= 5 ? 5000 : 0;
+  const discount = eventData.title === 'DND Block Party 2.0' && ticketQuantity === 5 ? 5000 : 0;
   const totalPriceWithDiscount = baseTotal - discount;
 
   const handleSubmit = (e) => {
@@ -1212,3 +1212,4 @@ TicketPurchase.defaultProps = {
 };
 
 export default TicketPurchase;
+
